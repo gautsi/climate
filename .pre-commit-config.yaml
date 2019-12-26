@@ -3,3 +3,12 @@ repos:
     rev: v0.1 # Get the latest from: https://github.com/NYAG/pre-commit/releases, e.g. v0.1
     hooks:
     - id: pip-freeze-check
+-   repo: https://github.com/ambv/black
+    rev: stable
+    hooks:
+    - id: black
+      language_version: python3.6
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v1.2.3
+    hooks:
+    - id: flake8
