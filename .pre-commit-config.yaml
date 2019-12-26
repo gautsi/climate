@@ -1,0 +1,5 @@
+repos:
+-   repo: https://github.com/NYAG/pre-commit
+    rev: v0.1 # Get the latest from: https://github.com/NYAG/pre-commit/releases, e.g. v0.1
+    hooks:
+    - id: pip-freeze-check
