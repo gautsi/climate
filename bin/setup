@@ -1,0 +1,11 @@
+#! /bin/bash
+
+# source the venv
+source ./../.venv/bin/activate
+
+# add kernel to jupyter
+ipython kernel install --user --name=.venv
+
+# tmux
+tmux new-session -d \; split-window "jupyter lab --ip 0.0.0.0"\; attach
+
