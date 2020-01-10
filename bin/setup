@@ -1,11 +1,14 @@
 #! /bin/bash
+# run this from the main repo folder
 
 # source the venv
-source ./../.venv/bin/activate
+source .venv/bin/activate
 
 # add kernel to jupyter
 ipython kernel install --user --name=.venv
 
+deactivate
+
 # tmux
-tmux new-session -d \; split-window "jupyter lab --ip 0.0.0.0"\; attach
+tmux new-session -d \; send-keys source Space .venv/bin/activate C-m \; split-window "jupyter lab --ip 0.0.0.0"\; send-keys C-o \; attach
 
