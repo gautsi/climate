@@ -6,4 +6,6 @@ https://www.ncdc.noaa.gov/data-access/land-based-station-data/land-based-dataset
 
 ## To do
 - [ ] check flags in ghcn data
+- [ ] documentation
+- [ ] testing
 - [ ] read https://www.nature.com/articles/s41558-019-0666-7

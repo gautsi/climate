@@ -1,8 +1,14 @@
+"""
+Functions to read and work with data from GHCN
+"""
+
 from ftplib import FTP
 from contextlib import closing
 from io import StringIO
 import pandas as pd
+from tqdm import tqdm
 
+# field specifications for fixed-width GHCN files
 ghcn_specs = [
     {
         "file_type": "stations",
@@ -44,6 +50,13 @@ ghcn_specs = [
 
 
 def get_ghcn_specs(file_type="stations"):
+    """Gets the field specifications for a given file type
+    Args:
+        file_type (str): the file type
+    Returns:
+        dict: the field specifications (see ghcn_specs)
+    """
+
     return [g for g in ghcn_specs if g["file_type"] == file_type][0]
 
 
@@ -103,3 +116,28 @@ def get_temps(station_data):
     temps["temp_f"] = temps["temp_c"].map(c_to_f)
     temps["date"] = pd.to_datetime(temps[["YEAR", "MONTH", "day"]])
     return temps
+
+
+def get_all_temps(limit=None, use_tqdm=False):
+
+    # get station data
+    stations_df = get_stations()
+
+    # get station ids for the stations with GSN data
+    gcn_station_specs = [
+        {"station_id": station_id}
+        for station_id in stations_df[pd.notnull(stations_df["GSN FLAG"])].ID.unique()
+    ][:limit]
+
+    def tqdm_wrap(l):
+        return tqdm(l) if use_tqdm else l
+
+    # get full data for each station
+    for station_spec in tqdm_wrap(gcn_station_specs):
+        station_spec["station_data"] = get_station_data(
+            station_id=station_spec["station_id"]
+        )
+        # pull temperatures from full data
+        station_spec["temps"] = get_temps(station_spec["station_data"])
+
+    return pd.concat([s["temps"] for s in gcn_station_specs])
