@@ -5,11 +5,14 @@
 
 Welcome to climate's documentation!
 ===================================
+This is a collection of tools to help pull and work with climate change related data sets.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+.. automodule:: src.ghcn
+   :members:
 
 
 Indices and tables
