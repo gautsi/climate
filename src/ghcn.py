@@ -51,8 +51,10 @@ ghcn_specs = [
 
 def get_ghcn_specs(file_type="stations"):
     """Gets the field specifications for a given file type
+
     Args:
         file_type (str): the file type
+
     Returns:
         dict: the field specifications (see ghcn_specs)
     """
