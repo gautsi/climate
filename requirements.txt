@@ -1,5 +1,5 @@
 backcall==0.1.0
--e git+https://github.com/gautsi/climate.git@fe5d5b397b7f38339c1eb0b0c2fd9998d3e97acf#egg=climate
+-e git+https://github.com/gautsi/climate.git@544ce97ca640e138870c302039f46b59c95f1a19#egg=climate
 cycler==0.10.0
 decorator==4.4.1
 ipykernel==5.1.3
