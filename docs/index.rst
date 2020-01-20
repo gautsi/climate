@@ -10,10 +10,8 @@ This is a collection of tools to help pull and work with climate change related 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
-.. automodule:: src.ghcn
-   :members:
-
+   
+   ghcn
 
 Indices and tables
 ==================
