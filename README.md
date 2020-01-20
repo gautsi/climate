@@ -7,7 +7,7 @@ https://www.ncdc.noaa.gov/data-access/land-based-station-data/land-based-dataset
 Climate data from sensors around the world
 
 ## IPCC reports
-notes 
+[./notes/ipcc_reports.md](./notes/ipcc_reports.md) 
 
 ## To do
 - [ ] check flags in ghcn data
