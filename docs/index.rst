@@ -11,16 +11,17 @@
    5. ^^
    6. ""
 
-#############
+###################################
 Welcome to climate's documentation!
-#############
+###################################
 
 This is a collection of tools to help pull and work with climate change related data sets.
 
 .. toctree::
    :maxdepth: 2
-    
-    ghcn
+   :caption: Contents:
+
+   ghcn
 
 Indices and tables
 ==================
