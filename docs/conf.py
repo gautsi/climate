@@ -179,3 +179,10 @@ texinfo_documents = [
 
 
 autodoc_mock_imports = ["tqdm"]
+
+html_theme_options = {
+    "description": "Tools around climate change data",
+    "github_user": "gautsi",
+    "github_repo": "climate",
+    "fixed_sidebar": True,
+}
