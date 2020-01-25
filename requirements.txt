@@ -1,8 +1,9 @@
 attrs==19.3.0
 backcall==0.1.0
--e git+https://github.com/gautsi/climate.git@f4f9cfa4276771e8b3d731458da32a92cac32620#egg=climate
+-e git+https://github.com/gautsi/climate.git@ca7f931be8263650e7496cf9d295cadbaaeb5461#egg=climate
 cycler==0.10.0
 decorator==4.4.1
+dfply==0.3.3
 importlib-metadata==1.4.0
 ipykernel==5.1.3
 ipython==7.11.0

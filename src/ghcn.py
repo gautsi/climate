@@ -143,3 +143,31 @@ def get_all_temps(limit=None, use_tqdm=False):
         station_spec["temps"] = get_temps(station_spec["station_data"])
 
     return pd.concat([s["temps"] for s in gcn_station_specs])
+
+
+def get_avg_temps(limit=None, use_tqdm=False, from_file=None):
+    # get all temps
+    print("get all temps...")
+    all_temps = (
+        pd.read_csv(from_file)
+        if from_file
+        else get_all_temps(limit=limit, use_tqdm=use_tqdm)
+    )
+    print("done.")
+
+    # take the daily average temp
+    print("taking avg...")
+    avg_temp_df = all_temps.groupby(["date", "ELEMENT"], as_index=False).agg(
+        {"temp_f": "mean"}
+    )
+    print("done.")
+
+    # add day, month, year fields and date in datetime
+    print("adding date fields...")
+    avg_temp_df["date_dt"] = pd.to_datetime(avg_temp_df.date)
+    avg_temp_df["day"] = avg_temp_df.date_dt.dt.day
+    avg_temp_df["month"] = avg_temp_df.date_dt.dt.month
+    avg_temp_df["year"] = avg_temp_df.date_dt.dt.year
+    print("done.")
+
+    return avg_temp_df[["date_dt", "day", "month", "year", "ELEMENT", "temp_f"]]

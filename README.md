@@ -7,7 +7,7 @@ https://www.ncdc.noaa.gov/data-access/land-based-station-data/land-based-dataset
 Climate data from sensors around the world
 
 ## IPCC reports
-[./notes/ipcc_reports.md](./notes/ipcc_reports.md) 
+[./notes/ipcc_reports.md](./notes/ipcc_reports.md)
 
 ## To do
 - [ ] check flags in ghcn data
@@ -15,3 +15,4 @@ Climate data from sensors around the world
 - [x] testing
 - [ ] read https://www.nature.com/articles/s41558-019-0666-7
 - [ ] read IPCC reports https://www.ipcc.ch/
+- [ ] ghcn daily averages: why are July temps mostly the same?
