@@ -22,3 +22,4 @@ def extract_zones_archive(data_folder_path):
 def get_zones(data_folder_path):
     gdb = fiona.open(f"{data_folder_path}/chermann.gdb/")
     return gpd.GeoDataFrame.from_features(gdb)
+
