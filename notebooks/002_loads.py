@@ -11,9 +11,16 @@ from climate.nyiso import utils as u
 
 # %%
 import pandas as pd
+import datetime as dt
 
 # %%
-test = pd.read_csv("http://mis.nyiso.com/public/csv/pal/20201003pal.csv")
+date = dt.datetime(year=2020, month=10, day=3)
+
+
+# %%
+
+# %%
+test = u.get_load(date)
 
 # %%
 test.head()
@@ -24,8 +31,6 @@ test.dtypes
 # %%
 len(test)
 
-# %%
-test["time"] = pd.to_datetime(test["Time Stamp"])
 
 # %%
 import matplotlib.pyplot as plt

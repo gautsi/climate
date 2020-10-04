@@ -3,6 +3,7 @@ import libarchive.public
 import os
 import fiona
 import geopandas as gpd
+import pandas as pd
 
 def get_zones_archive(data_folder_path):
     anon_gis = GIS()
@@ -23,3 +24,7 @@ def get_zones(data_folder_path):
     gdb = fiona.open(f"{data_folder_path}/chermann.gdb/")
     return gpd.GeoDataFrame.from_features(gdb)
 
+def get_load(date):
+    load = pd.read_csv(f"http://mis.nyiso.com/public/csv/pal/{date.strftime('%Y%m%d')}pal.csv")
+    load["time"] = pd.to_datetime(load["Time Stamp"])
+    return load
