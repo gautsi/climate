@@ -1,36 +1,35 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GHCN &#8212; climate  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Welcome to climate’s documentation!" href="index.html" />
+    <link rel="next" title="NYISO" href="nyiso.html" />
+    <link rel="prev" title="Climate projects" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
+  
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   <div class="document">
     
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -57,63 +56,67 @@
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">GHCN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nyiso.html">NYISO</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Welcome to climate’s documentation!</a></li>
+      <li>Previous: <a href="index.html" title="previous chapter">Climate projects</a></li>
+      <li>Next: <a href="nyiso.html" title="next chapter">NYISO</a></li>
   </ul></li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
     </form>
+    </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
-  <div class="section" id="module-src.ghcn">
-<span id="ghcn"></span><h1>GHCN<a class="headerlink" href="#module-src.ghcn" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-climate.ghcn">
+<span id="ghcn"></span><h1>GHCN<a class="headerlink" href="#module-climate.ghcn" title="Permalink to this headline">¶</a></h1>
 <p>Functions to read and work with data from GHCN</p>
-<dl class="function">
-<dt id="src.ghcn.c_to_f">
-<code class="descclassname">src.ghcn.</code><code class="descname">c_to_f</code><span class="sig-paren">(</span><em>c</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/ghcn.html#c_to_f"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.ghcn.c_to_f" title="Permalink to this definition">¶</a></dt>
+<dl class="py function">
+<dt id="climate.ghcn.c_to_f">
+<code class="sig-prename descclassname">climate.ghcn.</code><code class="sig-name descname">c_to_f</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">c</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/climate/ghcn.html#c_to_f"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#climate.ghcn.c_to_f" title="Permalink to this definition">¶</a></dt>
 <dd><p>tenths of degrees Celsius to Fahrenheit</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="src.ghcn.get_ghcn_specs">
-<code class="descclassname">src.ghcn.</code><code class="descname">get_ghcn_specs</code><span class="sig-paren">(</span><em>file_type='stations'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/ghcn.html#get_ghcn_specs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.ghcn.get_ghcn_specs" title="Permalink to this definition">¶</a></dt>
+<dl class="py function">
+<dt id="climate.ghcn.get_ghcn_specs">
+<code class="sig-prename descclassname">climate.ghcn.</code><code class="sig-name descname">get_ghcn_specs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_type</span><span class="o">=</span><span class="default_value">'stations'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/climate/ghcn.html#get_ghcn_specs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#climate.ghcn.get_ghcn_specs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the field specifications for a given file type</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_type</strong> (<em>str</em>) – the file type</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the field specifications (see ghcn_specs)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_type</strong> (<em>str</em>) – the file type</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the field specifications (see ghcn_specs)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
 
 
           </div>
+          
         </div>
       </div>
     <div class="clearer"></div>
@@ -122,8 +125,8 @@
       &copy;2020, Gautam Sisodia.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="_sources/ghcn.rst.txt"

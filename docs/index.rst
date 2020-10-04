@@ -12,7 +12,7 @@
    6. ""
 
 ###################################
-Welcome to climate's documentation!
+Climate projects
 ###################################
 
 This is a collection of tools to help pull and work with climate change related data sets.
@@ -22,6 +22,7 @@ This is a collection of tools to help pull and work with climate change related 
    :caption: Contents:
 
    ghcn
+   nyiso
 
 Indices and tables
 ==================

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>src.ghcn &#8212; climate  documentation</title>
+    <title>climate.ghcn &#8212; climate  documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
@@ -84,7 +84,7 @@
 
           <div class="body" role="main">
             
-  <h1>Source code for src.ghcn</h1><div class="highlight"><pre>
+  <h1>Source code for climate.ghcn</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Functions to read and work with data from GHCN</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -136,7 +136,7 @@
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="get_ghcn_specs"><a class="viewcode-back" href="../../ghcn.html#src.ghcn.get_ghcn_specs">[docs]</a><span class="k">def</span> <span class="nf">get_ghcn_specs</span><span class="p">(</span><span class="n">file_type</span><span class="o">=</span><span class="s2">&quot;stations&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="get_ghcn_specs"><a class="viewcode-back" href="../../ghcn.html#climate.ghcn.get_ghcn_specs">[docs]</a><span class="k">def</span> <span class="nf">get_ghcn_specs</span><span class="p">(</span><span class="n">file_type</span><span class="o">=</span><span class="s2">&quot;stations&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets the field specifications for a given file type</span>
 
 <span class="sd">    Args:</span>
@@ -185,7 +185,7 @@
     <span class="k">return</span> <span class="n">read_fwf</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;all/</span><span class="si">{}</span><span class="s2">.dly&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">station_id</span><span class="p">),</span> <span class="n">file_type</span><span class="o">=</span><span class="s2">&quot;station_data&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="c_to_f"><a class="viewcode-back" href="../../ghcn.html#src.ghcn.c_to_f">[docs]</a><span class="k">def</span> <span class="nf">c_to_f</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+<div class="viewcode-block" id="c_to_f"><a class="viewcode-back" href="../../ghcn.html#climate.ghcn.c_to_f">[docs]</a><span class="k">def</span> <span class="nf">c_to_f</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    tenths of degrees Celsius to Fahrenheit</span>
 <span class="sd">    &quot;&quot;&quot;</span>

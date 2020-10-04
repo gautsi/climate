@@ -2,5 +2,5 @@
 GHCN
 *********
 
-.. automodule:: src.ghcn
+.. automodule:: climate.ghcn
    :members:

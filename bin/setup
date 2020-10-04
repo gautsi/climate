@@ -4,11 +4,8 @@
 # source the venv
 source .venv/bin/activate
 
-# add kernel to jupyter
+# install the kernel (used for sphinx notebooks)
 ipython kernel install --user --name=.venv
 
-deactivate
-
 # tmux
-tmux new-session -d \; send-keys source Space .venv/bin/activate C-m \; split-window "jupyter lab --ip 0.0.0.0"\; send-keys C-o \; attach
-
+tmux new-session -d \; send-keys source Space .venv/bin/activate C-m \; split-window "code-server --auth=none --user-data-dir=/dockvol/code_server/user_data_dir/ --extensions-dir=/dockvol/code_server/extensions/"\; send-keys C-o \; attach
