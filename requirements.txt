@@ -6,6 +6,7 @@ async-generator==1.10
 attrs==19.3.0
 Babel==2.8.0
 backcall==0.1.0
+beautifulsoup4==4.9.3
 bleach==3.2.1
 certifi==2020.6.20
 cffi==1.14.3
@@ -13,7 +14,7 @@ chardet==3.0.4
 click==7.1.2
 click-plugins==1.1.1
 cligj==0.5.0
--e git+https://github.com/gautsi/climate.git@30bd6aa50e9791895ecdb7213a56feb1f536a478#egg=climate
+-e git+https://github.com/gautsi/climate.git@8e7611775adcd95dbad210952c226a08b2a1cd12#egg=climate
 cloudpickle==1.6.0
 cryptography==3.1.1
 cycler==0.10.0
@@ -111,6 +112,7 @@ Shapely==1.7.1
 six==1.13.0
 snowballstemmer==2.0.0
 sortedcontainers==2.2.2
+soupsieve==2.0.1
 Sphinx==3.2.1
 sphinx-jinja==1.1.1
 sphinxcontrib-applehelp==1.0.2

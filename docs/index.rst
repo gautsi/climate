@@ -23,6 +23,7 @@ This is a collection of tools to help pull and work with climate change related 
 
    ghcn
    nyiso
+   eia
 
 Indices and tables
 ==================
