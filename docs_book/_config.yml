@@ -1,3 +1,11 @@
 title: "Climate projects"
+author: Gautam Sisodia
+exclude_patterns: ["README.md"]
+repository:
+  url: https://github.com/gautsi/climate
+html:
+  use_repository_button: true
 execute:
   execute_notebooks: "off"
+sphinx:
+  extra_extensions: ["sphinx.ext.autodoc"]

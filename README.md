@@ -19,7 +19,8 @@ Climate data from sensors around the world
 ## To do
 ### eia
 - [ ] remove rocket ship icon from notebooks
-- [ ] move over content from blog
+- [ ] move content from blog to book
+- [ ] move content from old docs to book
 - [ ] add ghp to pre-commit
 ### ghcn
 - [ ] check flags in ghcn data

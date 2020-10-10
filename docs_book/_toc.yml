@@ -1,2 +1,19 @@
-- file: landing-page
-- file: eia-explore
+- file: home
+
+- part: GHCN
+  chapters:
+  - file: ghcn/intro
+  - file: ghcn/doc
+
+- part: NYISO
+  chapters:
+  - file: nyiso/intro
+
+- part: EIA
+  chapters:
+  - file: eia/intro
+  - file: eia/eia-explore
+
+- part: Analysis
+  chapters:
+  - file: analysis/queens
