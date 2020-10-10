@@ -264,10 +264,239 @@
 <h1>EIA data: exploring<a class="headerlink" href="#eia-data-exploring" title="Permalink to this headline">¶</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;./../data/eia&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+<span class="kn">from</span> <span class="nn">climate.eia</span> <span class="kn">import</span> <span class="n">utils</span> <span class="k">as</span> <span class="n">u</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;./../../data/eia&quot;</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The autoreload extension is already loaded. To reload it, use:
+  %reload_ext autoreload
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gen_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{data_path}</span><span class="s2">/processed/generation.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gen_data</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>plant_id                            int64
+combined_heat_and__power_plant     object
+plant_name                         object
+operator_name                      object
+operator_id                         int64
+plant_state                        object
+census_region                      object
+nerc_region                        object
+naics_code                          int64
+sector_number                       int64
+sector_name                        object
+generator_id                       object
+reported_prime_mover               object
+net_generation_january             object
+net_generation_february            object
+net_generation_march               object
+net_generation_april               object
+net_generation_may                 object
+net_generation_june                object
+net_generation_july                object
+net_generation_august              object
+net_generation_september           object
+net_generation_october             object
+net_generation_november            object
+net_generation_december            object
+net_generation_year_to_date       float64
+year                                int64
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gen_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>plant_id</th>
+      <th>combined_heat_and__power_plant</th>
+      <th>plant_name</th>
+      <th>operator_name</th>
+      <th>operator_id</th>
+      <th>plant_state</th>
+      <th>census_region</th>
+      <th>nerc_region</th>
+      <th>naics_code</th>
+      <th>sector_number</th>
+      <th>...</th>
+      <th>net_generation_may</th>
+      <th>net_generation_june</th>
+      <th>net_generation_july</th>
+      <th>net_generation_august</th>
+      <th>net_generation_september</th>
+      <th>net_generation_october</th>
+      <th>net_generation_november</th>
+      <th>net_generation_december</th>
+      <th>net_generation_year_to_date</th>
+      <th>year</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>3</td>
+      <td>N</td>
+      <td>Barry</td>
+      <td>Alabama Power Co</td>
+      <td>195</td>
+      <td>AL</td>
+      <td>ESC</td>
+      <td>SERC</td>
+      <td>22</td>
+      <td>1</td>
+      <td>...</td>
+      <td>-277</td>
+      <td>-293</td>
+      <td>-323</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+      <td>2787.0</td>
+      <td>2020</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3</td>
+      <td>N</td>
+      <td>Barry</td>
+      <td>Alabama Power Co</td>
+      <td>195</td>
+      <td>AL</td>
+      <td>ESC</td>
+      <td>SERC</td>
+      <td>22</td>
+      <td>1</td>
+      <td>...</td>
+      <td>-192</td>
+      <td>-363</td>
+      <td>-432</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+      <td>-614.0</td>
+      <td>2020</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>N</td>
+      <td>Barry</td>
+      <td>Alabama Power Co</td>
+      <td>195</td>
+      <td>AL</td>
+      <td>ESC</td>
+      <td>SERC</td>
+      <td>22</td>
+      <td>1</td>
+      <td>...</td>
+      <td>-1464</td>
+      <td>-1211</td>
+      <td>-1193</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+      <td>51249.0</td>
+      <td>2020</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>N</td>
+      <td>Barry</td>
+      <td>Alabama Power Co</td>
+      <td>195</td>
+      <td>AL</td>
+      <td>ESC</td>
+      <td>SERC</td>
+      <td>22</td>
+      <td>1</td>
+      <td>...</td>
+      <td>200505</td>
+      <td>218139</td>
+      <td>348463</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+      <td>1453006.0</td>
+      <td>2020</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3</td>
+      <td>N</td>
+      <td>Barry</td>
+      <td>Alabama Power Co</td>
+      <td>195</td>
+      <td>AL</td>
+      <td>ESC</td>
+      <td>SERC</td>
+      <td>22</td>
+      <td>1</td>
+      <td>...</td>
+      <td>9175</td>
+      <td>118551</td>
+      <td>122745</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+      <td>.</td>
+      <td>732876.0</td>
+      <td>2020</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 27 columns</p>
+</div></div></div>
 </div>
 </div>
 
