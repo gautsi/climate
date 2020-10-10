@@ -1,15 +1,27 @@
 # climate
 Exploring climate data
 
+See for https://gautsi.github.io/climate/ documentation and analysis
+
 ## Global Historical Climatology Network (GHCN)
 https://www.ncdc.noaa.gov/data-access/land-based-station-data/land-based-datasets/global-historical-climatology-network-ghcn
 
 Climate data from sensors around the world
 
+## NYISO
+
+## US EIA
+
+
 ## IPCC reports
 [./notes/ipcc_reports.md](./notes/ipcc_reports.md)
 
 ## To do
+### eia
+- [ ] remove rocket ship icon from notebooks
+- [ ] move over content from blog
+- [ ] add ghp to pre-commit
+### ghcn
 - [ ] check flags in ghcn data
 - [x] documentation
 - [x] testing
