@@ -1,6 +1,6 @@
 .vscode/
-docs/_build/jupyter_execute/
-docs/_build/doctrees/
+docs/_build/
+docs_book/_build/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
