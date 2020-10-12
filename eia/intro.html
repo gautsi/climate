@@ -237,8 +237,8 @@
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#plant-generation-data">
-   Plant generation data
+  <a class="reference internal nav-link" href="#plant-generation-and-fuel-data">
+   Plant generation and fuel data
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -261,18 +261,22 @@
                 
   <div class="section" id="intro">
 <h1>Intro<a class="headerlink" href="#intro" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="plant-generation-data">
-<h2>Plant generation data<a class="headerlink" href="#plant-generation-data" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="plant-generation-and-fuel-data">
+<h2>Plant generation and fuel data<a class="headerlink" href="#plant-generation-and-fuel-data" title="Permalink to this headline">¶</a></h2>
 <p>See <a class="reference external" href="https://www.eia.gov/electricity/data/eia923/">here</a> for the data. To pull,</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">climate.eia</span> <span class="kn">import</span> <span class="n">utils</span> <span class="k">as</span> <span class="n">u</span>
 <span class="n">u</span><span class="o">.</span><span class="n">pull_data</span><span class="p">(</span><span class="n">dest_folder</span><span class="o">=</span><span class="s2">&quot;./../data/eia&quot;</span><span class="p">)</span>
-<span class="n">u</span><span class="o">.</span><span class="n">get_generation</span><span class="p">(</span><span class="n">dest_folder</span><span class="o">=</span><span class="s2">&quot;./../data/eia&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This creates a <code class="docutils literal notranslate"><span class="pre">processed/generation.csv</span></code> file with generation data for 2019 and 2020 (through July).</p>
+<p>To pull generation and fuel data,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">climate.eia</span> <span class="kn">import</span> <span class="n">gen_and_fuel</span> <span class="k">as</span> <span class="n">gf</span>
+<span class="n">gf</span><span class="o">.</span><span class="n">pull_genand_fuel</span><span class="p">(</span><span class="n">dest_folder</span><span class="o">=</span><span class="s2">&quot;./../data/eia&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This creates a <code class="docutils literal notranslate"><span class="pre">{dest_folder}/processed/gen_fuel.csv</span></code> file with generation and fuel data for 2019 and 2020 (through July) by plant, fuel type, prime mover, year and month.</p>
 <div class="section" id="original-data-structure">
 <h3>Original data structure<a class="headerlink" href="#original-data-structure" title="Permalink to this headline">¶</a></h3>
-<p>The generation data appears to be in excel files with many tabs.</p>
+<p>The generation and fuel data appears to be in excel files with many tabs.</p>
 <table class="colwidths-auto table">
 <thead>
 <tr class="row-odd"><th class="head"><p>year</p></th>
