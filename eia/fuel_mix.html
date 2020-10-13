@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Intro &#8212; Climate projects</title>
+    <title>Fuel mix &#8212; Climate projects</title>
     
   <link rel="stylesheet" href="../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -55,8 +55,8 @@
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="EIA data: exploring" href="eia-explore.html" />
-    <link rel="prev" title="Intro" href="../nyiso/intro.html" />
+    <link rel="next" title="Fossil fuel power plants in Queens" href="../analysis/queens.html" />
+    <link rel="prev" title="EIA data: exploring" href="eia-explore.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -129,8 +129,8 @@
  </span>
 </p>
 <ul class="current nav sidenav_l1">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
    Intro
   </a>
  </li>
@@ -139,8 +139,8 @@
    EIA data: exploring
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="fuel_mix.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    Fuel mix
   </a>
  </li>
@@ -198,9 +198,9 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/eia/intro.md"><button type="button"
+        <a class="dropdown-buttons" href="../_sources/eia/fuel_mix.py"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.md</button></a>
+                data-placement="left">.py</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
             onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
@@ -236,27 +236,6 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
-        <div class="tocsection onthispage pt-5 pb-3">
-            <i class="fas fa-list"></i> Contents
-        </div>
-        <nav id="bd-toc-nav">
-            <ul class="nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#plant-generation-and-fuel-data">
-   Plant generation and fuel data
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#original-data-structure">
-     Original data structure
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
-
-        </nav>
-        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -264,51 +243,195 @@
         
               <div>
                 
-  <div class="section" id="intro">
-<h1>Intro<a class="headerlink" href="#intro" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="plant-generation-and-fuel-data">
-<h2>Plant generation and fuel data<a class="headerlink" href="#plant-generation-and-fuel-data" title="Permalink to this headline">¶</a></h2>
-<p>See <a class="reference external" href="https://www.eia.gov/electricity/data/eia923/">here</a> for the data. To pull,</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">climate.eia</span> <span class="kn">import</span> <span class="n">utils</span> <span class="k">as</span> <span class="n">u</span>
-<span class="n">u</span><span class="o">.</span><span class="n">pull_data</span><span class="p">(</span><span class="n">dest_folder</span><span class="o">=</span><span class="s2">&quot;./../data/eia&quot;</span><span class="p">)</span>
+  <div class="section" id="fuel-mix">
+<h1>Fuel mix<a class="headerlink" href="#fuel-mix" title="Permalink to this headline">¶</a></h1>
+<p>Checking fuel mix of NYS/NYC/Queens plants</p>
+<p>Previewing generation and fuel data…</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">climate.eia</span> <span class="kn">import</span> <span class="n">utils</span> <span class="k">as</span> <span class="n">u</span>
+<span class="kn">from</span> <span class="nn">climate.eia</span> <span class="kn">import</span> <span class="n">gen_and_fuel</span> <span class="k">as</span> <span class="n">gf</span>
+<span class="kn">import</span> <span class="nn">altair</span> <span class="k">as</span> <span class="nn">alt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+
+<span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;./../../data/eia&quot;</span>
+<span class="n">gf_df</span> <span class="o">=</span> <span class="n">gf</span><span class="o">.</span><span class="n">get_gen_and_fuel</span><span class="p">(</span><span class="n">dest_folder</span><span class="o">=</span><span class="n">data_path</span><span class="p">)</span>
+<span class="n">gf_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>To pull generation and fuel data,</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">climate.eia</span> <span class="kn">import</span> <span class="n">gen_and_fuel</span> <span class="k">as</span> <span class="n">gf</span>
-<span class="n">gf</span><span class="o">.</span><span class="n">pull_genand_fuel</span><span class="p">(</span><span class="n">dest_folder</span><span class="o">=</span><span class="s2">&quot;./../data/eia&quot;</span><span class="p">)</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/dockvol/climate/.venv/lib/python3.8/site-packages/geopandas/_compat.py:84: UserWarning: The Shapely GEOS version (3.8.0-CAPI-1.13.1 ) is incompatible with the GEOS version PyGEOS was compiled with (3.8.1-CAPI-1.13.3). Conversions between both will be slow.
+  warnings.warn(
 </pre></div>
 </div>
-<p>This creates a <code class="docutils literal notranslate"><span class="pre">{dest_folder}/processed/gen_fuel.csv</span></code> file with generation and fuel data for 2019 and 2020 (through July) by plant, fuel type, prime mover, year and month.</p>
-<div class="section" id="original-data-structure">
-<h3>Original data structure<a class="headerlink" href="#original-data-structure" title="Permalink to this headline">¶</a></h3>
-<p>The generation and fuel data appears to be in excel files with many tabs.</p>
-<table class="colwidths-auto table">
-<thead>
-<tr class="row-odd"><th class="head"><p>year</p></th>
-<th class="head"><p>filename</p></th>
-<th class="head"><p>most relevant tabs</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>2020</p></td>
-<td><p>EIA923_Schedules_2_3_4_5_M_07_2020_18SEP2020.xlsx</p></td>
-<td><p>“Page 4 Generator Data”, “Page 1 Generation and Fuel Data”, “Page 7 File Layout” (data dictionary)</p></td>
-</tr>
-<tr class="row-odd"><td><p>2019</p></td>
-<td><p>EIA923_Schedules_2_3_4_5_M_12_2019_Final.xlsx</p></td>
-<td><p>“Page 4 Generator Data”, “Page 1 Generation and Fuel Data”, “Page 7 File Layout” (data dictionary)</p></td>
-</tr>
-<tr class="row-even"><td><p>2018</p></td>
-<td><p></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p>2017</p></td>
-<td><p></p></td>
-<td><p></p></td>
-</tr>
-</tbody>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>plant_id</th>
+      <th>combined_heat_and_power_plant</th>
+      <th>nuclear_unit_id</th>
+      <th>operator_id</th>
+      <th>naics_code</th>
+      <th>plant_state</th>
+      <th>eia_sector_number</th>
+      <th>reported_prime_mover</th>
+      <th>reported_fuel_type_code</th>
+      <th>year</th>
+      <th>...</th>
+      <th>mmbtuper_unit</th>
+      <th>elec_mmbtu</th>
+      <th>tot_mmbtu</th>
+      <th>netgen</th>
+      <th>plant_name</th>
+      <th>operator_name</th>
+      <th>aer_fuel_type_code</th>
+      <th>year_month</th>
+      <th>fuel_desc</th>
+      <th>renew</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>3</td>
+      <td>N</td>
+      <td>.</td>
+      <td>195</td>
+      <td>22</td>
+      <td>AL</td>
+      <td>1</td>
+      <td>CA</td>
+      <td>NG</td>
+      <td>2020</td>
+      <td>...</td>
+      <td>1.016</td>
+      <td>46724</td>
+      <td>46724</td>
+      <td>141929.000</td>
+      <td>Barry</td>
+      <td>Alabama Power Co</td>
+      <td>NG</td>
+      <td>2020-01-01</td>
+      <td>Natural Gas</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3</td>
+      <td>N</td>
+      <td>.</td>
+      <td>195</td>
+      <td>22</td>
+      <td>AL</td>
+      <td>1</td>
+      <td>CT</td>
+      <td>NG</td>
+      <td>2020</td>
+      <td>...</td>
+      <td>1.016</td>
+      <td>2892251</td>
+      <td>2892251</td>
+      <td>275156.000</td>
+      <td>Barry</td>
+      <td>Alabama Power Co</td>
+      <td>NG</td>
+      <td>2020-01-01</td>
+      <td>Natural Gas</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>N</td>
+      <td>.</td>
+      <td>195</td>
+      <td>22</td>
+      <td>AL</td>
+      <td>1</td>
+      <td>ST</td>
+      <td>BIT</td>
+      <td>2020</td>
+      <td>...</td>
+      <td>20.284</td>
+      <td>3321180</td>
+      <td>3321180</td>
+      <td>339539.460</td>
+      <td>Barry</td>
+      <td>Alabama Power Co</td>
+      <td>COL</td>
+      <td>2020-01-01</td>
+      <td>Coal</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>N</td>
+      <td>.</td>
+      <td>195</td>
+      <td>22</td>
+      <td>AL</td>
+      <td>1</td>
+      <td>ST</td>
+      <td>NG</td>
+      <td>2020</td>
+      <td>...</td>
+      <td>1.025</td>
+      <td>132583</td>
+      <td>132583</td>
+      <td>13554.538</td>
+      <td>Barry</td>
+      <td>Alabama Power Co</td>
+      <td>NG</td>
+      <td>2020-01-01</td>
+      <td>Natural Gas</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3</td>
+      <td>N</td>
+      <td>.</td>
+      <td>195</td>
+      <td>22</td>
+      <td>AL</td>
+      <td>1</td>
+      <td>ST</td>
+      <td>SUB</td>
+      <td>2020</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0.000</td>
+      <td>Barry</td>
+      <td>Alabama Power Co</td>
+      <td>COL</td>
+      <td>2020-01-01</td>
+      <td>Coal</td>
+      <td>False</td>
+    </tr>
+  </tbody>
 </table>
-</div>
+<p>5 rows × 23 columns</p>
+</div></div></div>
 </div>
 </div>
 
@@ -340,8 +463,8 @@
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="../nyiso/intro.html" title="previous page">Intro</a>
-    <a class='right-next' id="next-link" href="eia-explore.html" title="next page">EIA data: exploring</a>
+    <a class='left-prev' id="prev-link" href="eia-explore.html" title="previous page">EIA data: exploring</a>
+    <a class='right-next' id="next-link" href="../analysis/queens.html" title="next page">Fossil fuel power plants in Queens</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">
