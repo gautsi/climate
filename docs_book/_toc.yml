@@ -13,6 +13,7 @@
   chapters:
   - file: eia/intro
   - file: eia/eia-explore
+  - file: eia/fuel_mix
 
 - part: Analysis
   chapters:

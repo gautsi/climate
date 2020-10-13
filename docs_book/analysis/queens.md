@@ -19,8 +19,8 @@
 - [x] add plant name to gen/fuel data
 - [x] get plant location finer than state
   - can get through shapefile
-- [ ] NYS net generation by sector
-- [ ] plant map
+- [x] NYS net generation by sector
+- [x] plant map
 - [ ] for each plant
   - [ ] over time:
     - [ ] fuel mix

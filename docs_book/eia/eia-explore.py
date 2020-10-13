@@ -13,7 +13,7 @@ if get_ipython() is not None:
 
 # %% [markdown]
 """
-## Previewing generation and fuel data...
+Previewing generation and fuel data...
 """
 
 # %% tags=["hide-input"]
@@ -29,7 +29,8 @@ gf_df.head()
 
 # %% [markdown]
 """
-##  New York State generation over time
+##  New York State
+### Generation over time
 """
 
 # %% tags=["hide-input"]
@@ -49,7 +50,7 @@ alt.Chart(ny_month_netgen).mark_bar().encode(x="year_month", y="netgen").configu
 
 # %% [markdown]
 """
-##  New York State generation by sector
+### Generation by sector
 """
 
 # %% tags=["hide-input"]
@@ -66,7 +67,8 @@ alt.Chart(ny_sector_netgen).mark_bar().encode(
 
 # %% [markdown]
 """
-NYC generation over time
+## NYC
+### Generation over time
 """
 # %% tags=["hide-input"]
 nyc_gf_df = u.add_nyc_flag(ny_gf_df, dest_folder=data_path).query("nyc == 1")
@@ -83,7 +85,7 @@ alt.Chart(nyc_month_netgen).mark_bar().encode(x="year_month", y="netgen").config
 
 # %% [markdown]
 """
-##  New York City generation by sector
+### Generation by sector
 """
 
 # %% tags=["hide-input"]
@@ -99,7 +101,8 @@ alt.Chart(nyc_sector_netgen).mark_bar().encode(
 
 # %% [markdown]
 """
-##  Queens plant operators
+##  Queens
+### Plant operators
 """
 
 # %%
@@ -113,10 +116,10 @@ queens_plants[["operator_name", "plant_name", "netgen"]].sort_values("netgen", a
 
 # %% [markdown]
 """
-##  Queens generation by plant
+### Generation by plant
 """
 
-# %%
+# %% tags=["hide-input"]
 alt.Chart(queens_plants).mark_bar().encode(
     y=alt.Y("plant_name", sort="-x"),
     x="netgen").configure_axis(
@@ -125,29 +128,46 @@ alt.Chart(queens_plants).mark_bar().encode(
 
 # %% [markdown]
 """
-##  Map of Queens plants
+###  Map of Queens top plants
 """
 
-# %% tag=["hide-input"]
-# nbh = alt.topo_feature("https://data.cityofnewyork.us/api/geospatial/cpf4-rkhq?method=export&format=GeoJSON", feature="")
-
+# %% tags=["hide-input"]
 nbd_gdf = gpd.read_file("https://data.cityofnewyork.us/api/geospatial/cpf4-rkhq?method=export&format=GeoJSON")
 queens_nbd_gdf = nbd_gdf[nbd_gdf.boro_name == "Queens"]
 queens_plants_gdf = u.get_nyc_plants(dest_folder=data_path).query("County == 'Queens'")
-queens_nbd_gdf["centroid_lat"] = queens_nbd_gdf.geometry.centroid.y
-queens_nbd_gdf["centroid_long"] = queens_nbd_gdf.geometry.centroid.x
-alt.Chart(queens_nbd_gdf).mark_geoshape(
+
+queens_top_plants = queens_plants.sort_values(
+    "netgen",
+    ascending=False).iloc[:5]
+queens_top_plants_gdf = queens_plants_gdf.rename(
+    columns={"Plant_Code": "plant_id"}
+).merge(
+    right=queens_top_plants[["plant_id"]],
+    on=["plant_id"],
+    how="inner",
+    validate="one_to_one"
+)
+
+queens_top_nbd_gdf = gpd.sjoin(
+    queens_nbd_gdf,
+    queens_top_plants_gdf,
+    how="inner",
+    op="intersects")[["ntaname", "geometry"]].drop_duplicates()
+
+queens_top_nbd_gdf.loc[:,"centroid_lat"] = queens_top_nbd_gdf.geometry.centroid.y
+queens_top_nbd_gdf.loc[:,"centroid_long"] = queens_top_nbd_gdf.geometry.centroid.x
+alt.Chart(queens_top_nbd_gdf).mark_geoshape(
     fill='lightgray',
     stroke='white'
-) + alt.Chart(queens_plants_gdf).mark_geoshape(   
-) + alt.Chart(queens_plants_gdf).mark_text(
+) + alt.Chart(queens_top_plants_gdf).mark_geoshape(   
+) + alt.Chart(queens_top_plants_gdf).mark_text(
     align="left",
     baseline="middle"
 ).encode(
          longitude="Longitude",
          latitude="Latitude",
          text="Plant_Name",
-) + alt.Chart(queens_nbd_gdf).mark_text(
+) + alt.Chart(queens_top_nbd_gdf).mark_text(
     align="center",
     baseline="middle"
 ).encode(
@@ -155,3 +175,5 @@ alt.Chart(queens_nbd_gdf).mark_geoshape(
          latitude='centroid_lat',
          text='ntaname',
      )
+
+# %%
