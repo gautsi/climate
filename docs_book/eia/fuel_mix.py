@@ -182,17 +182,17 @@ queens_fuel = queens_top_gf_df.groupby(
 ).agg({"elec_quantity": "sum", "gwh": "sum"})
 queens_fuel["gwh_pcnt"] = queens_fuel.gwh / queens_fuel.gwh.sum()
 queens_fuel_w_nyc = queens_fuel.merge(
-    right = nyc_fuel[["fuel_desc", "gwh"]].rename(columns = {"gwh": "ttl_nyc_gwh"}),
+    right = nyc_fuel[["fuel_desc", "elec_quantity"]].rename(columns = {"elec_quantity": "ttl_nyc_elec_quantity"}),
     on = ["fuel_desc"],
     how="left",
     validate="one_to_one"
 )
-queens_fuel_w_nyc["gwh_pcnt_of_nyc"] = queens_fuel_w_nyc.gwh / queens_fuel_w_nyc.ttl_nyc_gwh
+queens_fuel_w_nyc["elec_quantity_pcnt_of_nyc"] = queens_fuel_w_nyc.elec_quantity / queens_fuel_w_nyc.ttl_nyc_elec_quantity
 
 queens_fuel_table = (
     queens_fuel_w_nyc.sort_values("gwh", ascending=False)
-    .drop(columns=["ttl_nyc_gwh"])
-    .style.format({"elec_quantity": "{:,.0f}", "gwh": "{:,.0f}", "gwh_pcnt": "{:.2%}", "gwh_pcnt_of_nyc": "{:.2%}"})
+    .drop(columns=["ttl_nyc_elec_quantity"])
+    .style.format({"elec_quantity": "{:,.0f}", "gwh": "{:,.0f}", "gwh_pcnt": "{:.2%}", "elec_quantity_pcnt_of_nyc": "{:.2%}"})
     .set_table_styles(s.table_styles)
     .hide_index()
     .set_caption("2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/")
@@ -243,17 +243,17 @@ for i in queens_top_plants.plant_id.values:
     ).agg({"elec_quantity": "sum", "gwh": "sum"})
     plant_fuel["gwh_pcnt"] = plant_fuel.gwh / plant_fuel.gwh.sum()
     plant_fuel_w_nyc = plant_fuel.merge(
-        right = nyc_fuel[["fuel_desc", "gwh"]].rename(columns = {"gwh": "ttl_nyc_gwh"}),
+        right = nyc_fuel[["fuel_desc", "elec_quantity"]].rename(columns = {"elec_quantity": "ttl_nyc_elec_quantity"}),
         on = ["fuel_desc"],
         how="left",
         validate="one_to_one"
     )
-    plant_fuel_w_nyc["gwh_pcnt_of_nyc"] = plant_fuel_w_nyc.gwh / plant_fuel_w_nyc.ttl_nyc_gwh
+    plant_fuel_w_nyc["elec_quantity_pcnt_of_nyc"] = plant_fuel_w_nyc.elec_quantity / plant_fuel_w_nyc.ttl_nyc_elec_quantity
 
     plant_fuel_table = (
         plant_fuel_w_nyc.sort_values("gwh", ascending=False)
-        .drop(columns=["ttl_nyc_gwh"])
-        .style.format({"elec_quantity": "{:,.0f}", "gwh": "{:,.0f}", "gwh_pcnt": "{:.2%}", "gwh_pcnt_of_nyc": "{:.2%}"})
+        .drop(columns=["ttl_nyc_elec_quantity"])
+        .style.format({"elec_quantity": "{:,.0f}", "gwh": "{:,.0f}", "gwh_pcnt": "{:.2%}", "elec_quantity_pcnt_of_nyc": "{:.2%}"})
         .set_table_styles(s.table_styles)
         .hide_index()
         .set_caption("2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/")
