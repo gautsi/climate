@@ -34,10 +34,14 @@ def add_fuel_desc(df):
 def get_gen_and_fuel(dest_folder):
     gf_df = pd.read_csv(f"{dest_folder}/processed/gen_fuel.csv")
     gf_df["netgen"] = gf_df["netgen"].replace(".", "0").astype("float")
+    gf_df["gwh"] = gf_df["netgen"] / 1e3
+    gf_df["quantity"] = gf_df["quantity"].replace(".", "0").astype("float")
+    gf_df["elec_quantity"] = gf_df["elec_quantity"].replace(".", "0").astype("float")
+    gf_df["physical_unit_label"] = gf_df["physical_unit_label"].fillna("")
     gf_df["year_month"] = gf_df.apply(
         lambda row: dt.datetime(year=row["year"], month=row["month"], day=1), axis=1
     )
-    return add_fuel_desc(gf_df)
+    return gf_df
 
 
 def pull_gen_and_fuel(dest_folder):
@@ -57,28 +61,18 @@ def pull_gen_and_fuel(dest_folder):
     lng_form.to_csv(f"{dest_folder}/processed/gen_fuel.csv", index=False)
 
 
-def add_plant_op_names(df, gf_df):
-    return df.merge(
-        right=gf_df.groupby(id_fields, as_index=False).agg(
-            {"plant_name": u.nonnull_unq_str, "operator_name": u.nonnull_unq_str}
-        ),
-        on=id_fields,
-        how="left",
-        validate="many_to_one",
-    )
+def add_orig_fields(gf_df, fields):
+    def _(df):
+        return df.merge(
+            right=gf_df.groupby(id_fields, as_index=False).agg(
+                {f: u.nonnull_unq_str for f in fields}
+            ),
+            on=id_fields,
+            how="left",
+            validate="many_to_one",
+        )
 
-
-def add_aer_fuel_type_code(df, gf_df):
-    return df.merge(
-        right=gf_df.groupby(id_fields, as_index=False).agg(
-            {
-                "aer_fuel_type_code": u.nonnull_unq_str,
-            }
-        ),
-        on=id_fields,
-        how="left",
-        validate="many_to_one",
-    )
+    return _
 
 
 def get_long_form(gf_df):
@@ -124,4 +118,29 @@ def get_long_form(gf_df):
                 how="left",
                 validate="one_to_one",
             )
-    return add_aer_fuel_type_code(add_plant_op_names(lng_df, gf_df), gf_df)
+    return u.apply_funcs(
+        ob=lng_df,
+        funcs=[
+            add_orig_fields(
+                gf_df=gf_df,
+                fields=[
+                    "plant_name",
+                    "operator_name",
+                    "aer_fuel_type_code",
+                    "physical_unit_label",
+                ],
+            ),
+            add_fuel_desc,
+        ],
+    )
+
+
+def get_queens_top_plants(dest_folder):
+    gf_df = get_gen_and_fuel(dest_folder=dest_folder)
+    nyc_gf_df = u.add_nyc_flag(gf_df, dest_folder=dest_folder).query("nyc == 1")
+    nyc_gf_df_w_borough = u.add_borough(nyc_gf_df, dest_folder=dest_folder)
+    nyc_plants = nyc_gf_df_w_borough.groupby(
+        ["plant_id", "plant_name", "operator_name", "borough"], as_index=False
+    ).agg({"gwh": "sum"})
+    nyc_top_plants = nyc_plants.sort_values("gwh", ascending=False).iloc[:10]
+    return nyc_top_plants.query("borough == 'Queens'").to_dict(orient="records")

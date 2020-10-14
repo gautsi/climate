@@ -150,4 +150,26 @@ def add_county(df, dest_folder):
         on=["plant_id"],
         how="left",
         validate="many_to_one",
+    ).rename(columns={"County": "county"})
+
+
+def add_borough(df, dest_folder):
+    df_with_county = add_county(df, dest_folder)
+    df_with_county["county"] = df_with_county["county"].str.lower()
+    return df_with_county.merge(
+        right=pd.DataFrame(s.nyc_boroughs),
+        on="county",
+        how="left",
+        validate="many_to_one",
     )
+
+
+def apply_funcs(ob, funcs):
+    for f in funcs:
+        ob = f(ob)
+    return ob
+
+
+def highlight_queens(s):
+    is_queens = s == "Queens"
+    return ["background-color: yellow" if v else "" for v in is_queens]

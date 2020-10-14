@@ -1,14 +1,21 @@
-title: "Climate projects"
+title: Climate projects
 author: Gautam Sisodia
-exclude_patterns: ["README.md"]
+exclude_patterns: 
+  - README.md
+  - render.py
+  - eia/eia-explore.py
 repository:
   url: https://github.com/gautsi/climate
 html:
   use_repository_button: true
 execute:
-  execute_notebooks: "auto"
+  exclude_patterns:
+    - render.py
+    - eia/eia-explore.py
+  execute_notebooks: auto
 sphinx:
-  extra_extensions: ["sphinx.ext.autodoc"]
+  extra_extensions:
+    - sphinx.ext.autodoc
   config:
     nb_custom_formats:
         .py:

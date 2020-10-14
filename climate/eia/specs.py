@@ -46,6 +46,29 @@ eia_sectors = [
 
 nyc_counties = ["new york", "kings", "queens", "richmond", "bronx"]
 
+nyc_boroughs = [
+    {
+        "county": "new york",
+        "borough": "Manhattan",
+    },
+    {
+        "county": "kings",
+        "borough": "Brooklyn",
+    },
+    {
+        "county": "queens",
+        "borough": "Queens",
+    },
+    {
+        "county": "richmond",
+        "borough": "Staten Island",
+    },
+    {
+        "county": "bronx",
+        "borough": "Bronx",
+    },
+]
+
 aer_fuel_types = [
     {"code": "SUN", "desc": "Solar PV and thermal", "renew": True},
     {"code": "COL", "desc": "Coal ", "renew": False},
@@ -53,7 +76,11 @@ aer_fuel_types = [
     {"code": "GEO", "desc": "Geothermal", "renew": True},
     {"code": "HPS", "desc": "Hydroelectric Pumped Storage", "renew": True},
     {"code": "HYC", "desc": "Hydroelectric Conventional", "renew": True},
-    {"code": "MLG", "desc": "Biogenic Municipal Solid Waste and Landfill Gas", "renew": True},
+    {
+        "code": "MLG",
+        "desc": "Biogenic Municipal Solid Waste and Landfill Gas",
+        "renew": True,
+    },
     {"code": "NG", "desc": "Natural Gas", "renew": False},
     {"code": "NUC", "desc": "Nuclear", "renew": False},
     {"code": "OOG", "desc": "Other Gases", "renew": False},
@@ -65,4 +92,8 @@ aer_fuel_types = [
     {"code": "WOC", "desc": "Waste Coal", "renew": False},
     {"code": "WOO", "desc": "Waste Oil", "renew": False},
     {"code": "WWW", "desc": "Wood and Wood Waste", "renew": True},
+]
+
+table_styles = [
+    {"props": [("border-collapse", "separate"), ("border-spacing", "20px 0px")]}
 ]
