@@ -34,12 +34,12 @@ The top ten power plants in NYC by generation accounted for {glue:text}`top_ten_
 
 {glue:}`nyc_top_plants_table`
 
-##### NYC fuel mix
+#### NYC fuel mix
 {glue:text}`nat_gas_nyc_pcnt` of electricity generated in NYC plants was generated from natural gas.
 
 {glue:}`nyc_fuel_table`
 
-##### Queens top plants fuel mix
+#### Queens top plants fuel mix
 
 The {glue:text}`top_ten_queens` top power plants in Queens consumed {glue:text}`nat_gas_queens_pcnt` of the total natural gas consumed by NYC power plants for electricity generation.
 
