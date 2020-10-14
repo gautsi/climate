@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Fossil fuel power plants in Queens" href="../analysis/queens.html" />
-    <link rel="prev" title="EIA data: exploring" href="eia-explore.html" />
+    <link rel="prev" title="Intro" href="intro.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -132,11 +132,6 @@
  <li class="toctree-l1">
   <a class="reference internal" href="intro.html">
    Intro
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="eia-explore.html">
-   EIA data: exploring
   </a>
  </li>
  <li class="toctree-l1 current active">
@@ -236,6 +231,20 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#largest-nyc-plants-by-generation">
+   Largest NYC plants (by generation)
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -245,19 +254,34 @@
                 
   <div class="section" id="fuel-mix">
 <h1>Fuel mix<a class="headerlink" href="#fuel-mix" title="Permalink to this headline">¶</a></h1>
-<p>Checking fuel mix of NYS/NYC/Queens plants</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The page records my explorations of the fuel mix data from EIA, and will be light on comments and documentation.</p>
+</div>
+<p>Checking fuel mix of largest NYC/Queens plants</p>
+<div class="cell tag_hide-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">get_ipython</span>
+
+<span class="k">if</span> <span class="n">get_ipython</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">run_line_magic</span><span class="p">(</span><span class="s2">&quot;load_ext&quot;</span><span class="p">,</span> <span class="s2">&quot;autoreload&quot;</span><span class="p">)</span>
+    <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">run_line_magic</span><span class="p">(</span><span class="s2">&quot;autoreload&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>Previewing generation and fuel data…</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">climate.eia</span> <span class="kn">import</span> <span class="n">utils</span> <span class="k">as</span> <span class="n">u</span>
+<span class="kn">from</span> <span class="nn">climate.eia</span> <span class="kn">import</span> <span class="n">specs</span> <span class="k">as</span> <span class="n">s</span>
 <span class="kn">from</span> <span class="nn">climate.eia</span> <span class="kn">import</span> <span class="n">gen_and_fuel</span> <span class="k">as</span> <span class="n">gf</span>
 <span class="kn">import</span> <span class="nn">altair</span> <span class="k">as</span> <span class="nn">alt</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+<span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span>
 
 <span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;./../../data/eia&quot;</span>
-<span class="n">gf_df</span> <span class="o">=</span> <span class="n">gf</span><span class="o">.</span><span class="n">get_gen_and_fuel</span><span class="p">(</span><span class="n">dest_folder</span><span class="o">=</span><span class="n">data_path</span><span class="p">)</span>
-<span class="n">gf_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -266,6 +290,16 @@
   warnings.warn(
 </pre></div>
 </div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gf_df</span> <span class="o">=</span> <span class="n">gf</span><span class="o">.</span><span class="n">get_gen_and_fuel</span><span class="p">(</span><span class="n">dest_folder</span><span class="o">=</span><span class="n">data_path</span><span class="p">)</span>
+<span class="n">gf_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -295,16 +329,16 @@
       <th>reported_fuel_type_code</th>
       <th>year</th>
       <th>...</th>
-      <th>mmbtuper_unit</th>
-      <th>elec_mmbtu</th>
       <th>tot_mmbtu</th>
       <th>netgen</th>
       <th>plant_name</th>
       <th>operator_name</th>
       <th>aer_fuel_type_code</th>
-      <th>year_month</th>
+      <th>physical_unit_label</th>
       <th>fuel_desc</th>
       <th>renew</th>
+      <th>gwh</th>
+      <th>year_month</th>
     </tr>
   </thead>
   <tbody>
@@ -321,16 +355,16 @@
       <td>NG</td>
       <td>2020</td>
       <td>...</td>
-      <td>1.016</td>
-      <td>46724</td>
       <td>46724</td>
       <td>141929.000</td>
       <td>Barry</td>
       <td>Alabama Power Co</td>
       <td>NG</td>
-      <td>2020-01-01</td>
+      <td>mcf</td>
       <td>Natural Gas</td>
       <td>False</td>
+      <td>141.929000</td>
+      <td>2020-01-01</td>
     </tr>
     <tr>
       <th>1</th>
@@ -345,16 +379,16 @@
       <td>NG</td>
       <td>2020</td>
       <td>...</td>
-      <td>1.016</td>
-      <td>2892251</td>
       <td>2892251</td>
       <td>275156.000</td>
       <td>Barry</td>
       <td>Alabama Power Co</td>
       <td>NG</td>
-      <td>2020-01-01</td>
+      <td>mcf</td>
       <td>Natural Gas</td>
       <td>False</td>
+      <td>275.156000</td>
+      <td>2020-01-01</td>
     </tr>
     <tr>
       <th>2</th>
@@ -369,16 +403,16 @@
       <td>BIT</td>
       <td>2020</td>
       <td>...</td>
-      <td>20.284</td>
-      <td>3321180</td>
       <td>3321180</td>
       <td>339539.460</td>
       <td>Barry</td>
       <td>Alabama Power Co</td>
       <td>COL</td>
-      <td>2020-01-01</td>
+      <td>short tons</td>
       <td>Coal</td>
       <td>False</td>
+      <td>339.539460</td>
+      <td>2020-01-01</td>
     </tr>
     <tr>
       <th>3</th>
@@ -393,16 +427,16 @@
       <td>NG</td>
       <td>2020</td>
       <td>...</td>
-      <td>1.025</td>
-      <td>132583</td>
       <td>132583</td>
       <td>13554.538</td>
       <td>Barry</td>
       <td>Alabama Power Co</td>
       <td>NG</td>
-      <td>2020-01-01</td>
+      <td>mcf</td>
       <td>Natural Gas</td>
       <td>False</td>
+      <td>13.554538</td>
+      <td>2020-01-01</td>
     </tr>
     <tr>
       <th>4</th>
@@ -418,20 +452,1360 @@
       <td>2020</td>
       <td>...</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
       <td>0.000</td>
       <td>Barry</td>
       <td>Alabama Power Co</td>
       <td>COL</td>
-      <td>2020-01-01</td>
+      <td>short tons</td>
       <td>Coal</td>
       <td>False</td>
+      <td>0.000000</td>
+      <td>2020-01-01</td>
     </tr>
   </tbody>
 </table>
-<p>5 rows × 23 columns</p>
+<p>5 rows × 25 columns</p>
 </div></div></div>
+</div>
+<div class="section" id="largest-nyc-plants-by-generation">
+<h2>Largest NYC plants (by generation)<a class="headerlink" href="#largest-nyc-plants-by-generation" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nyc_gf_df</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">add_nyc_flag</span><span class="p">(</span><span class="n">gf_df</span><span class="p">,</span> <span class="n">dest_folder</span><span class="o">=</span><span class="n">data_path</span><span class="p">)</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;nyc == 1&quot;</span><span class="p">)</span>
+<span class="n">ttl_nyc_gwh</span> <span class="o">=</span> <span class="n">nyc_gf_df</span><span class="o">.</span><span class="n">gwh</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;ttl_nyc_gwh&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{:,.0f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ttl_nyc_gwh</span><span class="p">))</span>
+<span class="n">glue</span><span class="p">(</span>
+    <span class="s2">&quot;avg_nyc_gwh_per_month&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;</span><span class="si">{:,.0f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ttl_nyc_gwh</span> <span class="o">/</span> <span class="n">nyc_gf_df</span><span class="o">.</span><span class="n">year_month</span><span class="o">.</span><span class="n">nunique</span><span class="p">()),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;27,730&#39;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;1,155&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nyc_month_gwh</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">nyc_gf_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;year_month&quot;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;gwh&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">})</span>
+    <span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;gwh &gt; 0&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">nyc_month_gwh_chart</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">nyc_month_gwh</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">mark_bar</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;year_month&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;gwh&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">configure_axis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">properties</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;NYC net generation (GWh) by month&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;subtitle&quot;</span><span class="p">:</span> <span class="s2">&quot;2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;nyc_month_gwh_chart&quot;</span><span class="p">,</span> <span class="n">nyc_month_gwh_chart</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<div id="altair-viz-1617be307d7246dd804fa260f0eeedd9"></div>
+<script type="text/javascript">
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-1617be307d7246dd804fa260f0eeedd9") {
+      outputDiv = document.getElementById("altair-viz-1617be307d7246dd804fa260f0eeedd9");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.8.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
+    };
+
+    function loadScript(lib) {
+      return new Promise(function(resolve, reject) {
+        var s = document.createElement('script');
+        s.src = paths[lib];
+        s.async = true;
+        s.onload = () => resolve(paths[lib]);
+        s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+        document.getElementsByTagName("head")[0].appendChild(s);
+      });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else if (typeof vegaEmbed === "function") {
+      displayChart(vegaEmbed);
+    } else {
+      loadScript("vega")
+        .then(() => loadScript("vega-lite"))
+        .then(() => loadScript("vega-embed"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}, "axis": {"title": null}}, "data": {"name": "data-a98578c8182e1abc0a8581989d5683b6"}, "mark": "bar", "encoding": {"x": {"type": "temporal", "field": "year_month"}, "y": {"type": "quantitative", "field": "gwh"}}, "title": {"text": "NYC net generation (GWh) by month", "subtitle": "2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/"}, "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json", "datasets": {"data-a98578c8182e1abc0a8581989d5683b6": [{"year_month": "2019-01-01T00:00:00", "gwh": 1593.2774}, {"year_month": "2019-02-01T00:00:00", "gwh": 1375.2153610000007}, {"year_month": "2019-03-01T00:00:00", "gwh": 1284.232435}, {"year_month": "2019-04-01T00:00:00", "gwh": 1172.407284}, {"year_month": "2019-05-01T00:00:00", "gwh": 1371.5330759999997}, {"year_month": "2019-06-01T00:00:00", "gwh": 1597.5761889999999}, {"year_month": "2019-07-01T00:00:00", "gwh": 2365.5608850000003}, {"year_month": "2019-08-01T00:00:00", "gwh": 2003.525569}, {"year_month": "2019-09-01T00:00:00", "gwh": 1532.8076790000002}, {"year_month": "2019-10-01T00:00:00", "gwh": 1186.463035}, {"year_month": "2019-11-01T00:00:00", "gwh": 1482.3531810000004}, {"year_month": "2019-12-01T00:00:00", "gwh": 1474.3563589999999}, {"year_month": "2020-01-01T00:00:00", "gwh": 1323.7710000000002}, {"year_month": "2020-02-01T00:00:00", "gwh": 1287.6069959999998}, {"year_month": "2020-03-01T00:00:00", "gwh": 1127.259002}, {"year_month": "2020-04-01T00:00:00", "gwh": 1001.277002}, {"year_month": "2020-05-01T00:00:00", "gwh": 1081.582}, {"year_month": "2020-06-01T00:00:00", "gwh": 1444.058}, {"year_month": "2020-07-01T00:00:00", "gwh": 2024.8500000000004}]}}, {"mode": "vega-lite"});
+</script></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nyc_gf_df_w_borough</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">add_borough</span><span class="p">(</span><span class="n">nyc_gf_df</span><span class="p">,</span> <span class="n">dest_folder</span><span class="o">=</span><span class="n">data_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nyc_gf_df_w_borough</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>plant_id</th>
+      <th>combined_heat_and_power_plant</th>
+      <th>nuclear_unit_id</th>
+      <th>operator_id</th>
+      <th>naics_code</th>
+      <th>plant_state</th>
+      <th>eia_sector_number</th>
+      <th>reported_prime_mover</th>
+      <th>reported_fuel_type_code</th>
+      <th>year</th>
+      <th>...</th>
+      <th>operator_name</th>
+      <th>aer_fuel_type_code</th>
+      <th>physical_unit_label</th>
+      <th>fuel_desc</th>
+      <th>renew</th>
+      <th>gwh</th>
+      <th>year_month</th>
+      <th>nyc</th>
+      <th>county</th>
+      <th>borough</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2490</td>
+      <td>N</td>
+      <td>.</td>
+      <td>13192</td>
+      <td>22</td>
+      <td>NY</td>
+      <td>2</td>
+      <td>GT</td>
+      <td>NG</td>
+      <td>2020</td>
+      <td>...</td>
+      <td>NRG Arthur Kill Operations Inc</td>
+      <td>NG</td>
+      <td>mcf</td>
+      <td>Natural Gas</td>
+      <td>False</td>
+      <td>0.185</td>
+      <td>2020-01-01</td>
+      <td>1.0</td>
+      <td>richmond</td>
+      <td>Staten Island</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2490</td>
+      <td>N</td>
+      <td>.</td>
+      <td>13192</td>
+      <td>22</td>
+      <td>NY</td>
+      <td>2</td>
+      <td>ST</td>
+      <td>NG</td>
+      <td>2020</td>
+      <td>...</td>
+      <td>NRG Arthur Kill Operations Inc</td>
+      <td>NG</td>
+      <td>mcf</td>
+      <td>Natural Gas</td>
+      <td>False</td>
+      <td>49.877</td>
+      <td>2020-01-01</td>
+      <td>1.0</td>
+      <td>richmond</td>
+      <td>Staten Island</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2493</td>
+      <td>Y</td>
+      <td>.</td>
+      <td>4226</td>
+      <td>22</td>
+      <td>NY</td>
+      <td>1</td>
+      <td>GT</td>
+      <td>DFO</td>
+      <td>2020</td>
+      <td>...</td>
+      <td>Consolidated Edison Co-NY Inc</td>
+      <td>DFO</td>
+      <td>barrels</td>
+      <td>Distillate Petroleum</td>
+      <td>False</td>
+      <td>0.000</td>
+      <td>2020-01-01</td>
+      <td>1.0</td>
+      <td>new york</td>
+      <td>Manhattan</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2493</td>
+      <td>Y</td>
+      <td>.</td>
+      <td>4226</td>
+      <td>22</td>
+      <td>NY</td>
+      <td>1</td>
+      <td>GT</td>
+      <td>NG</td>
+      <td>2020</td>
+      <td>...</td>
+      <td>Consolidated Edison Co-NY Inc</td>
+      <td>NG</td>
+      <td>mcf</td>
+      <td>Natural Gas</td>
+      <td>False</td>
+      <td>253.476</td>
+      <td>2020-01-01</td>
+      <td>1.0</td>
+      <td>new york</td>
+      <td>Manhattan</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2493</td>
+      <td>Y</td>
+      <td>.</td>
+      <td>4226</td>
+      <td>22</td>
+      <td>NY</td>
+      <td>1</td>
+      <td>ST</td>
+      <td>NG</td>
+      <td>2020</td>
+      <td>...</td>
+      <td>Consolidated Edison Co-NY Inc</td>
+      <td>NG</td>
+      <td>mcf</td>
+      <td>Natural Gas</td>
+      <td>False</td>
+      <td>46.360</td>
+      <td>2020-01-01</td>
+      <td>1.0</td>
+      <td>new york</td>
+      <td>Manhattan</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 28 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">borough_gwh</span> <span class="o">=</span> <span class="n">nyc_gf_df_w_borough</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;borough&quot;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;gwh&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">borough_gwh</span><span class="p">[</span><span class="s2">&quot;pcnt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">borough_gwh</span><span class="o">.</span><span class="n">gwh</span> <span class="o">/</span> <span class="n">borough_gwh</span><span class="o">.</span><span class="n">gwh</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span>
+    <span class="s2">&quot;queens_gwh_pcnt&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;</span><span class="si">{:.0%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">borough_gwh</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;borough == &#39;Queens&#39;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;pcnt&quot;</span><span class="p">]),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;64%&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">borough_gwh_chart</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">borough_gwh</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">mark_bar</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;gwh&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">alt</span><span class="o">.</span><span class="n">Y</span><span class="p">(</span><span class="s2">&quot;borough&quot;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="s2">&quot;-x&quot;</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">configure_axis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">properties</span><span class="p">(</span>
+        <span class="n">title</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;NYC net generation (GWh) by borough&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;subtitle&quot;</span><span class="p">:</span> <span class="s2">&quot;2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;borough_gwh_chart&quot;</span><span class="p">,</span> <span class="n">borough_gwh_chart</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<div id="altair-viz-e15e7a814ee94d3384e5c892996cdd1f"></div>
+<script type="text/javascript">
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-e15e7a814ee94d3384e5c892996cdd1f") {
+      outputDiv = document.getElementById("altair-viz-e15e7a814ee94d3384e5c892996cdd1f");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.8.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
+    };
+
+    function loadScript(lib) {
+      return new Promise(function(resolve, reject) {
+        var s = document.createElement('script');
+        s.src = paths[lib];
+        s.async = true;
+        s.onload = () => resolve(paths[lib]);
+        s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+        document.getElementsByTagName("head")[0].appendChild(s);
+      });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else if (typeof vegaEmbed === "function") {
+      displayChart(vegaEmbed);
+    } else {
+      loadScript("vega")
+        .then(() => loadScript("vega-lite"))
+        .then(() => loadScript("vega-embed"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}, "axis": {"title": null}}, "data": {"name": "data-a13233fe7bf9d36554527b84809d7360"}, "mark": "bar", "encoding": {"x": {"type": "quantitative", "field": "gwh"}, "y": {"type": "nominal", "field": "borough", "sort": "-x"}}, "title": {"text": "NYC net generation (GWh) by borough", "subtitle": "2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/"}, "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json", "datasets": {"data-a13233fe7bf9d36554527b84809d7360": [{"borough": "Bronx", "gwh": 263.10275999999993, "pcnt": 0.0094881171395463}, {"borough": "Brooklyn", "gwh": 3317.5299980000023, "pcnt": 0.119638095909685}, {"borough": "Manhattan", "gwh": 4981.825685, "pcnt": 0.17965659375097587}, {"borough": "Queens", "gwh": 17764.400010000012, "pcnt": 0.6406269102180366}, {"borough": "Staten Island", "gwh": 1402.854, "pcnt": 0.05059028298175622}]}}, {"mode": "vega-lite"});
+</script></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nyc_plants</span> <span class="o">=</span> <span class="n">nyc_gf_df_w_borough</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;plant_id&quot;</span><span class="p">,</span> <span class="s2">&quot;plant_name&quot;</span><span class="p">,</span> <span class="s2">&quot;operator_name&quot;</span><span class="p">,</span> <span class="s2">&quot;borough&quot;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;gwh&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nyc_top_plants</span> <span class="o">=</span> <span class="n">nyc_plants</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;gwh&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;top_ten_pcnt&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{:.0%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nyc_top_plants</span><span class="o">.</span><span class="n">gwh</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">nyc_plants</span><span class="o">.</span><span class="n">gwh</span><span class="o">.</span><span class="n">sum</span><span class="p">()))</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;top_ten_queens&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nyc_top_plants</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;borough == &#39;Queens&#39;&quot;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;97%&#39;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nyc_top_plants_table</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">nyc_top_plants</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;gwh&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span>
+        <span class="p">[</span><span class="s2">&quot;operator_name&quot;</span><span class="p">,</span> <span class="s2">&quot;plant_name&quot;</span><span class="p">,</span> <span class="s2">&quot;borough&quot;</span><span class="p">,</span> <span class="s2">&quot;gwh&quot;</span><span class="p">]</span>
+    <span class="p">]</span>
+    <span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s2">&quot;gwh&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:,.0f}</span><span class="s2">&quot;</span><span class="p">})</span>
+    <span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;gwh&quot;</span><span class="p">])</span>
+    <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">highlight_queens</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;borough&quot;</span><span class="p">])</span>
+    <span class="o">.</span><span class="n">set_table_styles</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">table_styles</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">hide_index</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s2">&quot;2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;nyc_top_plants_table&quot;</span><span class="p">,</span> <span class="n">nyc_top_plants_table</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style  type="text/css" >
+    #T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4b  {
+          border-collapse: separate;
+          border-spacing: 20px 0px;
+    }#T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow0_col2,#T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow2_col2,#T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow3_col2,#T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow4_col2,#T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow7_col2,#T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow8_col2{
+            background-color:  yellow;
+        }#T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow0_col3{
+            width:  10em;
+             height:  80%;
+            background:  linear-gradient(90deg,#d65f5f 100.0%, transparent 100.0%);
+        }#T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow1_col3{
+            width:  10em;
+             height:  80%;
+            background:  linear-gradient(90deg,#d65f5f 92.7%, transparent 92.7%);
+        }#T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow2_col3{
+            width:  10em;
+             height:  80%;
+            background:  linear-gradient(90deg,#d65f5f 80.1%, transparent 80.1%);
+        }#T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow3_col3{
+            width:  10em;
+             height:  80%;
+            background:  linear-gradient(90deg,#d65f5f 73.6%, transparent 73.6%);
+        }#T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow4_col3{
+            width:  10em;
+             height:  80%;
+            background:  linear-gradient(90deg,#d65f5f 66.1%, transparent 66.1%);
+        }#T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow5_col3{
+            width:  10em;
+             height:  80%;
+            background:  linear-gradient(90deg,#d65f5f 59.8%, transparent 59.8%);
+        }#T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow6_col3{
+            width:  10em;
+             height:  80%;
+            background:  linear-gradient(90deg,#d65f5f 24.1%, transparent 24.1%);
+        }#T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow7_col3{
+            width:  10em;
+             height:  80%;
+            background:  linear-gradient(90deg,#d65f5f 10.2%, transparent 10.2%);
+        }#T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow8_col3{
+            width:  10em;
+             height:  80%;
+            background:  linear-gradient(90deg,#d65f5f 6.5%, transparent 6.5%);
+        }#T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow9_col3{
+            width:  10em;
+             height:  80%;
+        }</style><table id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4b" ><caption>2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/</caption><thead>    <tr>        <th class="col_heading level0 col0" >operator_name</th>        <th class="col_heading level0 col1" >plant_name</th>        <th class="col_heading level0 col2" >borough</th>        <th class="col_heading level0 col3" >gwh</th>    </tr></thead><tbody>
+                <tr>
+                                <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow0_col0" class="data row0 col0" >Astoria Energy LLC</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow0_col1" class="data row0 col1" >Astoria Energy</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow0_col2" class="data row0 col2" >Queens</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow0_col3" class="data row0 col3" >5,099</td>
+            </tr>
+            <tr>
+                                <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow1_col0" class="data row1 col0" >Consolidated Edison Co-NY Inc</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow1_col1" class="data row1 col1" >East River</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow1_col2" class="data row1 col2" >Manhattan</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow1_col3" class="data row1 col3" >4,739</td>
+            </tr>
+            <tr>
+                                <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow2_col0" class="data row2 col0" >Astoria Energy II LLC</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow2_col1" class="data row2 col1" >Astoria Energy II</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow2_col2" class="data row2 col2" >Queens</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow2_col3" class="data row2 col3" >4,115</td>
+            </tr>
+            <tr>
+                                <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow3_col0" class="data row3 col0" >New York Power Authority</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow3_col1" class="data row3 col1" >500MW CC</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow3_col2" class="data row3 col2" >Queens</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow3_col3" class="data row3 col3" >3,795</td>
+            </tr>
+            <tr>
+                                <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow4_col0" class="data row4 col0" >Helix Ravenswood, LLC</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow4_col1" class="data row4 col1" >Ravenswood</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow4_col2" class="data row4 col2" >Queens</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow4_col3" class="data row4 col3" >3,426</td>
+            </tr>
+            <tr>
+                                <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow5_col0" class="data row5 col0" >Brooklyn Navy Yard Cogen PLP</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow5_col1" class="data row5 col1" >Brooklyn Navy Yard Cogeneration</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow5_col2" class="data row5 col2" >Brooklyn</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow5_col3" class="data row5 col3" >3,116</td>
+            </tr>
+            <tr>
+                                <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow6_col0" class="data row6 col0" >NRG Arthur Kill Operations Inc</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow6_col1" class="data row6 col1" >Arthur Kill Generating Station</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow6_col2" class="data row6 col2" >Staten Island</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow6_col3" class="data row6 col3" >1,350</td>
+            </tr>
+            <tr>
+                                <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow7_col0" class="data row7 col0" >U S Power Generating Company LLC</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow7_col1" class="data row7 col1" >Astoria Generating Station</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow7_col2" class="data row7 col2" >Queens</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow7_col3" class="data row7 col3" >665</td>
+            </tr>
+            <tr>
+                                <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow8_col0" class="data row8 col0" >KIAC Partners</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow8_col1" class="data row8 col1" >Kennedy International Airport Cogen</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow8_col2" class="data row8 col2" >Queens</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow8_col3" class="data row8 col3" >480</td>
+            </tr>
+            <tr>
+                                <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow9_col0" class="data row9 col0" >Riverbay Corp</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow9_col1" class="data row9 col1" >Riverbay</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow9_col2" class="data row9 col2" >Bronx</td>
+                        <td id="T_f5daabec_0e5f_11eb_996f_9cb6d0c4cc4brow9_col3" class="data row9 col3" >161</td>
+            </tr>
+    </tbody></table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nyc_fuel</span> <span class="o">=</span> <span class="n">nyc_gf_df_w_borough</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;fuel_desc&quot;</span><span class="p">,</span> <span class="s2">&quot;physical_unit_label&quot;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;elec_quantity&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="s2">&quot;gwh&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">})</span>
+<span class="n">nyc_fuel</span><span class="p">[</span><span class="s2">&quot;gwh_pcnt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">nyc_fuel</span><span class="o">.</span><span class="n">gwh</span> <span class="o">/</span> <span class="n">nyc_fuel</span><span class="o">.</span><span class="n">gwh</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">glue</span><span class="p">(</span>
+    <span class="s2">&quot;nat_gas_nyc_pcnt&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;</span><span class="si">{:.0%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nyc_fuel</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;fuel_desc == &#39;Natural Gas&#39;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;gwh_pcnt&quot;</span><span class="p">]),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;99%&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nyc_fuel_table</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">nyc_fuel</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;gwh&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s2">&quot;elec_quantity&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:,.0f}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;gwh&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:,.0f}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;gwh_pcnt&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.2%}</span><span class="s2">&quot;</span><span class="p">})</span>
+    <span class="o">.</span><span class="n">set_table_styles</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">table_styles</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">hide_index</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s2">&quot;2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;nyc_fuel_table&quot;</span><span class="p">,</span> <span class="n">nyc_fuel_table</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style  type="text/css" >
+    #T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4b  {
+          border-collapse: separate;
+          border-spacing: 20px 0px;
+    }</style><table id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4b" ><caption>2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/</caption><thead>    <tr>        <th class="col_heading level0 col0" >fuel_desc</th>        <th class="col_heading level0 col1" >physical_unit_label</th>        <th class="col_heading level0 col2" >elec_quantity</th>        <th class="col_heading level0 col3" >gwh</th>        <th class="col_heading level0 col4" >gwh_pcnt</th>    </tr></thead><tbody>
+                <tr>
+                                <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow0_col0" class="data row0 col0" >Natural Gas</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow0_col1" class="data row0 col1" >mcf</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow0_col2" class="data row0 col2" >213,446,842</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow0_col3" class="data row0 col3" >27,502</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow0_col4" class="data row0 col4" >99.18%</td>
+            </tr>
+            <tr>
+                                <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow1_col0" class="data row1 col0" >Distillate Petroleum</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow1_col1" class="data row1 col1" >barrels</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow1_col2" class="data row1 col2" >208,714</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow1_col3" class="data row1 col3" >163</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow1_col4" class="data row1 col4" >0.59%</td>
+            </tr>
+            <tr>
+                                <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow2_col0" class="data row2 col0" >Residual Petroleum</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow2_col1" class="data row2 col1" >barrels</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow2_col2" class="data row2 col2" >69,429</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow2_col3" class="data row2 col3" >38</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow2_col4" class="data row2 col4" >0.14%</td>
+            </tr>
+            <tr>
+                                <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow3_col0" class="data row3 col0" >Waste Oil</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow3_col1" class="data row3 col1" >barrels</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow3_col2" class="data row3 col2" >34,097</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow3_col3" class="data row3 col3" >21</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow3_col4" class="data row3 col4" >0.08%</td>
+            </tr>
+            <tr>
+                                <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow4_col0" class="data row4 col0" >Solar PV and thermal</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow4_col1" class="data row4 col1" ></td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow4_col2" class="data row4 col2" >0</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow4_col3" class="data row4 col3" >5</td>
+                        <td id="T_f5e3beb2_0e5f_11eb_996f_9cb6d0c4cc4brow4_col4" class="data row4 col4" >0.02%</td>
+            </tr>
+    </tbody></table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">queens_top_plants</span> <span class="o">=</span> <span class="n">nyc_top_plants</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;borough == &#39;Queens&#39;&quot;</span><span class="p">)</span>
+<span class="n">queens_top_gf_df</span> <span class="o">=</span> <span class="n">nyc_gf_df_w_borough</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">right</span><span class="o">=</span><span class="n">queens_top_plants</span><span class="p">[[</span><span class="s2">&quot;plant_id&quot;</span><span class="p">]],</span>
+    <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;plant_id&quot;</span><span class="p">],</span>
+    <span class="n">how</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">,</span>
+    <span class="n">validate</span><span class="o">=</span><span class="s2">&quot;many_to_one&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">queens_top_gf_df</span><span class="o">.</span><span class="n">plant_name</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;Ravenswood&#39;, &#39;Astoria Energy&#39;, &#39;500MW CC&#39;, &#39;Astoria Energy II&#39;,
+       &#39;Astoria Generating Station&#39;,
+       &#39;Kennedy International Airport Cogen&#39;], dtype=object)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">glue</span><span class="p">(</span>
+    <span class="s2">&quot;nat_gas_queens_pcnt&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;</span><span class="si">{:.0%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">queens_top_gf_df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;fuel_desc == &#39;Natural Gas&#39;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">elec_quantity</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="o">/</span> <span class="n">nyc_gf_df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;fuel_desc == &#39;Natural Gas&#39;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">elec_quantity</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;63%&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">queens_fuel</span> <span class="o">=</span> <span class="n">queens_top_gf_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;fuel_desc&quot;</span><span class="p">,</span> <span class="s2">&quot;physical_unit_label&quot;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;elec_quantity&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="s2">&quot;gwh&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">})</span>
+<span class="n">queens_fuel</span><span class="p">[</span><span class="s2">&quot;gwh_pcnt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">queens_fuel</span><span class="o">.</span><span class="n">gwh</span> <span class="o">/</span> <span class="n">queens_fuel</span><span class="o">.</span><span class="n">gwh</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">queens_fuel_w_nyc</span> <span class="o">=</span> <span class="n">queens_fuel</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="n">nyc_fuel</span><span class="p">[[</span><span class="s2">&quot;fuel_desc&quot;</span><span class="p">,</span> <span class="s2">&quot;gwh&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;gwh&quot;</span><span class="p">:</span> <span class="s2">&quot;ttl_nyc_gwh&quot;</span><span class="p">}),</span>
+    <span class="n">on</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fuel_desc&quot;</span><span class="p">],</span>
+    <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+    <span class="n">validate</span><span class="o">=</span><span class="s2">&quot;one_to_one&quot;</span>
+<span class="p">)</span>
+<span class="n">queens_fuel_w_nyc</span><span class="p">[</span><span class="s2">&quot;gwh_pcnt_of_nyc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">queens_fuel_w_nyc</span><span class="o">.</span><span class="n">gwh</span> <span class="o">/</span> <span class="n">queens_fuel_w_nyc</span><span class="o">.</span><span class="n">ttl_nyc_gwh</span>
+
+<span class="n">queens_fuel_table</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">queens_fuel_w_nyc</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;gwh&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ttl_nyc_gwh&quot;</span><span class="p">])</span>
+    <span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s2">&quot;elec_quantity&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:,.0f}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;gwh&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:,.0f}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;gwh_pcnt&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.2%}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;gwh_pcnt_of_nyc&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.2%}</span><span class="s2">&quot;</span><span class="p">})</span>
+    <span class="o">.</span><span class="n">set_table_styles</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">table_styles</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">hide_index</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s2">&quot;2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;queens_fuel_table&quot;</span><span class="p">,</span> <span class="n">queens_fuel_table</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style  type="text/css" >
+    #T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4b  {
+          border-collapse: separate;
+          border-spacing: 20px 0px;
+    }</style><table id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4b" ><caption>2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/</caption><thead>    <tr>        <th class="col_heading level0 col0" >fuel_desc</th>        <th class="col_heading level0 col1" >physical_unit_label</th>        <th class="col_heading level0 col2" >elec_quantity</th>        <th class="col_heading level0 col3" >gwh</th>        <th class="col_heading level0 col4" >gwh_pcnt</th>        <th class="col_heading level0 col5" >gwh_pcnt_of_nyc</th>    </tr></thead><tbody>
+                <tr>
+                                <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow0_col0" class="data row0 col0" >Natural Gas</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow0_col1" class="data row0 col1" >mcf</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow0_col2" class="data row0 col2" >134,753,336</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow0_col3" class="data row0 col3" >17,415</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow0_col4" class="data row0 col4" >99.06%</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow0_col5" class="data row0 col5" >63.32%</td>
+            </tr>
+            <tr>
+                                <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow1_col0" class="data row1 col0" >Distillate Petroleum</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow1_col1" class="data row1 col1" >barrels</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow1_col2" class="data row1 col2" >166,884</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow1_col3" class="data row1 col3" >130</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow1_col4" class="data row1 col4" >0.74%</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow1_col5" class="data row1 col5" >79.76%</td>
+            </tr>
+            <tr>
+                                <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow2_col0" class="data row2 col0" >Residual Petroleum</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow2_col1" class="data row2 col1" >barrels</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow2_col2" class="data row2 col2" >49,221</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow2_col3" class="data row2 col3" >23</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow2_col4" class="data row2 col4" >0.13%</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow2_col5" class="data row2 col5" >60.15%</td>
+            </tr>
+            <tr>
+                                <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow3_col0" class="data row3 col0" >Waste Oil</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow3_col1" class="data row3 col1" >barrels</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow3_col2" class="data row3 col2" >15,628</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow3_col3" class="data row3 col3" >12</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow3_col4" class="data row3 col4" >0.07%</td>
+                        <td id="T_f5f55082_0e5f_11eb_996f_9cb6d0c4cc4brow3_col5" class="data row3 col5" >54.73%</td>
+            </tr>
+    </tbody></table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># queens plant info</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">queens_top_plants</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>plant_id</th>
+      <th>plant_name</th>
+      <th>operator_name</th>
+      <th>borough</th>
+      <th>gwh</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>23</th>
+      <td>55375</td>
+      <td>Astoria Energy</td>
+      <td>Astoria Energy LLC</td>
+      <td>Queens</td>
+      <td>5098.810007</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>57664</td>
+      <td>Astoria Energy II</td>
+      <td>Astoria Energy II LLC</td>
+      <td>Queens</td>
+      <td>4115.013014</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>56196</td>
+      <td>500MW CC</td>
+      <td>New York Power Authority</td>
+      <td>Queens</td>
+      <td>3794.776995</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2500</td>
+      <td>Ravenswood</td>
+      <td>Helix Ravenswood, LLC</td>
+      <td>Queens</td>
+      <td>3425.938997</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>8906</td>
+      <td>Astoria Generating Station</td>
+      <td>U S Power Generating Company LLC</td>
+      <td>Queens</td>
+      <td>664.807997</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>54114</td>
+      <td>Kennedy International Airport Cogen</td>
+      <td>KIAC Partners</td>
+      <td>Queens</td>
+      <td>480.049000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">queens_top_plants</span><span class="o">.</span><span class="n">plant_id</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+    <span class="n">plant_info</span> <span class="o">=</span> <span class="n">queens_top_plants</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;plant_id == </span><span class="si">{i}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">glue</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;queens_top_gwh_pcnt_</span><span class="si">{i}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{:.0%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plant_info</span><span class="o">.</span><span class="n">gwh</span> <span class="o">/</span> <span class="n">ttl_nyc_gwh</span><span class="p">))</span>
+
+    <span class="n">plant_gf_df</span> <span class="o">=</span> <span class="n">nyc_gf_df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;plant_id == </span><span class="si">{i}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">plant_gen_month</span> <span class="o">=</span> <span class="n">plant_gf_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;year_month&quot;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;gwh&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;gwh &gt; 0&quot;</span><span class="p">)</span>
+
+    <span class="n">plant_month_gwh_chart</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">alt</span><span class="o">.</span><span class="n">Chart</span><span class="p">(</span><span class="n">plant_gen_month</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">mark_bar</span><span class="p">()</span>
+        <span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;year_month&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;gwh&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">configure_axis</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">properties</span><span class="p">(</span>
+            <span class="n">title</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{plant_info[&#39;plant_name&#39;]}</span><span class="s2"> net generation (GWh) by month&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;subtitle&quot;</span><span class="p">:</span> <span class="s2">&quot;2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">glue</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;queens_top_month_gwh_chart_</span><span class="si">{i}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">plant_month_gwh_chart</span><span class="p">)</span>
+
+    <span class="n">glue</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;queens_top_nat_gas_pcnt_</span><span class="si">{i}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;</span><span class="si">{:.0%}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">plant_gf_df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;fuel_desc == &#39;Natural Gas&#39;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">elec_quantity</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+            <span class="o">/</span> <span class="n">nyc_gf_df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;fuel_desc == &#39;Natural Gas&#39;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">elec_quantity</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="p">),</span>
+    <span class="p">)</span>       
+
+    <span class="n">plant_fuel</span> <span class="o">=</span> <span class="n">plant_gf_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;fuel_desc&quot;</span><span class="p">,</span> <span class="s2">&quot;physical_unit_label&quot;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;elec_quantity&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="s2">&quot;gwh&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">})</span>
+    <span class="n">plant_fuel</span><span class="p">[</span><span class="s2">&quot;gwh_pcnt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">plant_fuel</span><span class="o">.</span><span class="n">gwh</span> <span class="o">/</span> <span class="n">plant_fuel</span><span class="o">.</span><span class="n">gwh</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">plant_fuel_w_nyc</span> <span class="o">=</span> <span class="n">plant_fuel</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">nyc_fuel</span><span class="p">[[</span><span class="s2">&quot;fuel_desc&quot;</span><span class="p">,</span> <span class="s2">&quot;gwh&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;gwh&quot;</span><span class="p">:</span> <span class="s2">&quot;ttl_nyc_gwh&quot;</span><span class="p">}),</span>
+        <span class="n">on</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fuel_desc&quot;</span><span class="p">],</span>
+        <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+        <span class="n">validate</span><span class="o">=</span><span class="s2">&quot;one_to_one&quot;</span>
+    <span class="p">)</span>
+    <span class="n">plant_fuel_w_nyc</span><span class="p">[</span><span class="s2">&quot;gwh_pcnt_of_nyc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">plant_fuel_w_nyc</span><span class="o">.</span><span class="n">gwh</span> <span class="o">/</span> <span class="n">plant_fuel_w_nyc</span><span class="o">.</span><span class="n">ttl_nyc_gwh</span>
+
+    <span class="n">plant_fuel_table</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">plant_fuel_w_nyc</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;gwh&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ttl_nyc_gwh&quot;</span><span class="p">])</span>
+        <span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s2">&quot;elec_quantity&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:,.0f}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;gwh&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:,.0f}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;gwh_pcnt&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.2%}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;gwh_pcnt_of_nyc&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.2%}</span><span class="s2">&quot;</span><span class="p">})</span>
+        <span class="o">.</span><span class="n">set_table_styles</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">table_styles</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">hide_index</span><span class="p">()</span>
+        <span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s2">&quot;2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">glue</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;queens_top_fuel_table_</span><span class="si">{i}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">plant_fuel_table</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;18%&#39;
+</pre></div>
+</div>
+<div class="output text_html">
+<div id="altair-viz-d32cd7907a8e443a84f9069c93d103f5"></div>
+<script type="text/javascript">
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-d32cd7907a8e443a84f9069c93d103f5") {
+      outputDiv = document.getElementById("altair-viz-d32cd7907a8e443a84f9069c93d103f5");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.8.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
+    };
+
+    function loadScript(lib) {
+      return new Promise(function(resolve, reject) {
+        var s = document.createElement('script');
+        s.src = paths[lib];
+        s.async = true;
+        s.onload = () => resolve(paths[lib]);
+        s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+        document.getElementsByTagName("head")[0].appendChild(s);
+      });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else if (typeof vegaEmbed === "function") {
+      displayChart(vegaEmbed);
+    } else {
+      loadScript("vega")
+        .then(() => loadScript("vega-lite"))
+        .then(() => loadScript("vega-embed"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}, "axis": {"title": null}}, "data": {"name": "data-eb9cae0b5596956b8c43b011281198a7"}, "mark": "bar", "encoding": {"x": {"type": "temporal", "field": "year_month"}, "y": {"type": "quantitative", "field": "gwh"}}, "title": {"text": "Astoria Energy net generation (GWh) by month", "subtitle": "2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/"}, "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json", "datasets": {"data-eb9cae0b5596956b8c43b011281198a7": [{"year_month": "2019-01-01T00:00:00", "gwh": 294.08000300000003}, {"year_month": "2019-02-01T00:00:00", "gwh": 264.236001}, {"year_month": "2019-03-01T00:00:00", "gwh": 328.509004}, {"year_month": "2019-04-01T00:00:00", "gwh": 119.678}, {"year_month": "2019-05-01T00:00:00", "gwh": 186.055}, {"year_month": "2019-06-01T00:00:00", "gwh": 282.436006}, {"year_month": "2019-07-01T00:00:00", "gwh": 349.509}, {"year_month": "2019-08-01T00:00:00", "gwh": 328.875}, {"year_month": "2019-09-01T00:00:00", "gwh": 301.858}, {"year_month": "2019-10-01T00:00:00", "gwh": 202.104998}, {"year_month": "2019-11-01T00:00:00", "gwh": 255.290999}, {"year_month": "2019-12-01T00:00:00", "gwh": 290.861998}, {"year_month": "2020-01-01T00:00:00", "gwh": 273.798998}, {"year_month": "2020-02-01T00:00:00", "gwh": 246.52399599999998}, {"year_month": "2020-03-01T00:00:00", "gwh": 223.880002}, {"year_month": "2020-04-01T00:00:00", "gwh": 207.187002}, {"year_month": "2020-05-01T00:00:00", "gwh": 294.67}, {"year_month": "2020-06-01T00:00:00", "gwh": 307.654}, {"year_month": "2020-07-01T00:00:00", "gwh": 341.602}]}}, {"mode": "vega-lite"});
+</script></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;17%&#39;
+</pre></div>
+</div>
+<div class="output text_html"><style  type="text/css" >
+    #T_f6070160_0e5f_11eb_996f_9cb6d0c4cc4b  {
+          border-collapse: separate;
+          border-spacing: 20px 0px;
+    }</style><table id="T_f6070160_0e5f_11eb_996f_9cb6d0c4cc4b" ><caption>2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/</caption><thead>    <tr>        <th class="col_heading level0 col0" >fuel_desc</th>        <th class="col_heading level0 col1" >physical_unit_label</th>        <th class="col_heading level0 col2" >elec_quantity</th>        <th class="col_heading level0 col3" >gwh</th>        <th class="col_heading level0 col4" >gwh_pcnt</th>        <th class="col_heading level0 col5" >gwh_pcnt_of_nyc</th>    </tr></thead><tbody>
+                <tr>
+                                <td id="T_f6070160_0e5f_11eb_996f_9cb6d0c4cc4brow0_col0" class="data row0 col0" >Natural Gas</td>
+                        <td id="T_f6070160_0e5f_11eb_996f_9cb6d0c4cc4brow0_col1" class="data row0 col1" >mcf</td>
+                        <td id="T_f6070160_0e5f_11eb_996f_9cb6d0c4cc4brow0_col2" class="data row0 col2" >36,028,135</td>
+                        <td id="T_f6070160_0e5f_11eb_996f_9cb6d0c4cc4brow0_col3" class="data row0 col3" >5,058</td>
+                        <td id="T_f6070160_0e5f_11eb_996f_9cb6d0c4cc4brow0_col4" class="data row0 col4" >99.20%</td>
+                        <td id="T_f6070160_0e5f_11eb_996f_9cb6d0c4cc4brow0_col5" class="data row0 col5" >18.39%</td>
+            </tr>
+            <tr>
+                                <td id="T_f6070160_0e5f_11eb_996f_9cb6d0c4cc4brow1_col0" class="data row1 col0" >Distillate Petroleum</td>
+                        <td id="T_f6070160_0e5f_11eb_996f_9cb6d0c4cc4brow1_col1" class="data row1 col1" >barrels</td>
+                        <td id="T_f6070160_0e5f_11eb_996f_9cb6d0c4cc4brow1_col2" class="data row1 col2" >50,886</td>
+                        <td id="T_f6070160_0e5f_11eb_996f_9cb6d0c4cc4brow1_col3" class="data row1 col3" >41</td>
+                        <td id="T_f6070160_0e5f_11eb_996f_9cb6d0c4cc4brow1_col4" class="data row1 col4" >0.80%</td>
+                        <td id="T_f6070160_0e5f_11eb_996f_9cb6d0c4cc4brow1_col5" class="data row1 col5" >24.86%</td>
+            </tr>
+    </tbody></table></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;15%&#39;
+</pre></div>
+</div>
+<div class="output text_html">
+<div id="altair-viz-d8a361b0448744038c9d59a23ff815c5"></div>
+<script type="text/javascript">
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-d8a361b0448744038c9d59a23ff815c5") {
+      outputDiv = document.getElementById("altair-viz-d8a361b0448744038c9d59a23ff815c5");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.8.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
+    };
+
+    function loadScript(lib) {
+      return new Promise(function(resolve, reject) {
+        var s = document.createElement('script');
+        s.src = paths[lib];
+        s.async = true;
+        s.onload = () => resolve(paths[lib]);
+        s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+        document.getElementsByTagName("head")[0].appendChild(s);
+      });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else if (typeof vegaEmbed === "function") {
+      displayChart(vegaEmbed);
+    } else {
+      loadScript("vega")
+        .then(() => loadScript("vega-lite"))
+        .then(() => loadScript("vega-embed"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}, "axis": {"title": null}}, "data": {"name": "data-8daea24522df38b493bfcbc23a4b003c"}, "mark": "bar", "encoding": {"x": {"type": "temporal", "field": "year_month"}, "y": {"type": "quantitative", "field": "gwh"}}, "title": {"text": "Astoria Energy II net generation (GWh) by month", "subtitle": "2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/"}, "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json", "datasets": {"data-8daea24522df38b493bfcbc23a4b003c": [{"year_month": "2019-01-01T00:00:00", "gwh": 219.072001}, {"year_month": "2019-02-01T00:00:00", "gwh": 197.03500200000002}, {"year_month": "2019-03-01T00:00:00", "gwh": 102.278}, {"year_month": "2019-04-01T00:00:00", "gwh": 283.710997}, {"year_month": "2019-05-01T00:00:00", "gwh": 248.699999}, {"year_month": "2019-06-01T00:00:00", "gwh": 243.654002}, {"year_month": "2019-07-01T00:00:00", "gwh": 356.656}, {"year_month": "2019-08-01T00:00:00", "gwh": 309.283005}, {"year_month": "2019-09-01T00:00:00", "gwh": 223.85500100000002}, {"year_month": "2019-10-01T00:00:00", "gwh": 192.122002}, {"year_month": "2019-11-01T00:00:00", "gwh": 214.755003}, {"year_month": "2019-12-01T00:00:00", "gwh": 194.77700199999998}, {"year_month": "2020-01-01T00:00:00", "gwh": 151.022}, {"year_month": "2020-02-01T00:00:00", "gwh": 210.435}, {"year_month": "2020-03-01T00:00:00", "gwh": 118.607}, {"year_month": "2020-04-01T00:00:00", "gwh": 30.003999999999998}, {"year_month": "2020-05-01T00:00:00", "gwh": 146.364}, {"year_month": "2020-06-01T00:00:00", "gwh": 309.278}, {"year_month": "2020-07-01T00:00:00", "gwh": 363.405}]}}, {"mode": "vega-lite"});
+</script></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;14%&#39;
+</pre></div>
+</div>
+<div class="output text_html"><style  type="text/css" >
+    #T_f60d408e_0e5f_11eb_996f_9cb6d0c4cc4b  {
+          border-collapse: separate;
+          border-spacing: 20px 0px;
+    }</style><table id="T_f60d408e_0e5f_11eb_996f_9cb6d0c4cc4b" ><caption>2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/</caption><thead>    <tr>        <th class="col_heading level0 col0" >fuel_desc</th>        <th class="col_heading level0 col1" >physical_unit_label</th>        <th class="col_heading level0 col2" >elec_quantity</th>        <th class="col_heading level0 col3" >gwh</th>        <th class="col_heading level0 col4" >gwh_pcnt</th>        <th class="col_heading level0 col5" >gwh_pcnt_of_nyc</th>    </tr></thead><tbody>
+                <tr>
+                                <td id="T_f60d408e_0e5f_11eb_996f_9cb6d0c4cc4brow0_col0" class="data row0 col0" >Natural Gas</td>
+                        <td id="T_f60d408e_0e5f_11eb_996f_9cb6d0c4cc4brow0_col1" class="data row0 col1" >mcf</td>
+                        <td id="T_f60d408e_0e5f_11eb_996f_9cb6d0c4cc4brow0_col2" class="data row0 col2" >29,332,644</td>
+                        <td id="T_f60d408e_0e5f_11eb_996f_9cb6d0c4cc4brow0_col3" class="data row0 col3" >4,064</td>
+                        <td id="T_f60d408e_0e5f_11eb_996f_9cb6d0c4cc4brow0_col4" class="data row0 col4" >98.76%</td>
+                        <td id="T_f60d408e_0e5f_11eb_996f_9cb6d0c4cc4brow0_col5" class="data row0 col5" >14.78%</td>
+            </tr>
+            <tr>
+                                <td id="T_f60d408e_0e5f_11eb_996f_9cb6d0c4cc4brow1_col0" class="data row1 col0" >Distillate Petroleum</td>
+                        <td id="T_f60d408e_0e5f_11eb_996f_9cb6d0c4cc4brow1_col1" class="data row1 col1" >barrels</td>
+                        <td id="T_f60d408e_0e5f_11eb_996f_9cb6d0c4cc4brow1_col2" class="data row1 col2" >64,618</td>
+                        <td id="T_f60d408e_0e5f_11eb_996f_9cb6d0c4cc4brow1_col3" class="data row1 col3" >51</td>
+                        <td id="T_f60d408e_0e5f_11eb_996f_9cb6d0c4cc4brow1_col4" class="data row1 col4" >1.24%</td>
+                        <td id="T_f60d408e_0e5f_11eb_996f_9cb6d0c4cc4brow1_col5" class="data row1 col5" >31.21%</td>
+            </tr>
+    </tbody></table></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;14%&#39;
+</pre></div>
+</div>
+<div class="output text_html">
+<div id="altair-viz-fb98991719064e77973de63c2a75ad1e"></div>
+<script type="text/javascript">
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-fb98991719064e77973de63c2a75ad1e") {
+      outputDiv = document.getElementById("altair-viz-fb98991719064e77973de63c2a75ad1e");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.8.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
+    };
+
+    function loadScript(lib) {
+      return new Promise(function(resolve, reject) {
+        var s = document.createElement('script');
+        s.src = paths[lib];
+        s.async = true;
+        s.onload = () => resolve(paths[lib]);
+        s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+        document.getElementsByTagName("head")[0].appendChild(s);
+      });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else if (typeof vegaEmbed === "function") {
+      displayChart(vegaEmbed);
+    } else {
+      loadScript("vega")
+        .then(() => loadScript("vega-lite"))
+        .then(() => loadScript("vega-embed"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}, "axis": {"title": null}}, "data": {"name": "data-881729ad92a204c0de327ba3a85ed438"}, "mark": "bar", "encoding": {"x": {"type": "temporal", "field": "year_month"}, "y": {"type": "quantitative", "field": "gwh"}}, "title": {"text": "500MW CC net generation (GWh) by month", "subtitle": "2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/"}, "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json", "datasets": {"data-881729ad92a204c0de327ba3a85ed438": [{"year_month": "2019-01-01T00:00:00", "gwh": 200.699997}, {"year_month": "2019-02-01T00:00:00", "gwh": 196.54899899999998}, {"year_month": "2019-03-01T00:00:00", "gwh": 117.596}, {"year_month": "2019-04-01T00:00:00", "gwh": 199.087}, {"year_month": "2019-05-01T00:00:00", "gwh": 212.149}, {"year_month": "2019-06-01T00:00:00", "gwh": 201.83499999999998}, {"year_month": "2019-07-01T00:00:00", "gwh": 301.074}, {"year_month": "2019-08-01T00:00:00", "gwh": 254.73899999999998}, {"year_month": "2019-09-01T00:00:00", "gwh": 137.885}, {"year_month": "2019-10-01T00:00:00", "gwh": 186.138}, {"year_month": "2019-11-01T00:00:00", "gwh": 214.79999600000002}, {"year_month": "2019-12-01T00:00:00", "gwh": 223.91300099999998}, {"year_month": "2020-01-01T00:00:00", "gwh": 208.22300199999998}, {"year_month": "2020-02-01T00:00:00", "gwh": 197.30700000000002}, {"year_month": "2020-03-01T00:00:00", "gwh": 157.244}, {"year_month": "2020-04-01T00:00:00", "gwh": 120.726}, {"year_month": "2020-05-01T00:00:00", "gwh": 119.353}, {"year_month": "2020-06-01T00:00:00", "gwh": 234.47}, {"year_month": "2020-07-01T00:00:00", "gwh": 310.98900000000003}]}}, {"mode": "vega-lite"});
+</script></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;13%&#39;
+</pre></div>
+</div>
+<div class="output text_html"><style  type="text/css" >
+    #T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4b  {
+          border-collapse: separate;
+          border-spacing: 20px 0px;
+    }</style><table id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4b" ><caption>2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/</caption><thead>    <tr>        <th class="col_heading level0 col0" >fuel_desc</th>        <th class="col_heading level0 col1" >physical_unit_label</th>        <th class="col_heading level0 col2" >elec_quantity</th>        <th class="col_heading level0 col3" >gwh</th>        <th class="col_heading level0 col4" >gwh_pcnt</th>        <th class="col_heading level0 col5" >gwh_pcnt_of_nyc</th>    </tr></thead><tbody>
+                <tr>
+                                <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow0_col0" class="data row0 col0" >Natural Gas</td>
+                        <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow0_col1" class="data row0 col1" >mcf</td>
+                        <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow0_col2" class="data row0 col2" >27,835,410</td>
+                        <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow0_col3" class="data row0 col3" >3,756</td>
+                        <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow0_col4" class="data row0 col4" >98.98%</td>
+                        <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow0_col5" class="data row0 col5" >13.66%</td>
+            </tr>
+            <tr>
+                                <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow1_col0" class="data row1 col0" >Distillate Petroleum</td>
+                        <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow1_col1" class="data row1 col1" >barrels</td>
+                        <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow1_col2" class="data row1 col2" >51,380</td>
+                        <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow1_col3" class="data row1 col3" >39</td>
+                        <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow1_col4" class="data row1 col4" >1.02%</td>
+                        <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow1_col5" class="data row1 col5" >23.69%</td>
+            </tr>
+            <tr>
+                                <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow2_col0" class="data row2 col0" >Waste Oil</td>
+                        <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow2_col1" class="data row2 col1" >barrels</td>
+                        <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow2_col2" class="data row2 col2" >0</td>
+                        <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow2_col3" class="data row2 col3" >0</td>
+                        <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow2_col4" class="data row2 col4" >0.00%</td>
+                        <td id="T_f6139d62_0e5f_11eb_996f_9cb6d0c4cc4brow2_col5" class="data row2 col5" >0.00%</td>
+            </tr>
+    </tbody></table></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;12%&#39;
+</pre></div>
+</div>
+<div class="output text_html">
+<div id="altair-viz-6e6308a6624d45b3a43791ebf4a72a40"></div>
+<script type="text/javascript">
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-6e6308a6624d45b3a43791ebf4a72a40") {
+      outputDiv = document.getElementById("altair-viz-6e6308a6624d45b3a43791ebf4a72a40");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.8.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
+    };
+
+    function loadScript(lib) {
+      return new Promise(function(resolve, reject) {
+        var s = document.createElement('script');
+        s.src = paths[lib];
+        s.async = true;
+        s.onload = () => resolve(paths[lib]);
+        s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+        document.getElementsByTagName("head")[0].appendChild(s);
+      });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else if (typeof vegaEmbed === "function") {
+      displayChart(vegaEmbed);
+    } else {
+      loadScript("vega")
+        .then(() => loadScript("vega-lite"))
+        .then(() => loadScript("vega-embed"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}, "axis": {"title": null}}, "data": {"name": "data-da19367d09c40fc5aac8e2d26f71c552"}, "mark": "bar", "encoding": {"x": {"type": "temporal", "field": "year_month"}, "y": {"type": "quantitative", "field": "gwh"}}, "title": {"text": "Ravenswood net generation (GWh) by month", "subtitle": "2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/"}, "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json", "datasets": {"data-da19367d09c40fc5aac8e2d26f71c552": [{"year_month": "2019-01-01T00:00:00", "gwh": 198.24299700000003}, {"year_month": "2019-02-01T00:00:00", "gwh": 168.585}, {"year_month": "2019-03-01T00:00:00", "gwh": 106.054}, {"year_month": "2019-04-01T00:00:00", "gwh": 71.606}, {"year_month": "2019-05-01T00:00:00", "gwh": 157.721}, {"year_month": "2019-06-01T00:00:00", "gwh": 203.23199999999997}, {"year_month": "2019-07-01T00:00:00", "gwh": 381.18899999999996}, {"year_month": "2019-08-01T00:00:00", "gwh": 305.621}, {"year_month": "2019-09-01T00:00:00", "gwh": 198.70999999999998}, {"year_month": "2019-10-01T00:00:00", "gwh": 164.136}, {"year_month": "2019-11-01T00:00:00", "gwh": 185.975}, {"year_month": "2019-12-01T00:00:00", "gwh": 157.632}, {"year_month": "2020-01-01T00:00:00", "gwh": 157.32299999999998}, {"year_month": "2020-02-01T00:00:00", "gwh": 150.419}, {"year_month": "2020-03-01T00:00:00", "gwh": 172.78000000000003}, {"year_month": "2020-04-01T00:00:00", "gwh": 154.591}, {"year_month": "2020-05-01T00:00:00", "gwh": 8.241}, {"year_month": "2020-06-01T00:00:00", "gwh": 48.126999999999995}, {"year_month": "2020-07-01T00:00:00", "gwh": 435.754}]}}, {"mode": "vega-lite"});
+</script></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;14%&#39;
+</pre></div>
+</div>
+<div class="output text_html"><style  type="text/css" >
+    #T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4b  {
+          border-collapse: separate;
+          border-spacing: 20px 0px;
+    }</style><table id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4b" ><caption>2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/</caption><thead>    <tr>        <th class="col_heading level0 col0" >fuel_desc</th>        <th class="col_heading level0 col1" >physical_unit_label</th>        <th class="col_heading level0 col2" >elec_quantity</th>        <th class="col_heading level0 col3" >gwh</th>        <th class="col_heading level0 col4" >gwh_pcnt</th>        <th class="col_heading level0 col5" >gwh_pcnt_of_nyc</th>    </tr></thead><tbody>
+                <tr>
+                                <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow0_col0" class="data row0 col0" >Natural Gas</td>
+                        <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow0_col1" class="data row0 col1" >mcf</td>
+                        <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow0_col2" class="data row0 col2" >29,516,708</td>
+                        <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow0_col3" class="data row0 col3" >3,402</td>
+                        <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow0_col4" class="data row0 col4" >99.30%</td>
+                        <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow0_col5" class="data row0 col5" >12.37%</td>
+            </tr>
+            <tr>
+                                <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow1_col0" class="data row1 col0" >Residual Petroleum</td>
+                        <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow1_col1" class="data row1 col1" >barrels</td>
+                        <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow1_col2" class="data row1 col2" >27,346</td>
+                        <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow1_col3" class="data row1 col3" >12</td>
+                        <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow1_col4" class="data row1 col4" >0.36%</td>
+                        <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow1_col5" class="data row1 col5" >32.60%</td>
+            </tr>
+            <tr>
+                                <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow2_col0" class="data row2 col0" >Waste Oil</td>
+                        <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow2_col1" class="data row2 col1" >barrels</td>
+                        <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow2_col2" class="data row2 col2" >15,628</td>
+                        <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow2_col3" class="data row2 col3" >12</td>
+                        <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow2_col4" class="data row2 col4" >0.34%</td>
+                        <td id="T_f61a13fe_0e5f_11eb_996f_9cb6d0c4cc4brow2_col5" class="data row2 col5" >54.73%</td>
+            </tr>
+    </tbody></table></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;2%&#39;
+</pre></div>
+</div>
+<div class="output text_html">
+<div id="altair-viz-110a077a7c3e43948a53b5fe60061de0"></div>
+<script type="text/javascript">
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-110a077a7c3e43948a53b5fe60061de0") {
+      outputDiv = document.getElementById("altair-viz-110a077a7c3e43948a53b5fe60061de0");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.8.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
+    };
+
+    function loadScript(lib) {
+      return new Promise(function(resolve, reject) {
+        var s = document.createElement('script');
+        s.src = paths[lib];
+        s.async = true;
+        s.onload = () => resolve(paths[lib]);
+        s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+        document.getElementsByTagName("head")[0].appendChild(s);
+      });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else if (typeof vegaEmbed === "function") {
+      displayChart(vegaEmbed);
+    } else {
+      loadScript("vega")
+        .then(() => loadScript("vega-lite"))
+        .then(() => loadScript("vega-embed"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}, "axis": {"title": null}}, "data": {"name": "data-b64138c444997bcbb16cee0bfd58b0be"}, "mark": "bar", "encoding": {"x": {"type": "temporal", "field": "year_month"}, "y": {"type": "quantitative", "field": "gwh"}}, "title": {"text": "Astoria Generating Station net generation (GWh) by month", "subtitle": "2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/"}, "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json", "datasets": {"data-b64138c444997bcbb16cee0bfd58b0be": [{"year_month": "2019-01-01T00:00:00", "gwh": 50.925672}, {"year_month": "2019-02-01T00:00:00", "gwh": 4.577438}, {"year_month": "2019-03-01T00:00:00", "gwh": 66.291094}, {"year_month": "2019-04-01T00:00:00", "gwh": 25.884679000000002}, {"year_month": "2019-05-01T00:00:00", "gwh": 60.145466}, {"year_month": "2019-06-01T00:00:00", "gwh": 68.373243}, {"year_month": "2019-07-01T00:00:00", "gwh": 132.59020300000003}, {"year_month": "2019-08-01T00:00:00", "gwh": 88.720236}, {"year_month": "2019-09-01T00:00:00", "gwh": 103.811463}, {"year_month": "2019-10-01T00:00:00", "gwh": 45.281923}, {"year_month": "2019-11-01T00:00:00", "gwh": 7.731488}, {"year_month": "2019-12-01T00:00:00", "gwh": 10.475092}]}}, {"mode": "vega-lite"});
+</script></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;4%&#39;
+</pre></div>
+</div>
+<div class="output text_html"><style  type="text/css" >
+    #T_f6205fb6_0e5f_11eb_996f_9cb6d0c4cc4b  {
+          border-collapse: separate;
+          border-spacing: 20px 0px;
+    }</style><table id="T_f6205fb6_0e5f_11eb_996f_9cb6d0c4cc4b" ><caption>2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/</caption><thead>    <tr>        <th class="col_heading level0 col0" >fuel_desc</th>        <th class="col_heading level0 col1" >physical_unit_label</th>        <th class="col_heading level0 col2" >elec_quantity</th>        <th class="col_heading level0 col3" >gwh</th>        <th class="col_heading level0 col4" >gwh_pcnt</th>        <th class="col_heading level0 col5" >gwh_pcnt_of_nyc</th>    </tr></thead><tbody>
+                <tr>
+                                <td id="T_f6205fb6_0e5f_11eb_996f_9cb6d0c4cc4brow0_col0" class="data row0 col0" >Natural Gas</td>
+                        <td id="T_f6205fb6_0e5f_11eb_996f_9cb6d0c4cc4brow0_col1" class="data row0 col1" >mcf</td>
+                        <td id="T_f6205fb6_0e5f_11eb_996f_9cb6d0c4cc4brow0_col2" class="data row0 col2" >7,818,750</td>
+                        <td id="T_f6205fb6_0e5f_11eb_996f_9cb6d0c4cc4brow0_col3" class="data row0 col3" >654</td>
+                        <td id="T_f6205fb6_0e5f_11eb_996f_9cb6d0c4cc4brow0_col4" class="data row0 col4" >98.43%</td>
+                        <td id="T_f6205fb6_0e5f_11eb_996f_9cb6d0c4cc4brow0_col5" class="data row0 col5" >2.38%</td>
+            </tr>
+            <tr>
+                                <td id="T_f6205fb6_0e5f_11eb_996f_9cb6d0c4cc4brow1_col0" class="data row1 col0" >Residual Petroleum</td>
+                        <td id="T_f6205fb6_0e5f_11eb_996f_9cb6d0c4cc4brow1_col1" class="data row1 col1" >barrels</td>
+                        <td id="T_f6205fb6_0e5f_11eb_996f_9cb6d0c4cc4brow1_col2" class="data row1 col2" >21,875</td>
+                        <td id="T_f6205fb6_0e5f_11eb_996f_9cb6d0c4cc4brow1_col3" class="data row1 col3" >10</td>
+                        <td id="T_f6205fb6_0e5f_11eb_996f_9cb6d0c4cc4brow1_col4" class="data row1 col4" >1.57%</td>
+                        <td id="T_f6205fb6_0e5f_11eb_996f_9cb6d0c4cc4brow1_col5" class="data row1 col5" >27.55%</td>
+            </tr>
+    </tbody></table></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;2%&#39;
+</pre></div>
+</div>
+<div class="output text_html">
+<div id="altair-viz-62349ea5167b4ca7aa211e0ba4936a0b"></div>
+<script type="text/javascript">
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-62349ea5167b4ca7aa211e0ba4936a0b") {
+      outputDiv = document.getElementById("altair-viz-62349ea5167b4ca7aa211e0ba4936a0b");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.8.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
+    };
+
+    function loadScript(lib) {
+      return new Promise(function(resolve, reject) {
+        var s = document.createElement('script');
+        s.src = paths[lib];
+        s.async = true;
+        s.onload = () => resolve(paths[lib]);
+        s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+        document.getElementsByTagName("head")[0].appendChild(s);
+      });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else if (typeof vegaEmbed === "function") {
+      displayChart(vegaEmbed);
+    } else {
+      loadScript("vega")
+        .then(() => loadScript("vega-lite"))
+        .then(() => loadScript("vega-embed"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}, "axis": {"title": null}}, "data": {"name": "data-f39641726f3bdd35d3ab1e17cac2e296"}, "mark": "bar", "encoding": {"x": {"type": "temporal", "field": "year_month"}, "y": {"type": "quantitative", "field": "gwh"}}, "title": {"text": "Kennedy International Airport Cogen net generation (GWh) by month", "subtitle": "2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/"}, "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json", "datasets": {"data-f39641726f3bdd35d3ab1e17cac2e296": [{"year_month": "2019-01-01T00:00:00", "gwh": 34.457}, {"year_month": "2019-02-01T00:00:00", "gwh": 44.457}, {"year_month": "2019-03-01T00:00:00", "gwh": 43.364}, {"year_month": "2019-04-01T00:00:00", "gwh": 50.991}, {"year_month": "2019-05-01T00:00:00", "gwh": 46.807}, {"year_month": "2019-06-01T00:00:00", "gwh": 38.79}, {"year_month": "2019-07-01T00:00:00", "gwh": 48.824}, {"year_month": "2019-08-01T00:00:00", "gwh": 42.601}, {"year_month": "2019-09-01T00:00:00", "gwh": 37.812}, {"year_month": "2019-10-01T00:00:00", "gwh": 38.369}, {"year_month": "2019-11-01T00:00:00", "gwh": 38.37}, {"year_month": "2019-12-01T00:00:00", "gwh": 15.206999999999999}]}}, {"mode": "vega-lite"});
+</script></div><div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;2%&#39;
+</pre></div>
+</div>
+<div class="output text_html"><style  type="text/css" >
+    #T_f626a31c_0e5f_11eb_996f_9cb6d0c4cc4b  {
+          border-collapse: separate;
+          border-spacing: 20px 0px;
+    }</style><table id="T_f626a31c_0e5f_11eb_996f_9cb6d0c4cc4b" ><caption>2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/</caption><thead>    <tr>        <th class="col_heading level0 col0" >fuel_desc</th>        <th class="col_heading level0 col1" >physical_unit_label</th>        <th class="col_heading level0 col2" >elec_quantity</th>        <th class="col_heading level0 col3" >gwh</th>        <th class="col_heading level0 col4" >gwh_pcnt</th>        <th class="col_heading level0 col5" >gwh_pcnt_of_nyc</th>    </tr></thead><tbody>
+                <tr>
+                                <td id="T_f626a31c_0e5f_11eb_996f_9cb6d0c4cc4brow0_col0" class="data row0 col0" >Natural Gas</td>
+                        <td id="T_f626a31c_0e5f_11eb_996f_9cb6d0c4cc4brow0_col1" class="data row0 col1" >mcf</td>
+                        <td id="T_f626a31c_0e5f_11eb_996f_9cb6d0c4cc4brow0_col2" class="data row0 col2" >4,221,689</td>
+                        <td id="T_f626a31c_0e5f_11eb_996f_9cb6d0c4cc4brow0_col3" class="data row0 col3" >480</td>
+                        <td id="T_f626a31c_0e5f_11eb_996f_9cb6d0c4cc4brow0_col4" class="data row0 col4" >100.00%</td>
+                        <td id="T_f626a31c_0e5f_11eb_996f_9cb6d0c4cc4brow0_col5" class="data row0 col5" >1.75%</td>
+            </tr>
+            <tr>
+                                <td id="T_f626a31c_0e5f_11eb_996f_9cb6d0c4cc4brow1_col0" class="data row1 col0" >Distillate Petroleum</td>
+                        <td id="T_f626a31c_0e5f_11eb_996f_9cb6d0c4cc4brow1_col1" class="data row1 col1" >barrels</td>
+                        <td id="T_f626a31c_0e5f_11eb_996f_9cb6d0c4cc4brow1_col2" class="data row1 col2" >0</td>
+                        <td id="T_f626a31c_0e5f_11eb_996f_9cb6d0c4cc4brow1_col3" class="data row1 col3" >0</td>
+                        <td id="T_f626a31c_0e5f_11eb_996f_9cb6d0c4cc4brow1_col4" class="data row1 col4" >0.00%</td>
+                        <td id="T_f626a31c_0e5f_11eb_996f_9cb6d0c4cc4brow1_col5" class="data row1 col5" >0.00%</td>
+            </tr>
+    </tbody></table></div></div>
+</div>
 </div>
 </div>
 
@@ -463,7 +1837,7 @@
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="eia-explore.html" title="previous page">EIA data: exploring</a>
+    <a class='left-prev' id="prev-link" href="intro.html" title="previous page">Intro</a>
     <a class='right-next' id="next-link" href="../analysis/queens.html" title="next page">Fossil fuel power plants in Queens</a>
 
     </div>
