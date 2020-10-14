@@ -130,26 +130,6 @@ Kennedy International Airport Cogen consumed {glue:text}`queens_top_nat_gas_pcnt
 ## Questions
 - does the "boiler fuel" encompass all consumed fuel? Can check against fuel receipts
 
-## To do
-- [x] add plant name to gen/fuel data
-- [x] get plant location finer than state
-  - can get through shapefile
-- [x] NYS net generation by sector
-- [x] plant map
-- [ ] fuel mix of power generation
-  - [ ] NYS
-  - [ ] NYC
-  - [ ] Queens
-  - [ ] Queens by plant
-- [ ] for each plant
-  - [ ] map (matplotlib basemap)
-  - [ ] over time:
-    - [ ] fuel mix
-    - [ ] fuel quantity consumed by type
-    - [ ] generation
-  - [ ] proportion of Queens plants
-- [ ] Queens plants as a proportion of NYC plants
-
 [^gen_type]: NYS [data](https://data.ny.gov/Energy-Environment/Electric-Generation-By-Fuel-Type-GWh-Beginning-196/h4gs-8qnu) on electric generation by fuel type, 1960-present 
 [^eia_plant_gen]: US EIA plant level generation [data](https://www.eia.gov/electricity/data/eia923/)
 [^eia_shapefiles]: US EIA [shapefiles](https://www.eia.gov/maps/layer_info-m.php)
