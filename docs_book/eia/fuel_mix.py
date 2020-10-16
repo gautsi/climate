@@ -303,7 +303,7 @@ for i in queens_top_plants.plant_id.values:
         .set_table_styles(s.table_styles)
         .hide_index()
         .set_caption(
-            "2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/"
+            subtitle
         )
     )
 
