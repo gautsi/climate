@@ -11,16 +11,16 @@
 ### US Energy Information Administration (EIA)
 The use the following data sets from US EIA:
 - plant level generation data by month [^eia_plant_gen]
-  - the time period specifically looked at here is 2019-July 2020
+  - the time period specifically looked at here is {glue:text}`start_year`-{glue:text}`end_year`
 - shapefiles for plant locations [^eia_shapefiles]
 
 ## Analysis
-All values are for the time period 2019-July 2020.
+All values are for the time period {glue:text}`start_year`}-{glue:text}`end_year`.
 ### NYC power plants
 #### Overall generation
 Power plants in NYC generated a total of {glue:text}`ttl_nyc_gwh` gigawatt hours (GWh) of electricity in the time period, an average of {glue:text}`avg_nyc_gwh_per_month` GWh per month.
 
-{glue:}`nyc_month_gwh_chart`
+{glue:}`nyc_year_gwh_chart`
 
 #### Generation by borough
 
@@ -52,7 +52,7 @@ The {glue:text}`top_ten_queens` top power plants in Queens consumed {glue:text}`
 ##### Generation
 Astoria Energy accounted for {glue:text}`queens_top_gwh_pcnt_55375` of total NYC generation. 
 
-{glue:}`queens_top_month_gwh_chart_55375`
+{glue:}`queens_top_year_gwh_chart_55375`
 ##### Fuel mix
 
 Astoria Energy consumed {glue:text}`queens_top_nat_gas_pcnt_55375` of the total natural gas consumed by NYC power plants for electricity generation.
@@ -61,11 +61,24 @@ Astoria Energy consumed {glue:text}`queens_top_nat_gas_pcnt_55375` of the total 
 
 
 
+#### Ravenswood, operated by Helix Ravenswood, LLC
+##### Generation
+Ravenswood accounted for {glue:text}`queens_top_gwh_pcnt_2500` of total NYC generation. 
+
+{glue:}`queens_top_year_gwh_chart_2500`
+##### Fuel mix
+
+Ravenswood consumed {glue:text}`queens_top_nat_gas_pcnt_2500` of the total natural gas consumed by NYC power plants for electricity generation.
+
+{glue:}`queens_top_fuel_table_2500`
+
+
+
 #### Astoria Energy II, operated by Astoria Energy II LLC
 ##### Generation
 Astoria Energy II accounted for {glue:text}`queens_top_gwh_pcnt_57664` of total NYC generation. 
 
-{glue:}`queens_top_month_gwh_chart_57664`
+{glue:}`queens_top_year_gwh_chart_57664`
 ##### Fuel mix
 
 Astoria Energy II consumed {glue:text}`queens_top_nat_gas_pcnt_57664` of the total natural gas consumed by NYC power plants for electricity generation.
@@ -78,7 +91,7 @@ Astoria Energy II consumed {glue:text}`queens_top_nat_gas_pcnt_57664` of the tot
 ##### Generation
 500MW CC accounted for {glue:text}`queens_top_gwh_pcnt_56196` of total NYC generation. 
 
-{glue:}`queens_top_month_gwh_chart_56196`
+{glue:}`queens_top_year_gwh_chart_56196`
 ##### Fuel mix
 
 500MW CC consumed {glue:text}`queens_top_nat_gas_pcnt_56196` of the total natural gas consumed by NYC power plants for electricity generation.
@@ -87,24 +100,11 @@ Astoria Energy II consumed {glue:text}`queens_top_nat_gas_pcnt_57664` of the tot
 
 
 
-#### Ravenswood, operated by Helix Ravenswood, LLC
-##### Generation
-Ravenswood accounted for {glue:text}`queens_top_gwh_pcnt_2500` of total NYC generation. 
-
-{glue:}`queens_top_month_gwh_chart_2500`
-##### Fuel mix
-
-Ravenswood consumed {glue:text}`queens_top_nat_gas_pcnt_2500` of the total natural gas consumed by NYC power plants for electricity generation.
-
-{glue:}`queens_top_fuel_table_2500`
-
-
-
 #### Astoria Generating Station, operated by U S Power Generating Company LLC
 ##### Generation
 Astoria Generating Station accounted for {glue:text}`queens_top_gwh_pcnt_8906` of total NYC generation. 
 
-{glue:}`queens_top_month_gwh_chart_8906`
+{glue:}`queens_top_year_gwh_chart_8906`
 ##### Fuel mix
 
 Astoria Generating Station consumed {glue:text}`queens_top_nat_gas_pcnt_8906` of the total natural gas consumed by NYC power plants for electricity generation.
@@ -117,12 +117,25 @@ Astoria Generating Station consumed {glue:text}`queens_top_nat_gas_pcnt_8906` of
 ##### Generation
 Kennedy International Airport Cogen accounted for {glue:text}`queens_top_gwh_pcnt_54114` of total NYC generation. 
 
-{glue:}`queens_top_month_gwh_chart_54114`
+{glue:}`queens_top_year_gwh_chart_54114`
 ##### Fuel mix
 
 Kennedy International Airport Cogen consumed {glue:text}`queens_top_nat_gas_pcnt_54114` of the total natural gas consumed by NYC power plants for electricity generation.
 
 {glue:}`queens_top_fuel_table_54114`
+
+
+
+#### Bayswater Peaking Facility LLC, operated by Bayswater Peaking Facility LLC
+##### Generation
+Bayswater Peaking Facility LLC accounted for {glue:text}`queens_top_gwh_pcnt_55699` of total NYC generation. 
+
+{glue:}`queens_top_year_gwh_chart_55699`
+##### Fuel mix
+
+Bayswater Peaking Facility LLC consumed {glue:text}`queens_top_nat_gas_pcnt_55699` of the total natural gas consumed by NYC power plants for electricity generation.
+
+{glue:}`queens_top_fuel_table_55699`
 
 
 

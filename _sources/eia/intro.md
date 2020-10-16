@@ -13,7 +13,7 @@ To pull generation and fuel data,
 
 ```python
 from climate.eia import gen_and_fuel as gf
-gf.pull_genand_fuel(dest_folder="./../data/eia")
+gf.pull_gen_and_fuel(dest_folder="./../data/eia")
 ```
 
 This creates a `{dest_folder}/processed/gen_fuel.csv` file with generation and fuel data for 2019 and 2020 (through July) by plant, fuel type, prime mover, year and month.
