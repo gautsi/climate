@@ -17,6 +17,9 @@ ghp-import -n -p -f ./docs_book/_build/html
 - Note that resulting source files are derivative and subject to being overwritten! Edit templates instead of resulting source files
 
 ## To do
+### NYISO
+- [ ] how has NYS generation fuel mix changed over the years? 
+### EIA
 - [x] add plant name to gen/fuel data
 - [x] get plant location finer than state
   - can get through shapefile
@@ -35,3 +38,5 @@ ghp-import -n -p -f ./docs_book/_build/html
     - [x] generation
   - [ ] proportion of Queens plants
 - [x] Queens plants as a proportion of NYC plants
+- [ ] how much gas have NYS/NYC/Queens plants consumed over the years?
+- [ ] add more years

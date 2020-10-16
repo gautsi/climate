@@ -2,7 +2,13 @@
 
 eia_file_specs = {
     "generation": [{"year": 2020, "start_row": 5}, {"year": 2019, "start_row": 6}],
-    "gen_and_fuel": [{"year": 2020, "start_row": 6}, {"year": 2019, "start_row": 6}],
+    "gen_and_fuel": [
+        {"year": 2020, "start_row": 6},
+        {"year": 2019, "start_row": 6},
+        {"year": 2018, "start_row": 6},
+        {"year": 2017, "start_row": 6},
+        {"year": 2016, "start_row": 6},
+    ],
 }
 
 # from eia generation and fuel data: "Page 7 File Layout"

@@ -33,9 +33,21 @@ from myst_nb import glue
 data_path = "./../../data/eia"
 
 # %%
-gf_df = gf.get_gen_and_fuel(dest_folder=data_path)
+# gf.pull_gen_and_fuel(dest_folder=data_path)
+
+# %%
+gf_df = gf.get_gen_and_fuel(dest_folder=data_path).query("year < 2020")
 gf_df.head()
 
+# %%
+start_year = gf_df.query("quantity > 0").year.min()
+end_year = gf_df.query("quantity > 0").year.max()
+glue("start_year", start_year)
+glue("end_year", end_year)
+
+subtitle = (
+    f"{start_year}-{end_year}, US EIA https://www.eia.gov/electricity/data/eia923/"
+)
 
 # %% [markdown]
 """
@@ -53,22 +65,25 @@ glue(
 )
 
 # %%
-nyc_month_gwh = (
-    nyc_gf_df.groupby(["year_month"], as_index=False)
+nyc_year_gwh = (
+    nyc_gf_df.assign(year_str=nyc_gf_df.year.astype(str))
+    .groupby(["year_str"], as_index=False)
     .agg({"gwh": "sum"})
     .query("gwh > 0")
 )
 
 nyc_month_gwh_chart = (
-    alt.Chart(nyc_month_gwh)
+    alt.Chart(nyc_year_gwh)
     .mark_bar()
-    .encode(x="year_month", y="gwh")
+    .encode(x="year_str", y="gwh")
     .configure_axis(title=None)
     .properties(
         title={
-            "text": "NYC net generation (GWh) by month",
-            "subtitle": "2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/",
-        }
+            "text": "NYC net generation (GWh) by year",
+            "subtitle": subtitle,
+        },
+        width=300,
+        height=150,
     )
 )
 glue("nyc_month_gwh_chart", nyc_month_gwh_chart)
@@ -102,7 +117,7 @@ borough_gwh_chart = (
     .properties(
         title={
             "text": "NYC net generation (GWh) by borough",
-            "subtitle": "2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/",
+            "subtitle": subtitle,
         }
     )
 )
@@ -129,7 +144,7 @@ nyc_top_plants_table = (
     .apply(u.highlight_queens, subset=["borough"])
     .set_table_styles(s.table_styles)
     .hide_index()
-    .set_caption("2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/")
+    .set_caption(subtitle)
 )
 
 glue("nyc_top_plants_table", nyc_top_plants_table)
@@ -150,7 +165,7 @@ nyc_fuel_table = (
     .style.format({"elec_quantity": "{:,.0f}", "gwh": "{:,.0f}", "gwh_pcnt": "{:.2%}"})
     .set_table_styles(s.table_styles)
     .hide_index()
-    .set_caption("2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/")
+    .set_caption(subtitle)
 )
 
 glue("nyc_fuel_table", nyc_fuel_table)
@@ -163,6 +178,7 @@ queens_top_gf_df = nyc_gf_df_w_borough.merge(
     how="inner",
     validate="many_to_one",
 )
+
 
 # %%
 queens_top_gf_df.plant_name.unique()
@@ -182,17 +198,28 @@ queens_fuel = queens_top_gf_df.groupby(
 ).agg({"elec_quantity": "sum", "gwh": "sum"})
 queens_fuel["gwh_pcnt"] = queens_fuel.gwh / queens_fuel.gwh.sum()
 queens_fuel_w_nyc = queens_fuel.merge(
-    right = nyc_fuel[["fuel_desc", "elec_quantity"]].rename(columns = {"elec_quantity": "ttl_nyc_elec_quantity"}),
-    on = ["fuel_desc"],
+    right=nyc_fuel[["fuel_desc", "elec_quantity"]].rename(
+        columns={"elec_quantity": "ttl_nyc_elec_quantity"}
+    ),
+    on=["fuel_desc"],
     how="left",
-    validate="one_to_one"
+    validate="one_to_one",
 )
-queens_fuel_w_nyc["elec_quantity_pcnt_of_nyc"] = queens_fuel_w_nyc.elec_quantity / queens_fuel_w_nyc.ttl_nyc_elec_quantity
+queens_fuel_w_nyc["elec_quantity_pcnt_of_nyc"] = (
+    queens_fuel_w_nyc.elec_quantity / queens_fuel_w_nyc.ttl_nyc_elec_quantity
+)
 
 queens_fuel_table = (
     queens_fuel_w_nyc.sort_values("gwh", ascending=False)
     .drop(columns=["ttl_nyc_elec_quantity"])
-    .style.format({"elec_quantity": "{:,.0f}", "gwh": "{:,.0f}", "gwh_pcnt": "{:.2%}", "elec_quantity_pcnt_of_nyc": "{:.2%}"})
+    .style.format(
+        {
+            "elec_quantity": "{:,.0f}",
+            "gwh": "{:,.0f}",
+            "gwh_pcnt": "{:.2%}",
+            "elec_quantity_pcnt_of_nyc": "{:.2%}",
+        }
+    )
     .set_table_styles(s.table_styles)
     .hide_index()
     .set_caption("2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/")
@@ -214,21 +241,28 @@ for i in queens_top_plants.plant_id.values:
     glue(f"queens_top_gwh_pcnt_{i}", "{:.0%}".format(plant_info.gwh / ttl_nyc_gwh))
 
     plant_gf_df = nyc_gf_df.query(f"plant_id == {i}")
-    plant_gen_month = plant_gf_df.groupby(["year_month"], as_index=False).agg({"gwh": "sum"}).query("gwh > 0")
+    plant_gen_year = (
+        plant_gf_df.assign(year_str=plant_gf_df.year.astype(str))
+        .groupby(["year_str"], as_index=False)
+        .agg({"gwh": "sum"})
+        .query("gwh > 0")
+    )
 
-    plant_month_gwh_chart = (
-        alt.Chart(plant_gen_month)
+    plant_year_gwh_chart = (
+        alt.Chart(plant_gen_year)
         .mark_bar()
-        .encode(x="year_month", y="gwh")
+        .encode(x="year_str", y="gwh")
         .configure_axis(title=None)
         .properties(
             title={
                 "text": f"{plant_info['plant_name']} net generation (GWh) by month",
-                "subtitle": "2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/",
-            }
+                "subtitle": subtitle,
+            },
+            width=300,
+            height=150,
         )
     )
-    glue(f"queens_top_month_gwh_chart_{i}", plant_month_gwh_chart)
+    glue(f"queens_top_year_gwh_chart_{i}", plant_year_gwh_chart)
 
     glue(
         f"queens_top_nat_gas_pcnt_{i}",
@@ -236,27 +270,41 @@ for i in queens_top_plants.plant_id.values:
             plant_gf_df.query("fuel_desc == 'Natural Gas'").elec_quantity.sum()
             / nyc_gf_df.query("fuel_desc == 'Natural Gas'").elec_quantity.sum()
         ),
-    )       
+    )
 
     plant_fuel = plant_gf_df.groupby(
         ["fuel_desc", "physical_unit_label"], as_index=False
     ).agg({"elec_quantity": "sum", "gwh": "sum"})
     plant_fuel["gwh_pcnt"] = plant_fuel.gwh / plant_fuel.gwh.sum()
     plant_fuel_w_nyc = plant_fuel.merge(
-        right = nyc_fuel[["fuel_desc", "elec_quantity"]].rename(columns = {"elec_quantity": "ttl_nyc_elec_quantity"}),
-        on = ["fuel_desc"],
+        right=nyc_fuel[["fuel_desc", "elec_quantity"]].rename(
+            columns={"elec_quantity": "ttl_nyc_elec_quantity"}
+        ),
+        on=["fuel_desc"],
         how="left",
-        validate="one_to_one"
+        validate="one_to_one",
     )
-    plant_fuel_w_nyc["elec_quantity_pcnt_of_nyc"] = plant_fuel_w_nyc.elec_quantity / plant_fuel_w_nyc.ttl_nyc_elec_quantity
+    plant_fuel_w_nyc["elec_quantity_pcnt_of_nyc"] = (
+        plant_fuel_w_nyc.elec_quantity / plant_fuel_w_nyc.ttl_nyc_elec_quantity
+    )
 
     plant_fuel_table = (
-        plant_fuel_w_nyc.sort_values("gwh", ascending=False)
+        plant_fuel_w_nyc.query("elec_quantity > 0")
+        .sort_values("gwh", ascending=False)
         .drop(columns=["ttl_nyc_elec_quantity"])
-        .style.format({"elec_quantity": "{:,.0f}", "gwh": "{:,.0f}", "gwh_pcnt": "{:.2%}", "elec_quantity_pcnt_of_nyc": "{:.2%}"})
+        .style.format(
+            {
+                "elec_quantity": "{:,.0f}",
+                "gwh": "{:,.0f}",
+                "gwh_pcnt": "{:.2%}",
+                "elec_quantity_pcnt_of_nyc": "{:.2%}",
+            }
+        )
         .set_table_styles(s.table_styles)
         .hide_index()
-        .set_caption("2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/")
+        .set_caption(
+            "2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/"
+        )
     )
 
     glue(f"queens_top_fuel_table_{i}", plant_fuel_table)

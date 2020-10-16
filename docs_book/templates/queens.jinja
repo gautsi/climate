@@ -11,16 +11,16 @@
 ### US Energy Information Administration (EIA)
 The use the following data sets from US EIA:
 - plant level generation data by month [^eia_plant_gen]
-  - the time period specifically looked at here is 2019-July 2020
+  - the time period specifically looked at here is {glue:text}`start_year`-{glue:text}`end_year`
 - shapefiles for plant locations [^eia_shapefiles]
 
 ## Analysis
-All values are for the time period 2019-July 2020.
+All values are for the time period {glue:text}`start_year`}-{glue:text}`end_year`.
 ### NYC power plants
 #### Overall generation
 Power plants in NYC generated a total of {glue:text}`ttl_nyc_gwh` gigawatt hours (GWh) of electricity in the time period, an average of {glue:text}`avg_nyc_gwh_per_month` GWh per month.
 
-{glue:}`nyc_month_gwh_chart`
+{glue:}`nyc_year_gwh_chart`
 
 #### Generation by borough
 
@@ -52,7 +52,7 @@ The {glue:text}`top_ten_queens` top power plants in Queens consumed {glue:text}`
 ##### Generation
 {{ p.plant_name }} accounted for {glue:text}`queens_top_gwh_pcnt_{{ p.plant_id }}` of total NYC generation. 
 
-{glue:}`queens_top_month_gwh_chart_{{ p.plant_id }}`
+{glue:}`queens_top_year_gwh_chart_{{ p.plant_id }}`
 ##### Fuel mix
 
 {{ p.plant_name }} consumed {glue:text}`queens_top_nat_gas_pcnt_{{ p.plant_id }}` of the total natural gas consumed by NYC power plants for electricity generation.
