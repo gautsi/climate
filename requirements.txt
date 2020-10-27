@@ -20,7 +20,7 @@ cligj==0.5.0
 -e git+https://github.com/gautsi/climate.git@e6bbd3f170d38a988d8dd1e005be0eb4a6b7b114#egg=climate
 cloudpickle==1.6.0
 colorama==0.4.3
-cryptography==3.1.1
+cryptography==3.2
 cycler==0.10.0
 dask==2.28.0
 decorator==4.4.1
