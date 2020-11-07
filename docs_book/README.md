@@ -1,14 +1,29 @@
 # Book
 
+https://gautsi.github.io/climate/home.html
+
 Book for this project made with [jupyter book](https://jupyterbook.org/index.html)
+
+## To build
+
+```sh
+python ./docs_book/render.py
+jb build ./docs_book/
+```
+
+## To preview
+
+```sh
+python -m http.server -d docs_book/_build/html/
+```
+
+## To clean
+```sh
+jb clean ./docs_book/
+```
 
 ## Setup
 - following https://jupyterbook.org/start/overview.html
-- using ghp-import for publishing:
-```sh
-pip install ghp-import
-ghp-import -n -p -f ./docs_book/_build/html
-```
 
 ## Templates
 - Template documents are in [./templates](./templates)
@@ -40,3 +55,5 @@ ghp-import -n -p -f ./docs_book/_build/html
 - [x] Queens plants as a proportion of NYC plants
 - [ ] how much gas have NYS/NYC/Queens plants consumed over the years?
 - [ ] add more years
+  - [x] add 2018, 2017, 2016
+  - [ ] add back to 2010

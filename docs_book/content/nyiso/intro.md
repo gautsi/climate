@@ -2,7 +2,7 @@
 
 ## Objective
 
-To pull energy mix data for NYS from NYISO and check trends for carbon and non-carbon sources aound the state.
+To pull energy mix data for NYS from NYISO and check trends for fossil fuel and non-fossil-fuel sources aound the state.
 
 
 ## Data

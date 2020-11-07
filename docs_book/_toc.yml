@@ -1,20 +1,23 @@
-- file: home
+- file: content/home
 
 - part: GHCN
   chapters:
-  - file: ghcn/intro
-  - file: ghcn/doc
+  - file: content/ghcn/intro
+  - file: content/ghcn/doc
 
 - part: NYISO
   chapters:
-  - file: nyiso/intro
+  - file: content/nyiso/intro
+  - file: notebooks/nyiso_explore
 
 - part: EIA
   chapters:
-  - file: eia/intro
-  # - file: eia/eia-explore
-  - file: eia/fuel_mix
+  - file: content/eia/intro
 
 - part: Analysis
   chapters:
-  - file: analysis/queens
+  - file: content/analysis/queens
+
+- part: Notebooks
+  chapters:
+  - file: notebooks/fuel_mix

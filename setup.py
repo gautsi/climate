@@ -10,4 +10,5 @@ setuptools.setup(
     author="Gautam Sisodia",
     packages=setuptools.find_packages(),
     classifiers=["Progamming Language :: Python :: 3"],
+    dependency_links=['http://github.com/gautsi/pygsutils/tarball/master#egg=pygsutils-0.0.1']
 )

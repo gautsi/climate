@@ -3,7 +3,7 @@ author: Gautam Sisodia
 exclude_patterns: 
   - README.md
   - render.py
-  - eia/eia-explore.py
+  - notebooks/eia_explore.py
 repository:
   url: https://github.com/gautsi/climate
 html:
