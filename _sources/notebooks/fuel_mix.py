@@ -72,7 +72,7 @@ nyc_year_gwh = (
     .query("gwh > 0")
 )
 
-nyc_month_gwh_chart = (
+nyc_year_gwh_chart = (
     alt.Chart(nyc_year_gwh)
     .mark_bar()
     .encode(x="year_str", y="gwh")
@@ -86,7 +86,7 @@ nyc_month_gwh_chart = (
         height=150,
     )
 )
-glue("nyc_month_gwh_chart", nyc_month_gwh_chart)
+glue("nyc_year_gwh_chart", nyc_year_gwh_chart)
 
 
 # %%
