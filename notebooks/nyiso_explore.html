@@ -253,12 +253,102 @@
   <div class="section" id="nyiso-data-exploring">
 <h1>NYISO data: exploring<a class="headerlink" href="#nyiso-data-exploring" title="Permalink to this headline">¶</a></h1>
 <p>Exploring NYISO data, in particular electric consumption fuel mix over time</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">get_ipython</span>
 <span class="k">if</span> <span class="n">get_ipython</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">run_line_magic</span><span class="p">(</span><span class="s1">&#39;load_ext&#39;</span><span class="p">,</span> <span class="s1">&#39;autoreload&#39;</span><span class="p">)</span>
     <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">run_line_magic</span><span class="p">(</span><span class="s1">&#39;autoreload&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">climate.nyiso</span> <span class="kn">import</span> <span class="n">utils</span> <span class="k">as</span> <span class="n">u</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">pygsutils</span> <span class="kn">import</span> <span class="n">general</span> <span class="k">as</span> <span class="n">g</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/dockvol/climate/.venv/lib/python3.8/site-packages/geopandas/_compat.py:84: UserWarning: The Shapely GEOS version (3.8.0-CAPI-1.13.1 ) is incompatible with the GEOS version PyGEOS was compiled with (3.8.1-CAPI-1.13.3). Conversions between both will be slow.
+  warnings.warn(
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dfp</span> <span class="o">=</span> <span class="s2">&quot;./../data&quot;</span>
+
+<span class="n">log_fp</span> <span class="o">=</span> <span class="s2">&quot;./../logs/get_nyiso.log&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span><span class="o">.</span><span class="n">setup_logging</span><span class="p">(</span><span class="n">log_fp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">4</span><span class="o">-</span><span class="n">d17d392a3667</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">g</span><span class="o">.</span><span class="n">setup_logging</span><span class="p">(</span><span class="n">log_fp</span><span class="p">)</span>
+
+<span class="nn">/dockvol/pygsutils/pygsutils/general.py</span> in <span class="ni">setup_logging</span><span class="nt">(fp)</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span>     <span class="n">rootLogger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">19</span> 
+<span class="ne">---&gt; </span><span class="mi">20</span>     <span class="n">fileHandler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span>     <span class="n">fileHandler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">22</span>     <span class="n">rootLogger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">fileHandler</span><span class="p">)</span>
+
+<span class="nn">/usr/lib/python3.8/logging/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, filename, mode, encoding, delay)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1141</span>             <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="g g-Whitespace">   </span><span class="mi">1142</span>         <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1143</span>             <span class="n">StreamHandler</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">())</span>
+<span class="g g-Whitespace">   </span><span class="mi">1144</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1145</span>     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<span class="nn">/usr/lib/python3.8/logging/__init__.py</span> in <span class="ni">_open</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1170</span>         <span class="n">Return</span> <span class="n">the</span> <span class="n">resulting</span> <span class="n">stream</span><span class="o">.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1171</span>         <span class="s2">&quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1172</span><span class="s2">         return open(self.baseFilename, self.mode, encoding=self.encoding)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1173</span><span class="s2"> </span>
+<span class="g g-Whitespace">   </span><span class="mi">1174</span><span class="s2">     def emit(self, record):</span>
+
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/dockvol/climate/docs_book/logs/get_nyiso.log&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fm</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">get_fuel_mix</span><span class="p">(</span><span class="n">data_folder_path</span><span class="o">=</span><span class="n">dfp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">fm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fm</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fm</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
