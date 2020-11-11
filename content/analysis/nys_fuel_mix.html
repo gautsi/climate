@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>climate.ghcn &#8212; Climate projects</title>
+    <title>New York State generated electricity fuel mix &#8212; Climate projects</title>
     
   <link rel="stylesheet" href="../../_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -55,8 +55,8 @@
     <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Intro" href="../nyiso/intro.html" />
-    <link rel="prev" title="Intro" href="intro.html" />
+    <link rel="next" title="Fuel mix" href="../../notebooks/fuel_mix.html" />
+    <link rel="prev" title="Fossil fuel power plants in Queens" href="queens.html" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -99,14 +99,14 @@
   GHCN
  </span>
 </p>
-<ul class="current nav sidenav_l1">
+<ul class="nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="intro.html">
+  <a class="reference internal" href="../ghcn/intro.html">
    Intro
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../ghcn/doc.html">
    climate.ghcn
   </a>
  </li>
@@ -145,14 +145,14 @@
   Analysis
  </span>
 </p>
-<ul class="nav sidenav_l1">
+<ul class="current nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="../analysis/queens.html">
+  <a class="reference internal" href="queens.html">
    Fossil fuel power plants in Queens
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../analysis/nys_fuel_mix.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    New York State generated electricity fuel mix
   </a>
  </li>
@@ -210,7 +210,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/content/ghcn/doc.md"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/content/analysis/nys_fuel_mix.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -248,6 +248,32 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#objective">
+   Objective
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-sources">
+   Data sources
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#new-york-independent-system-operator-nyiso">
+     New York Independent System Operator (NYISO)
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -255,27 +281,32 @@
         
               <div>
                 
-  <div class="section" id="module-climate.ghcn">
-<span id="climate-ghcn"></span><h1>climate.ghcn<a class="headerlink" href="#module-climate.ghcn" title="Permalink to this headline">¶</a></h1>
-<p>Functions to read and work with data from GHCN</p>
-<dl class="py function">
-<dt id="climate.ghcn.c_to_f">
-<code class="sig-prename descclassname">climate.ghcn.</code><code class="sig-name descname">c_to_f</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">c</span></em><span class="sig-paren">)</span><a class="headerlink" href="#climate.ghcn.c_to_f" title="Permalink to this definition">¶</a></dt>
-<dd><p>tenths of degrees Celsius to Fahrenheit</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="climate.ghcn.get_ghcn_specs">
-<code class="sig-prename descclassname">climate.ghcn.</code><code class="sig-name descname">get_ghcn_specs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_type</span><span class="o">=</span><span class="default_value">'stations'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#climate.ghcn.get_ghcn_specs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the field specifications for a given file type</p>
-<dl class="simple">
-<dt>Args:</dt><dd><p>file_type (str): the file type</p>
-</dd>
-<dt>Returns:</dt><dd><p>dict: the field specifications (see ghcn_specs)</p>
+  <div class="section" id="new-york-state-generated-electricity-fuel-mix">
+<h1>New York State generated electricity fuel mix<a class="headerlink" href="#new-york-state-generated-electricity-fuel-mix" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="objective">
+<h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
+<p>See which fuels are most used to generated electricity in New York State, and how that has changed over time</p>
+</div>
+<div class="section" id="data-sources">
+<h2>Data sources<a class="headerlink" href="#data-sources" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="new-york-independent-system-operator-nyiso">
+<h3>New York Independent System Operator (NYISO)<a class="headerlink" href="#new-york-independent-system-operator-nyiso" title="Permalink to this headline">¶</a></h3>
+<p>I use the following data set from NYISO:</p>
+<ul class="simple">
+<li><p>fuel mix for NYS electricity generation every 5 minutes <a class="footnote-reference brackets" href="#nyiso-fuel-mix" id="id1">1</a></p>
+<ul>
+<li><p>the time period specifically looked at here is <span class="pasted-text">2015</span>-<span class="pasted-text">2020</span></p></li>
+</ul>
+</li>
+</ul>
+<hr class="docutils" />
+<dl class="footnote brackets">
+<dt class="label" id="nyiso-fuel-mix"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>csvs here: <a class="reference external" href="http://mis.nyiso.com/public/P-63list.htm">http://mis.nyiso.com/public/P-63list.htm</a>, also see the real-time dashboard here: <a class="reference external" href="https://www.nyiso.com/real-time-dashboard">https://www.nyiso.com/real-time-dashboard</a></p>
 </dd>
 </dl>
-</dd></dl>
-
+</div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -291,7 +322,7 @@
         },
         kernelOptions: {
             kernelName: "python3",
-            path: "./content/ghcn"
+            path: "./content/analysis"
         },
         predefinedOutput: true
     }
@@ -306,8 +337,8 @@
     
     <div class='prev-next-bottom'>
         
-    <a class='left-prev' id="prev-link" href="intro.html" title="previous page">Intro</a>
-    <a class='right-next' id="next-link" href="../nyiso/intro.html" title="next page">Intro</a>
+    <a class='left-prev' id="prev-link" href="queens.html" title="previous page">Fossil fuel power plants in Queens</a>
+    <a class='right-next' id="next-link" href="../../notebooks/fuel_mix.html" title="next page">Fuel mix</a>
 
     </div>
     <footer class="footer mt-5 mt-md-0">

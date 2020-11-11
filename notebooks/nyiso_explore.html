@@ -151,6 +151,11 @@
    Fossil fuel power plants in Queens
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../content/analysis/nys_fuel_mix.html">
+   New York State generated electricity fuel mix
+  </a>
+ </li>
 </ul>
 <p class="caption">
  <span class="caption-text">
@@ -252,7 +257,7 @@
                 
   <div class="section" id="nyiso-data-exploring">
 <h1>NYISO data: exploring<a class="headerlink" href="#nyiso-data-exploring" title="Permalink to this headline">¶</a></h1>
-<p>Exploring NYISO data, in particular electric consumption fuel mix over time</p>
+<p>Exploring NYISO data, in particular electric generation fuel mix over time</p>
 <div class="cell tag_hide-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">get_ipython</span>
@@ -268,6 +273,8 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">climate.nyiso</span> <span class="kn">import</span> <span class="n">utils</span> <span class="k">as</span> <span class="n">u</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">pygsutils</span> <span class="kn">import</span> <span class="n">general</span> <span class="k">as</span> <span class="n">g</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">myst_nb</span> <span class="kn">import</span> <span class="n">glue</span>
 </pre></div>
 </div>
 </div>
@@ -280,9 +287,9 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dfp</span> <span class="o">=</span> <span class="s2">&quot;./../data&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dfp</span> <span class="o">=</span> <span class="s2">&quot;./../../data&quot;</span>
 
-<span class="n">log_fp</span> <span class="o">=</span> <span class="s2">&quot;./../logs/get_nyiso.log&quot;</span>
+<span class="n">log_fp</span> <span class="o">=</span> <span class="s2">&quot;./../../logs/get_nyiso.log&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -293,48 +300,10 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">4</span><span class="o">-</span><span class="n">d17d392a3667</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">g</span><span class="o">.</span><span class="n">setup_logging</span><span class="p">(</span><span class="n">log_fp</span><span class="p">)</span>
-
-<span class="nn">/dockvol/pygsutils/pygsutils/general.py</span> in <span class="ni">setup_logging</span><span class="nt">(fp)</span>
-<span class="g g-Whitespace">     </span><span class="mi">18</span>     <span class="n">rootLogger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">19</span> 
-<span class="ne">---&gt; </span><span class="mi">20</span>     <span class="n">fileHandler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">21</span>     <span class="n">fileHandler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span>     <span class="n">rootLogger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">fileHandler</span><span class="p">)</span>
-
-<span class="nn">/usr/lib/python3.8/logging/__init__.py</span> in <span class="ni">__init__</span><span class="nt">(self, filename, mode, encoding, delay)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1141</span>             <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="g g-Whitespace">   </span><span class="mi">1142</span>         <span class="k">else</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1143</span>             <span class="n">StreamHandler</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">())</span>
-<span class="g g-Whitespace">   </span><span class="mi">1144</span> 
-<span class="g g-Whitespace">   </span><span class="mi">1145</span>     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-<span class="nn">/usr/lib/python3.8/logging/__init__.py</span> in <span class="ni">_open</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1170</span>         <span class="n">Return</span> <span class="n">the</span> <span class="n">resulting</span> <span class="n">stream</span><span class="o">.</span>
-<span class="g g-Whitespace">   </span><span class="mi">1171</span>         <span class="s2">&quot;&quot;&quot;</span>
-<span class="ne">-&gt; </span><span class="mi">1172</span><span class="s2">         return open(self.baseFilename, self.mode, encoding=self.encoding)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1173</span><span class="s2"> </span>
-<span class="g g-Whitespace">   </span><span class="mi">1174</span><span class="s2">     def emit(self, record):</span>
-
-<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;/dockvol/climate/docs_book/logs/get_nyiso.log&#39;
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fm</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">get_fuel_mix</span><span class="p">(</span><span class="n">data_folder_path</span><span class="o">=</span><span class="n">dfp</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">fm</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fm</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">get_fuel_mix</span><span class="p">(</span><span class="n">data_folder_path</span><span class="o">=</span><span class="n">dfp</span><span class="p">,</span> <span class="n">agg</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -345,10 +314,98 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 42 entries, 0 to 41
+Data columns (total 3 columns):
+ #   Column   Non-Null Count  Dtype  
+---  ------   --------------  -----  
+ 0   year     42 non-null     int64  
+ 1   fuel     42 non-null     object 
+ 2   gen_mwh  42 non-null     float64
+dtypes: float64(1), int64(1), object(1)
+memory usage: 1.1+ KB
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fm</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>year</th>
+      <th>fuel</th>
+      <th>gen_mwh</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2015</td>
+      <td>Dual Fuel</td>
+      <td>23244961.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2015</td>
+      <td>Hydro</td>
+      <td>20677093.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2015</td>
+      <td>Natural Gas</td>
+      <td>12517146.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2015</td>
+      <td>Nuclear</td>
+      <td>35033518.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2015</td>
+      <td>Other Fossil Fuels</td>
+      <td>630435.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">glue</span><span class="p">(</span><span class="s2">&quot;nyiso_start_year&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;{fm.year.min():.0f}&quot;</span><span class="p">)</span>
+<span class="n">glue</span><span class="p">(</span><span class="s2">&quot;nyiso_end_year&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;{fm.year.max():.0f}&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;2015&#39;
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;2020&#39;
 </pre></div>
 </div>
 </div>
