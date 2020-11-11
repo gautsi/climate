@@ -10,6 +10,7 @@ import pandas as pd
 import geopandas as gpd
 import glob
 import json
+from pygsutils import general as g
 
 
 def get_zip_links():
@@ -41,19 +42,14 @@ def extract_zip(path_to_zip, dest_folder):
         zip_ref.extractall(folderpath)
 
 
-def make_dir(dir):
-    if not os.path.exists(dir):
-        os.makedirs(dir)
-
-
 def pull_data(dest_folder):
     zips = get_zip_links()
-    make_dir(f"{dest_folder}/originals")
+    g.make_dir(f"{dest_folder}/originals")
     for z in tqdm(zips):
         filename = z.split("/")[-1]
         foldername = filename.split(".")[0]
         download_zip(z, f"{dest_folder}/originals")
-        make_dir(f"{dest_folder}/extracted/{foldername}")
+        g.make_dir(f"{dest_folder}/extracted/{foldername}")
         extract_zip(
             path_to_zip=f"{dest_folder}/originals/{filename}",
             dest_folder=f"{dest_folder}/extracted/{foldername}",
@@ -90,7 +86,7 @@ def pull_plant_shapefile(dest_folder):
         dest_folder=f"{dest_folder}/originals",
         url_start="https://www.eia.gov",
     )
-    make_dir(f"{dest_folder}/extracted/PowerPlants_US_EIA")
+    g.make_dir(f"{dest_folder}/extracted/PowerPlants_US_EIA")
     extract_zip(
         path_to_zip=f"{dest_folder}/originals/PowerPlants_US_EIA.zip",
         dest_folder=f"{dest_folder}/extracted/PowerPlants_US_EIA",

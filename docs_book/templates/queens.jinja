@@ -1,7 +1,7 @@
 # Fossil fuel power plants in Queens
 
 ## Objective
- Research the fossil fuel plants in Queens, specifically their history and expansion plans.
+Research the fossil fuel plants in Queens, specifically their history and expansion plans.
 
 ### To answer
 - what are the top power plants in NYC and Queens?
@@ -9,13 +9,13 @@
 
 ## Data sources
 ### US Energy Information Administration (EIA)
-The use the following data sets from US EIA:
+I use the following data sets from US EIA:
 - plant level generation data by month [^eia_plant_gen]
   - the time period specifically looked at here is {glue:text}`start_year`-{glue:text}`end_year`
 - shapefiles for plant locations [^eia_shapefiles]
 
 ## Analysis
-All values are for the time period {glue:text}`start_year`}-{glue:text}`end_year`.
+All values are for the time period {glue:text}`start_year`-{glue:text}`end_year`.
 ### NYC power plants
 #### Overall generation
 Power plants in NYC generated a total of {glue:text}`ttl_nyc_gwh` gigawatt hours (GWh) of electricity in the time period, an average of {glue:text}`avg_nyc_gwh_per_month` GWh per month.

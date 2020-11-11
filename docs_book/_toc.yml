@@ -17,6 +17,7 @@
 - part: Analysis
   chapters:
   - file: content/analysis/queens
+  - file: content/analysis/nys_fuel_mix
 
 - part: Notebooks
   chapters:

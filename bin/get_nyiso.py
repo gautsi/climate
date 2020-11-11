@@ -23,9 +23,9 @@ g.setup_logging(log_fp)
 
 # %%
 # zone shapefiles
-# u.get_zones_archive(dfp)
+u.get_zones_archive(dfp)
 
-# u.extract_zones_archive(dfp)
+u.extract_zones_archive(dfp)
 
 # %%
 # fuel mix
@@ -36,5 +36,11 @@ u.extract_fuel_mix(data_folder_path=dfp)
 
 # %%
 u.combine_fuel_mix(data_folder_path=dfp)
+
+# %%
+u.process_fuel_mix(data_folder_path=dfp)
+
+# %%
+u.aggregate_fuel_mix(data_folder_path=dfp)
 
 # %%

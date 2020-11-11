@@ -9,6 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 from pygsutils import general as g
 import glob
+import numpy as np
 
 
 def get_zones_archive(data_folder_path):
@@ -86,5 +87,55 @@ def combine_fuel_mix(data_folder_path: str) -> None:
     pd.concat(dfs).to_csv(comb_fp, index=False)
 
 
-def get_fuel_mix(data_folder_path: str) -> None:
-    return pd.read_csv(f"{data_folder_path}/nyiso/fuel_mix/combined/comb_fuel_mix.csv")
+@g.log_exception
+def process_fuel_mix(data_folder_path: str) -> pd.DataFrame:
+    logging.info("Reading in combined fuel mix")
+    comb = pd.read_csv(f"{data_folder_path}/nyiso/fuel_mix/combined/comb_fuel_mix.csv")
+    logging.info("Getting time stamp")
+    comb["ts"] = pd.to_datetime(comb["Time Stamp"])
+    time_fields = {
+        "year": lambda _: _.dt.year,
+        "month": lambda _: _.dt.month,
+        "day": lambda _: _.dt.day,
+        "hour": lambda _: _.dt.hour,
+        "minute": lambda _: _.dt.minute,
+    }
+    for k, v in time_fields.items():
+        logging.info(f"adding {k}")
+        comb[k] = v(comb["ts"])
+
+    logging.info("Combining gen mwh fields")
+    comb["gen_mwh"] = np.where(pd.isna(comb["Gen MW"]), comb["Gen MWh"], comb["Gen MW"])
+
+    logging.info("Renaming fuel category field")
+    proc = comb.rename(columns={"Fuel Category": "fuel"})[
+        ["ts"] + list(time_fields.keys()) + ["fuel", "gen_mwh"]
+    ]
+
+    proc_loc = f"{data_folder_path}/nyiso/fuel_mix/processed"
+    os.makedirs(proc_loc)
+    proc_fp = f"{proc_loc}/proc_fuel_mix.csv"
+    logging.info(f"Saving processed data to {proc_fp}")
+    proc.to_csv(proc_fp, index=False)
+
+def aggregate_fuel_mix(data_folder_path: str) -> None:
+    logging.info("Reading in processed fuel mix")
+    proc = pd.read_csv(f"{data_folder_path}/nyiso/fuel_mix/processed/proc_fuel_mix.csv")
+    agg_loc = f"{data_folder_path}/nyiso/fuel_mix/aggregated"
+    os.makedirs(agg_loc)
+    curr_agg = []
+    for agg in ["year", "month", "day"]:
+        curr_agg.append(agg)
+        agg_fp = f"{agg_loc}/agg_fuel_mix_{agg}.csv"
+        logging.info(f"Saving aggregated {curr_agg} fuel mix to {agg_fp}")
+        proc.groupby(curr_agg + ["fuel"], as_index=False).agg({"gen_mwh": "sum"}).to_csv(agg_fp, index=False)
+
+@g.log_exception
+def get_fuel_mix(data_folder_path: str, agg:str = None) -> pd.DataFrame:
+    if agg is None:
+        fp = f"{data_folder_path}/nyiso/fuel_mix/processed/proc_fuel_mix.csv"
+    elif agg in ["year", "month", "day"]:
+        fp = f"{data_folder_path}/nyiso/fuel_mix/aggregated/agg_fuel_mix_{agg}.csv"
+    else:
+        raise Exception(f"Don't know how to handle agg value {agg}")
+    return pd.read_csv(fp)

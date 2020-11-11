@@ -1,7 +1,7 @@
 # %% [markdown]
 """
 # NYISO data: exploring
-Exploring NYISO data, in particular electric consumption fuel mix over time
+Exploring NYISO data, in particular electric generation fuel mix over time
 """
 
 # %% tags=['hide-cell']
@@ -14,26 +14,29 @@ if get_ipython() is not None:
 from climate.nyiso import utils as u
 import logging
 from pygsutils import general as g
+import pandas as pd
+from myst_nb import glue
 
 # %%
-dfp = "./../data"
+dfp = "./../../data"
 
-log_fp = "./../logs/get_nyiso.log"
+log_fp = "./../../logs/get_nyiso.log"
 
 # %%
 g.setup_logging(log_fp)
 
-
 # %%
-fm = u.get_fuel_mix(data_folder_path=dfp)
-
-# %%
-len(fm)
+fm = u.get_fuel_mix(data_folder_path=dfp, agg="year")
 
 # %%
 fm.info()
 
 # %%
 fm.head()
+
+# %%
+glue("nyiso_start_year", f"{fm.year.min():.0f}")
+glue("nyiso_end_year", f"{fm.year.max():.0f}")
+
 
 # %%
