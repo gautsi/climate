@@ -259,6 +259,23 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#yearly-fuel-mix">
+   Yearly fuel mix
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#total-gwh">
+     Total GWh
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#percent-of-total">
+     Percent of total
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#data-sources">
    Data sources
   </a>
@@ -286,6 +303,115 @@
 <div class="section" id="objective">
 <h2>Objective<a class="headerlink" href="#objective" title="Permalink to this headline">¶</a></h2>
 <p>See which fuels are most used to generated electricity in New York State, and how that has changed over time</p>
+</div>
+<div class="section" id="yearly-fuel-mix">
+<h2>Yearly fuel mix<a class="headerlink" href="#yearly-fuel-mix" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="total-gwh">
+<h3>Total GWh<a class="headerlink" href="#total-gwh" title="Permalink to this headline">¶</a></h3>
+<p><span class="pasted-inline"><span class="output text_html">
+<div id="altair-viz-32b8cf4defd041e89d8e13e2a904bc63"></div>
+<script type="text/javascript">
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-32b8cf4defd041e89d8e13e2a904bc63") {
+      outputDiv = document.getElementById("altair-viz-32b8cf4defd041e89d8e13e2a904bc63");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.8.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
+    };
+
+    function loadScript(lib) {
+      return new Promise(function(resolve, reject) {
+        var s = document.createElement('script');
+        s.src = paths[lib];
+        s.async = true;
+        s.onload = () => resolve(paths[lib]);
+        s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+        document.getElementsByTagName("head")[0].appendChild(s);
+      });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else if (typeof vegaEmbed === "function") {
+      displayChart(vegaEmbed);
+    } else {
+      loadScript("vega")
+        .then(() => loadScript("vega-lite"))
+        .then(() => loadScript("vega-embed"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}}, "data": {"name": "data-e62dd2b22053400a9634ca3d3128c6d3"}, "mark": "bar", "encoding": {"color": {"type": "nominal", "field": "fuel"}, "x": {"type": "ordinal", "field": "year"}, "y": {"type": "quantitative", "field": "gen_gwh"}}, "title": {"text": "NYS yearly generated fuel mix", "subtitle": "2015-2020, NYISO, http://mis.nyiso.com/public/P-63list.htm"}, "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json", "datasets": {"data-e62dd2b22053400a9634ca3d3128c6d3": [{"year": 2015, "fuel": "Dual Fuel", "gen_mwh": 23244961.0, "gen_gwh": 23244.961}, {"year": 2015, "fuel": "Hydro", "gen_mwh": 20677093.0, "gen_gwh": 20677.093}, {"year": 2015, "fuel": "Natural Gas", "gen_mwh": 12517146.0, "gen_gwh": 12517.146}, {"year": 2015, "fuel": "Nuclear", "gen_mwh": 35033518.0, "gen_gwh": 35033.518}, {"year": 2015, "fuel": "Other Fossil Fuels", "gen_mwh": 630435.0, "gen_gwh": 630.435}, {"year": 2015, "fuel": "Other Renewables", "gen_mwh": 2077573.0, "gen_gwh": 2077.573}, {"year": 2015, "fuel": "Wind", "gen_mwh": 3989056.0, "gen_gwh": 3989.056}, {"year": 2016, "fuel": "Dual Fuel", "gen_mwh": 427225135.0, "gen_gwh": 427225.135}, {"year": 2016, "fuel": "Hydro", "gen_mwh": 317123878.0, "gen_gwh": 317123.878}, {"year": 2016, "fuel": "Natural Gas", "gen_mwh": 304393656.0, "gen_gwh": 304393.656}, {"year": 2016, "fuel": "Nuclear", "gen_mwh": 502589105.0, "gen_gwh": 502589.105}, {"year": 2016, "fuel": "Other Fossil Fuels", "gen_mwh": 19415271.0, "gen_gwh": 19415.271}, {"year": 2016, "fuel": "Other Renewables", "gen_mwh": 30687688.0, "gen_gwh": 30687.688}, {"year": 2016, "fuel": "Wind", "gen_mwh": 47764629.0, "gen_gwh": 47764.629}, {"year": 2017, "fuel": "Dual Fuel", "gen_mwh": 314184798.0, "gen_gwh": 314184.798}, {"year": 2017, "fuel": "Hydro", "gen_mwh": 349437386.0, "gen_gwh": 349437.386}, {"year": 2017, "fuel": "Natural Gas", "gen_mwh": 301927534.0, "gen_gwh": 301927.534}, {"year": 2017, "fuel": "Nuclear", "gen_mwh": 509483238.0, "gen_gwh": 509483.238}, {"year": 2017, "fuel": "Other Fossil Fuels", "gen_mwh": 8071826.0, "gen_gwh": 8071.826}, {"year": 2017, "fuel": "Other Renewables", "gen_mwh": 28871463.0, "gen_gwh": 28871.463}, {"year": 2017, "fuel": "Wind", "gen_mwh": 51064329.0, "gen_gwh": 51064.329}, {"year": 2018, "fuel": "Dual Fuel", "gen_mwh": 355199851.0, "gen_gwh": 355199.851}, {"year": 2018, "fuel": "Hydro", "gen_mwh": 346515052.0, "gen_gwh": 346515.052}, {"year": 2018, "fuel": "Natural Gas", "gen_mwh": 319330857.0, "gen_gwh": 319330.857}, {"year": 2018, "fuel": "Nuclear", "gen_mwh": 521461023.0, "gen_gwh": 521461.023}, {"year": 2018, "fuel": "Other Fossil Fuels", "gen_mwh": 11178939.0, "gen_gwh": 11178.939}, {"year": 2018, "fuel": "Other Renewables", "gen_mwh": 27809260.0, "gen_gwh": 27809.26}, {"year": 2018, "fuel": "Wind", "gen_mwh": 48307344.0, "gen_gwh": 48307.344}, {"year": 2019, "fuel": "Dual Fuel", "gen_mwh": 340091910.0, "gen_gwh": 340091.91}, {"year": 2019, "fuel": "Hydro", "gen_mwh": 355409643.0, "gen_gwh": 355409.643}, {"year": 2019, "fuel": "Natural Gas", "gen_mwh": 289549052.0, "gen_gwh": 289549.052}, {"year": 2019, "fuel": "Nuclear", "gen_mwh": 544102419.0, "gen_gwh": 544102.419}, {"year": 2019, "fuel": "Other Fossil Fuels", "gen_mwh": 7015088.0, "gen_gwh": 7015.088}, {"year": 2019, "fuel": "Other Renewables", "gen_mwh": 26910627.0, "gen_gwh": 26910.627}, {"year": 2019, "fuel": "Wind", "gen_mwh": 54320611.0, "gen_gwh": 54320.611}, {"year": 2020, "fuel": "Dual Fuel", "gen_mwh": 307827129.0, "gen_gwh": 307827.129}, {"year": 2020, "fuel": "Hydro", "gen_mwh": 299530603.0, "gen_gwh": 299530.603}, {"year": 2020, "fuel": "Natural Gas", "gen_mwh": 287146999.0, "gen_gwh": 287146.999}, {"year": 2020, "fuel": "Nuclear", "gen_mwh": 400522028.0, "gen_gwh": 400522.028}, {"year": 2020, "fuel": "Other Fossil Fuels", "gen_mwh": 4999102.0, "gen_gwh": 4999.102}, {"year": 2020, "fuel": "Other Renewables", "gen_mwh": 23437698.0, "gen_gwh": 23437.698}, {"year": 2020, "fuel": "Wind", "gen_mwh": 44715427.0, "gen_gwh": 44715.427}]}}, {"mode": "vega-lite"});
+</script></span></span></p>
+</div>
+<div class="section" id="percent-of-total">
+<h3>Percent of total<a class="headerlink" href="#percent-of-total" title="Permalink to this headline">¶</a></h3>
+<p><span class="pasted-inline"><span class="output text_html">
+<div id="altair-viz-c8b2de5fa46943bda96fa6c8ce069942"></div>
+<script type="text/javascript">
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-c8b2de5fa46943bda96fa6c8ce069942") {
+      outputDiv = document.getElementById("altair-viz-c8b2de5fa46943bda96fa6c8ce069942");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.8.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
+    };
+
+    function loadScript(lib) {
+      return new Promise(function(resolve, reject) {
+        var s = document.createElement('script');
+        s.src = paths[lib];
+        s.async = true;
+        s.onload = () => resolve(paths[lib]);
+        s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+        document.getElementsByTagName("head")[0].appendChild(s);
+      });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else if (typeof vegaEmbed === "function") {
+      displayChart(vegaEmbed);
+    } else {
+      loadScript("vega")
+        .then(() => loadScript("vega-lite"))
+        .then(() => loadScript("vega-embed"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}}, "data": {"name": "data-62ddcca3803fa39b6f3efeaefd3ac1c2"}, "mark": "line", "encoding": {"color": {"type": "nominal", "field": "fuel"}, "x": {"type": "ordinal", "field": "year"}, "y": {"type": "quantitative", "axis": {"format": "%", "title": "percent"}, "field": "pcnt"}}, "title": {"text": "NYS yearly generated fuel mix", "subtitle": "2015-2020, NYISO, http://mis.nyiso.com/public/P-63list.htm"}, "$schema": "https://vega.github.io/schema/vega-lite/v4.8.1.json", "datasets": {"data-62ddcca3803fa39b6f3efeaefd3ac1c2": [{"year": 2015, "fuel": "Dual Fuel", "gen_mwh": 23244961.0, "gen_gwh": 23244.961, "ttl_gen_gwh": 98169.78199999999, "pcnt": 0.23678325984262655}, {"year": 2015, "fuel": "Hydro", "gen_mwh": 20677093.0, "gen_gwh": 20677.093, "ttl_gen_gwh": 98169.78199999999, "pcnt": 0.21062584207429536}, {"year": 2015, "fuel": "Natural Gas", "gen_mwh": 12517146.0, "gen_gwh": 12517.146, "ttl_gen_gwh": 98169.78199999999, "pcnt": 0.12750508094232094}, {"year": 2015, "fuel": "Nuclear", "gen_mwh": 35033518.0, "gen_gwh": 35033.518, "ttl_gen_gwh": 98169.78199999999, "pcnt": 0.35686661706144973}, {"year": 2015, "fuel": "Other Fossil Fuels", "gen_mwh": 630435.0, "gen_gwh": 630.435, "ttl_gen_gwh": 98169.78199999999, "pcnt": 0.006421884485798288}, {"year": 2015, "fuel": "Other Renewables", "gen_mwh": 2077573.0, "gen_gwh": 2077.573, "ttl_gen_gwh": 98169.78199999999, "pcnt": 0.021163060135959148}, {"year": 2015, "fuel": "Wind", "gen_mwh": 3989056.0, "gen_gwh": 3989.056, "ttl_gen_gwh": 98169.78199999999, "pcnt": 0.04063425545755007}, {"year": 2016, "fuel": "Dual Fuel", "gen_mwh": 427225135.0, "gen_gwh": 427225.135, "ttl_gen_gwh": 1649199.362, "pcnt": 0.2590500244202738}, {"year": 2016, "fuel": "Hydro", "gen_mwh": 317123878.0, "gen_gwh": 317123.878, "ttl_gen_gwh": 1649199.362, "pcnt": 0.19228959536791285}, {"year": 2016, "fuel": "Natural Gas", "gen_mwh": 304393656.0, "gen_gwh": 304393.656, "ttl_gen_gwh": 1649199.362, "pcnt": 0.18457056376183587}, {"year": 2016, "fuel": "Nuclear", "gen_mwh": 502589105.0, "gen_gwh": 502589.105, "ttl_gen_gwh": 1649199.362, "pcnt": 0.30474733169342566}, {"year": 2016, "fuel": "Other Fossil Fuels", "gen_mwh": 19415271.0, "gen_gwh": 19415.271, "ttl_gen_gwh": 1649199.362, "pcnt": 0.01177254336095238}, {"year": 2016, "fuel": "Other Renewables", "gen_mwh": 30687688.0, "gen_gwh": 30687.688, "ttl_gen_gwh": 1649199.362, "pcnt": 0.01860762786300423}, {"year": 2016, "fuel": "Wind", "gen_mwh": 47764629.0, "gen_gwh": 47764.629, "ttl_gen_gwh": 1649199.362, "pcnt": 0.028962313532595218}, {"year": 2017, "fuel": "Dual Fuel", "gen_mwh": 314184798.0, "gen_gwh": 314184.798, "ttl_gen_gwh": 1563040.5739999998, "pcnt": 0.20100872826094662}, {"year": 2017, "fuel": "Hydro", "gen_mwh": 349437386.0, "gen_gwh": 349437.386, "ttl_gen_gwh": 1563040.5739999998, "pcnt": 0.2235625816838201}, {"year": 2017, "fuel": "Natural Gas", "gen_mwh": 301927534.0, "gen_gwh": 301927.534, "ttl_gen_gwh": 1563040.5739999998, "pcnt": 0.19316679235480935}, {"year": 2017, "fuel": "Nuclear", "gen_mwh": 509483238.0, "gen_gwh": 509483.238, "ttl_gen_gwh": 1563040.5739999998, "pcnt": 0.325956502009525}, {"year": 2017, "fuel": "Other Fossil Fuels", "gen_mwh": 8071826.0, "gen_gwh": 8071.826, "ttl_gen_gwh": 1563040.5739999998, "pcnt": 0.005164182001586352}, {"year": 2017, "fuel": "Other Renewables", "gen_mwh": 28871463.0, "gen_gwh": 28871.463, "ttl_gen_gwh": 1563040.5739999998, "pcnt": 0.018471345837245044}, {"year": 2017, "fuel": "Wind", "gen_mwh": 51064329.0, "gen_gwh": 51064.329, "ttl_gen_gwh": 1563040.5739999998, "pcnt": 0.03266986785206767}, {"year": 2018, "fuel": "Dual Fuel", "gen_mwh": 355199851.0, "gen_gwh": 355199.851, "ttl_gen_gwh": 1629802.3260000001, "pcnt": 0.21794044917812935}, {"year": 2018, "fuel": "Hydro", "gen_mwh": 346515052.0, "gen_gwh": 346515.052, "ttl_gen_gwh": 1629802.3260000001, "pcnt": 0.21261170540260968}, {"year": 2018, "fuel": "Natural Gas", "gen_mwh": 319330857.0, "gen_gwh": 319330.857, "ttl_gen_gwh": 1629802.3260000001, "pcnt": 0.19593226240125025}, {"year": 2018, "fuel": "Nuclear", "gen_mwh": 521461023.0, "gen_gwh": 521461.023, "ttl_gen_gwh": 1629802.3260000001, "pcnt": 0.3199535395680862}, {"year": 2018, "fuel": "Other Fossil Fuels", "gen_mwh": 11178939.0, "gen_gwh": 11178.939, "ttl_gen_gwh": 1629802.3260000001, "pcnt": 0.006859076601906874}, {"year": 2018, "fuel": "Other Renewables", "gen_mwh": 27809260.0, "gen_gwh": 27809.26, "ttl_gen_gwh": 1629802.3260000001, "pcnt": 0.017062964972109136}, {"year": 2018, "fuel": "Wind", "gen_mwh": 48307344.0, "gen_gwh": 48307.344, "ttl_gen_gwh": 1629802.3260000001, "pcnt": 0.029640001875908473}, {"year": 2019, "fuel": "Dual Fuel", "gen_mwh": 340091910.0, "gen_gwh": 340091.91, "ttl_gen_gwh": 1617399.35, "pcnt": 0.21027083385436007}, {"year": 2019, "fuel": "Hydro", "gen_mwh": 355409643.0, "gen_gwh": 355409.643, "ttl_gen_gwh": 1617399.35, "pcnt": 0.21974142811421307}, {"year": 2019, "fuel": "Natural Gas", "gen_mwh": 289549052.0, "gen_gwh": 289549.052, "ttl_gen_gwh": 1617399.35, "pcnt": 0.17902137279825173}, {"year": 2019, "fuel": "Nuclear", "gen_mwh": 544102419.0, "gen_gwh": 544102.419, "ttl_gen_gwh": 1617399.35, "pcnt": 0.3364057361591001}, {"year": 2019, "fuel": "Other Fossil Fuels", "gen_mwh": 7015088.0, "gen_gwh": 7015.088, "ttl_gen_gwh": 1617399.35, "pcnt": 0.004337264015841232}, {"year": 2019, "fuel": "Other Renewables", "gen_mwh": 26910627.0, "gen_gwh": 26910.627, "ttl_gen_gwh": 1617399.35, "pcnt": 0.016638208120956646}, {"year": 2019, "fuel": "Wind", "gen_mwh": 54320611.0, "gen_gwh": 54320.611, "ttl_gen_gwh": 1617399.35, "pcnt": 0.033585156937277115}, {"year": 2020, "fuel": "Dual Fuel", "gen_mwh": 307827129.0, "gen_gwh": 307827.129, "ttl_gen_gwh": 1368178.986, "pcnt": 0.22499039391034764}, {"year": 2020, "fuel": "Hydro", "gen_mwh": 299530603.0, "gen_gwh": 299530.603, "ttl_gen_gwh": 1368178.986, "pcnt": 0.21892647531132303}, {"year": 2020, "fuel": "Natural Gas", "gen_mwh": 287146999.0, "gen_gwh": 287146.999, "ttl_gen_gwh": 1368178.986, "pcnt": 0.20987531743891294}, {"year": 2020, "fuel": "Nuclear", "gen_mwh": 400522028.0, "gen_gwh": 400522.028, "ttl_gen_gwh": 1368178.986, "pcnt": 0.29274095867454}, {"year": 2020, "fuel": "Other Fossil Fuels", "gen_mwh": 4999102.0, "gen_gwh": 4999.102, "ttl_gen_gwh": 1368178.986, "pcnt": 0.0036538362678814012}, {"year": 2020, "fuel": "Other Renewables", "gen_mwh": 23437698.0, "gen_gwh": 23437.698, "ttl_gen_gwh": 1368178.986, "pcnt": 0.01713057884957166}, {"year": 2020, "fuel": "Wind", "gen_mwh": 44715427.0, "gen_gwh": 44715.427, "ttl_gen_gwh": 1368178.986, "pcnt": 0.03268243954742337}]}}, {"mode": "vega-lite"});
+</script></span></span></p>
+</div>
 </div>
 <div class="section" id="data-sources">
 <h2>Data sources<a class="headerlink" href="#data-sources" title="Permalink to this headline">¶</a></h2>
