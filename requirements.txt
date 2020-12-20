@@ -11,16 +11,17 @@ backcall==0.1.0
 beautifulsoup4==4.9.3
 black==20.8b1
 bleach==3.2.1
+bokeh==2.2.3
 certifi==2020.6.20
 cffi==1.14.3
 chardet==3.0.4
 click==7.1.2
 click-plugins==1.1.1
 cligj==0.5.0
--e git+https://github.com/gautsi/climate.git@a3ea3bed10e6f375890e8bee59ae66e9062431d2#egg=climate
+-e git+https://github.com/gautsi/climate.git@6f29b99ab4439cdd785d49caf38b8d61ab7785f6#egg=climate
 cloudpickle==1.6.0
 colorama==0.4.3
-cryptography==3.2
+cryptography==3.1.1
 cycler==0.10.0
 dask==2.28.0
 decorator==4.4.1
@@ -95,6 +96,7 @@ parso==0.5.2
 pathspec==0.8.0
 pexpect==4.7.0
 pickleshare==0.7.5
+Pillow==8.0.1
 pluggy==0.13.1
 prometheus-client==0.8.0
 prompt-toolkit==3.0.2
@@ -107,7 +109,7 @@ pycparser==2.20
 pydata-sphinx-theme==0.4.1
 pygeos==0.8
 Pygments==2.5.2
--e git+https://github.com/gautsi/pygsutils.git@968fb9585642bfe328d5084094abf400d3613d46#egg=pygsutils
+-e git+https://github.com/gautsi/pygsutils.git@9a41a727badca3d8f7d90acdd7ff9ad169acfbbc#egg=pygsutils
 pylint==2.6.0
 pyparsing==2.4.6
 pyproj==2.6.1.post1

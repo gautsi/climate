@@ -3,6 +3,13 @@
 ## Objective
 See which fuels are most used to generated electricity in New York State, and how that has changed over time
 
+## Yearly fuel mix
+### Total GWh
+{glue:}`yr_fm`
+### Percent of total
+{glue:}`yr_fm_pcnt`
+
+
 
 ## Data sources
 ### New York Independent System Operator (NYISO)

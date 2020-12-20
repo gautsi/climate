@@ -138,4 +138,6 @@ def get_fuel_mix(data_folder_path: str, agg:str = None) -> pd.DataFrame:
         fp = f"{data_folder_path}/nyiso/fuel_mix/aggregated/agg_fuel_mix_{agg}.csv"
     else:
         raise Exception(f"Don't know how to handle agg value {agg}")
-    return pd.read_csv(fp)
+    fm = pd.read_csv(fp)
+    fm["gen_gwh"] = fm["gen_mwh"] / 1e3
+    return fm
