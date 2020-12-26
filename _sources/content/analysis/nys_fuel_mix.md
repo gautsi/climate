@@ -5,10 +5,15 @@ See which fuels are most used to generated electricity in New York State, and ho
 
 ## Yearly fuel mix
 ### Total GWh
-{glue:}`yr_fm`
+{glue:}`fm_yr_chrt`
 ### Percent of total
-{glue:}`yr_fm_pcnt`
+{glue:}`fm_yr_pcnt_chrt`
 
+## Monthly fuel mix
+### Total Gwh
+{glue:}`fm_mo_chrt`
+### Percent of total
+{glue:}`fm_mo_pcnt_chrt`
 
 
 ## Data sources
