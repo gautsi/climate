@@ -124,6 +124,21 @@ fm_mo_chrt = (
 glue("fm_mo_chrt", fm_mo_chrt)
 
 # %%
+fm_mo_line_chrt = (
+    alt.Chart(fm_mo_general)
+    .mark_line()
+    .encode(
+        x="yearmonth(month_dt)",
+        y="gen_gwh",
+        color=color,
+    )
+    .properties(title={"text": "NYS monthly generated fuel mix", "subtitle": subtitle})
+)
+
+# %%
+glue("fm_mo_line_chrt", fm_mo_line_chrt)
+
+# %%
 fm_mo_w_ttl = fm_mo_general.merge(
     right=fm_mo_general.groupby(["month_dt"], as_index=False)
     .agg({"gen_gwh": "sum"})
@@ -216,13 +231,54 @@ fm_mo_pcnt_diff_chrt
 # %%
 fm_mo_rolling_chrt = (
     alt.Chart(fm_mo_general)
+    .transform_window(
+        sort=[{"field":"month_dt"}],
+        groupby=["general"],
+        frame=[-12,0],
+        rolling_gen_gwh = "mean(gen_gwh)")
     .mark_line()
     .encode(
         x="yearmonth(month_dt)",
-        y="gen_gwh",
+        y=alt.Y("rolling_gen_gwh:Q", scale=alt.Scale(zero=False)),
         color=color,
     )
-    .properties(title={"text": "NYS monthly generated fuel mix", "subtitle": subtitle})
+    .properties(title={"text": "NYS monthly generated fuel mix: rolling 12-month average", "subtitle": subtitle})
 )
 # %%
-fm_mo_rolling_chrt
+glue("fm_mo_rolling_chrt", fm_mo_rolling_chrt)
+
+
+# %%
+fm_mo_rolling_pcnt_chrt = (
+    alt.Chart(fm_mo_w_ttl)
+    .transform_window(
+        sort=[{"field":"month_dt"}],
+        groupby=["general"],
+        frame=[-12,0],
+        rolling_pcnt = "mean(pcnt)")
+    .mark_line()
+    .encode(
+        x="yearmonth(month_dt)",
+        y=alt.Y("rolling_pcnt:Q", axis=alt.Axis(format="%"), scale=alt.Scale(zero=False)),
+        color=color,
+    )
+    .properties(title={"text": "NYS monthly generated fuel mix: rolling 12-month average percent", "subtitle": subtitle})
+)
+# %%
+glue("fm_mo_rolling_pcnt_chrt", fm_mo_rolling_pcnt_chrt)
+
+# %%
+fm_mo_pcnt_yr_chrt = (
+    alt.Chart(fm_mo_w_ttl)
+    .mark_line()
+    .encode(
+        x="month(month_dt)",
+        y=alt.Y("pcnt", axis=alt.Axis(format="%", title="percent")),
+        row="general",
+        color="year(month_dt):O",
+    )
+    .properties(title={"text": "NYS yearly generated fuel mix", "subtitle": subtitle}, height=100)
+)
+# %%
+fm_mo_pcnt_yr_chrt
+# %%
