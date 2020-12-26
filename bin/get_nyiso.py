@@ -12,6 +12,7 @@ import logging
 from pygsutils import general as g
 import requests
 from bs4 import BeautifulSoup
+import os
 
 # %%
 dfp = "./../data"
@@ -23,24 +24,26 @@ g.setup_logging(log_fp)
 
 # %%
 # zone shapefiles
-u.get_zones_archive(dfp)
-
-u.extract_zones_archive(dfp)
+if not os.path.isdir(f"{dfp}/chermann.gdb/"):
+    u.get_zones_archive(dfp)
+    u.extract_zones_archive(dfp)
 
 # %%
 # fuel mix
-u.download_fuel_mix(data_folder_path=dfp)
+# u.download_fuel_mix(data_folder_path=dfp)
 
 # %%
-u.extract_fuel_mix(data_folder_path=dfp)
+# u.extract_fuel_mix(data_folder_path=dfp)
 
 # %%
-u.combine_fuel_mix(data_folder_path=dfp)
+# u.combine_fuel_mix(data_folder_path=dfp)
 
 # %%
-u.process_fuel_mix(data_folder_path=dfp)
+# u.process_fuel_mix(data_folder_path=dfp)
 
 # %%
 u.aggregate_fuel_mix(data_folder_path=dfp)
+
+# %%
 
 # %%
