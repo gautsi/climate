@@ -50,7 +50,7 @@ fm_yr_general = fm_yr.groupby(["year", "general"], as_index=False).agg(
 )
 
 # %%
-color = alt.Color("general", legend=alt.Legend(title="Fuel type"))
+color = alt.Color("general", legend=alt.Legend(title="Fuel type"), sort="descending")
 
 # %%
 fm_yr_chrt = (
