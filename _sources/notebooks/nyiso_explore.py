@@ -29,6 +29,12 @@ log_fp = "./../../logs/get_nyiso.log"
 g.setup_logging(log_fp)
 
 # %%
+fm = u.get_fuel_mix(data_folder_path=dfp)
+
+# %%
+fm.head()
+
+# %%
 fm_yr = u.get_fuel_mix(data_folder_path=dfp, agg="year")
 
 # %%
