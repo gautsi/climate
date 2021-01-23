@@ -52,7 +52,7 @@ subtitle = f"{start_year}-{end_year}, NYISO, http://mis.nyiso.com/public/P-63lis
 
 # %%
 fm_yr_general = fm_yr.groupby(["year", "general"], as_index=False).agg(
-    {"gen_gwh": "sum"}
+    {"gen_gw": "sum"}
 )
 
 # %%
@@ -64,10 +64,10 @@ fm_yr_chrt = (
     .mark_bar()
     .encode(
         x="year:O",
-        y="gen_gwh",
+        y="gen_gw",
         color=color,
     )
-    .properties(title={"text": "NYS yearly generated fuel mix", "subtitle": subtitle})
+    .properties(title={"text": "NYS yearly generated average fuel mix", "subtitle": subtitle})
 )
 
 # %%
@@ -76,12 +76,12 @@ glue("fm_yr_chrt", fm_yr_chrt)
 # %%
 fm_yr_w_ttl = fm_yr_general.merge(
     right=fm_yr_general.groupby(["year"], as_index=False)
-    .agg({"gen_gwh": "sum"})
-    .rename(columns={"gen_gwh": "ttl_gen_gwh"})
+    .agg({"gen_gw": "sum"})
+    .rename(columns={"gen_gw": "ttl_gen_gw"})
 )
 
 # %%
-fm_yr_w_ttl["pcnt"] = fm_yr_w_ttl["gen_gwh"] / fm_yr_w_ttl["ttl_gen_gwh"]
+fm_yr_w_ttl["pcnt"] = fm_yr_w_ttl["gen_gw"] / fm_yr_w_ttl["ttl_gen_gw"]
 
 # %%
 fm_yr_pcnt_chrt = (
@@ -92,7 +92,7 @@ fm_yr_pcnt_chrt = (
         y=alt.Y("pcnt", axis=alt.Axis(format="%", title="percent")),
         color=color,
     )
-    .properties(title={"text": "NYS yearly generated fuel mix", "subtitle": subtitle})
+    .properties(title={"text": "NYS yearly generated average fuel mix", "subtitle": subtitle})
 )
 
 # %%
@@ -104,7 +104,7 @@ fm_mo = u.get_fuel_mix(data_folder_path=dfp, agg="month")
 
 # %%
 fm_mo_general = fm_mo.groupby(["year", "month", "general"], as_index=False).agg(
-    {"gen_gwh": "sum"}
+    {"gen_gw": "sum"}
 )
 
 # %%
@@ -120,10 +120,10 @@ fm_mo_chrt = (
     .mark_bar()
     .encode(
         x="yearmonth(month_dt)",
-        y="gen_gwh",
+        y="gen_gw",
         color=color,
     )
-    .properties(title={"text": "NYS monthly generated fuel mix", "subtitle": subtitle})
+    .properties(title={"text": "NYS monthly generated average fuel mix", "subtitle": subtitle})
 )
 
 # %%
@@ -135,10 +135,10 @@ fm_mo_line_chrt = (
     .mark_line()
     .encode(
         x="yearmonth(month_dt)",
-        y="gen_gwh",
+        y="gen_gw",
         color=color,
     )
-    .properties(title={"text": "NYS monthly generated fuel mix", "subtitle": subtitle})
+    .properties(title={"text": "NYS monthly generated average fuel mix", "subtitle": subtitle})
 )
 
 # %%
@@ -147,12 +147,12 @@ glue("fm_mo_line_chrt", fm_mo_line_chrt)
 # %%
 fm_mo_w_ttl = fm_mo_general.merge(
     right=fm_mo_general.groupby(["month_dt"], as_index=False)
-    .agg({"gen_gwh": "sum"})
-    .rename(columns={"gen_gwh": "ttl_gen_gwh"})
+    .agg({"gen_gw": "sum"})
+    .rename(columns={"gen_gw": "ttl_gen_gw"})
 )
 
 # %%
-fm_mo_w_ttl["pcnt"] = fm_mo_w_ttl["gen_gwh"] / fm_mo_w_ttl["ttl_gen_gwh"]
+fm_mo_w_ttl["pcnt"] = fm_mo_w_ttl["gen_gw"] / fm_mo_w_ttl["ttl_gen_gw"]
 
 # %%
 fm_mo_pcnt_chrt = (
@@ -163,7 +163,7 @@ fm_mo_pcnt_chrt = (
         y=alt.Y("pcnt", axis=alt.Axis(format="%", title="percent")),
         color=color,
     )
-    .properties(title={"text": "NYS yearly generated fuel mix", "subtitle": subtitle})
+    .properties(title={"text": "NYS yearly generated average fuel mix", "subtitle": subtitle})
 )
 
 # %%
@@ -179,20 +179,20 @@ fm_mo_pcnt_mo_chrt = (
         color=color,
         row = "month(month_dt):N",
     )
-    .properties(title={"text": "NYS yearly generated fuel mix", "subtitle": subtitle}, height=50, width=100)
+    .properties(title={"text": "NYS yearly generated average fuel mix", "subtitle": subtitle}, height=50, width=100)
 )
 # %%
 fm_mo_pcnt_mo_chrt
 
 # %%
 fm_mo_w_avg = fm_mo_general.merge(
-    right = fm_mo_general.groupby(["general", "month"], as_index=False).agg({"gen_gwh": "mean"}).rename(columns={"gen_gwh": "avg_gen_gwh"}),
+    right = fm_mo_general.groupby(["general", "month"], as_index=False).agg({"gen_gw": "mean"}).rename(columns={"gen_gw": "avg_gen_gw"}),
     on=["general", "month"],
     how="left",
     validate="many_to_one")
 
 # %%
-fm_mo_w_avg["gen_gwh_diff"] = fm_mo_w_avg.gen_gwh - fm_mo_w_avg.avg_gen_gwh
+fm_mo_w_avg["gen_gw_diff"] = fm_mo_w_avg.gen_gw - fm_mo_w_avg.avg_gen_gw
 
 # %%
 fm_mo_diff_chrt = (
@@ -200,10 +200,10 @@ fm_mo_diff_chrt = (
     .mark_line()
     .encode(
         x="yearmonth(month_dt)",
-        y="gen_gwh_diff",
+        y="gen_gw_diff",
         color=color,
     )
-    .properties(title={"text": "NYS monthly generated fuel mix: difference from month average", "subtitle": subtitle})
+    .properties(title={"text": "NYS monthly generated average fuel mix: difference from month average", "subtitle": subtitle})
 )
 # %%
 fm_mo_diff_chrt
@@ -229,7 +229,7 @@ fm_mo_pcnt_diff_chrt = (
         y=alt.Y("pcnt_diff", axis=alt.Axis(format="%", title="percent difference"), scale=alt.Scale(zero=False)),
         color=color,
     )
-    .properties(title={"text": "NYS monthly generated fuel mix: percent difference from month average", "subtitle": subtitle})
+    .properties(title={"text": "NYS monthly generated average fuel mix: percent difference from month average", "subtitle": subtitle})
 )
 # %%
 fm_mo_pcnt_diff_chrt
@@ -241,14 +241,14 @@ fm_mo_rolling_chrt = (
         sort=[{"field":"month_dt"}],
         groupby=["general"],
         frame=[-12,0],
-        rolling_gen_gwh = "mean(gen_gwh)")
+        rolling_gen_gw = "mean(gen_gw)")
     .mark_line()
     .encode(
         x="yearmonth(month_dt)",
-        y=alt.Y("rolling_gen_gwh:Q", scale=alt.Scale(zero=False)),
+        y=alt.Y("rolling_gen_gw:Q", scale=alt.Scale(zero=False)),
         color=color,
     )
-    .properties(title={"text": "NYS monthly generated fuel mix: rolling 12-month average", "subtitle": subtitle})
+    .properties(title={"text": "NYS monthly generated average fuel mix: rolling 12-month average", "subtitle": subtitle})
 )
 # %%
 glue("fm_mo_rolling_chrt", fm_mo_rolling_chrt)
@@ -268,7 +268,7 @@ fm_mo_rolling_pcnt_chrt = (
         y=alt.Y("rolling_pcnt:Q", axis=alt.Axis(format="%"), scale=alt.Scale(zero=False)),
         color=color,
     )
-    .properties(title={"text": "NYS monthly generated fuel mix: rolling 12-month average percent", "subtitle": subtitle})
+    .properties(title={"text": "NYS monthly generated average fuel mix: rolling 12-month average percent", "subtitle": subtitle})
 )
 # %%
 glue("fm_mo_rolling_pcnt_chrt", fm_mo_rolling_pcnt_chrt)
@@ -283,7 +283,7 @@ fm_mo_pcnt_yr_chrt = (
         row="general",
         color="year(month_dt):O",
     )
-    .properties(title={"text": "NYS yearly generated fuel mix", "subtitle": subtitle}, height=100)
+    .properties(title={"text": "NYS yearly generated average fuel mix", "subtitle": subtitle}, height=100)
 )
 # %%
 fm_mo_pcnt_yr_chrt
