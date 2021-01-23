@@ -39,7 +39,7 @@ if not os.path.isdir(f"{dfp}/chermann.gdb/"):
 # u.combine_fuel_mix(data_folder_path=dfp)
 
 # %%
-# u.process_fuel_mix(data_folder_path=dfp)
+u.process_fuel_mix(data_folder_path=dfp)
 
 # %%
 u.aggregate_fuel_mix(data_folder_path=dfp)

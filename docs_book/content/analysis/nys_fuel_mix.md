@@ -4,14 +4,14 @@
 See which fuels are most used to generated electricity in New York State, and how that has changed over time
 
 ## Yearly fuel mix
-### Total GWh
+### Average GW
 {glue:}`fm_yr_chrt`
 ### Percent of total
 The proportion of NYS electricity generation from nuclear clealy dips from 2019 to 2020, and coincides with a equivalent increase in the proportion of generation from fossil fuels. 
 {glue:}`fm_yr_pcnt_chrt`
 
 ## Monthly fuel mix
-### Total Gwh
+### Average GW
 As a stacked bar chart:
 {glue:}`fm_mo_chrt`
 

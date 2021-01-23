@@ -155,8 +155,8 @@ def process_fuel_mix(data_folder_path: str) -> pd.DataFrame:
         logging.info(f"adding {k}")
         comb[k] = v(comb["ts"])
 
-    logging.info("Combining gen mwh fields")
-    comb["gen_mwh"] = np.where(pd.isna(comb["Gen MW"]), comb["Gen MWh"], comb["Gen MW"])
+    logging.info("Combining gen mw fields")
+    comb["gen_mw"] = np.where(pd.isna(comb["Gen MW"]), comb["Gen MWh"], comb["Gen MW"])
 
     logging.info("Renaming fuel category field")
     comb_rn = comb.rename(columns={"Fuel Category": "fuel"})
@@ -164,7 +164,7 @@ def process_fuel_mix(data_folder_path: str) -> pd.DataFrame:
     logging.info("Adding generalized fuel category")
     comb_rn["general"] = get_general(comb_rn["fuel"])
 
-    proc = comb_rn[["ts"] + list(time_fields.keys()) + ["fuel", "general", "gen_mwh"]]
+    proc = comb_rn[["ts"] + list(time_fields.keys()) + ["fuel", "general", "gen_mw"]]
 
     proc_loc = f"{data_folder_path}/nyiso/fuel_mix/processed"
     if not os.path.isdir(proc_loc):
@@ -186,7 +186,7 @@ def aggregate_fuel_mix(data_folder_path: str) -> None:
         agg_fp = f"{agg_loc}/agg_fuel_mix_{agg}.csv"
         logging.info(f"Saving aggregated {curr_agg} fuel mix to {agg_fp}")
         proc.groupby(curr_agg + ["general", "fuel"], as_index=False).agg(
-            {"gen_mwh": "sum"}
+            {"gen_mw": "mean"}
         ).to_csv(agg_fp, index=False)
 
 
@@ -199,5 +199,5 @@ def get_fuel_mix(data_folder_path: str, agg: str = None) -> pd.DataFrame:
     else:
         raise Exception(f"Don't know how to handle agg value {agg}")
     fm = pd.read_csv(fp)
-    fm["gen_gwh"] = fm["gen_mwh"] / 1e3
+    fm["gen_gw"] = fm["gen_mw"] / 1e3
     return fm
