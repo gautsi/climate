@@ -17,15 +17,18 @@ loc = "./../data/eia"
 fp_log = f"{loc}/log_get_eia.log"
 
 # %%
+g.setup_logging(fp=fp_log)
+
+# %%
 eia = b.EIA(loc=loc)
 
 # %%
-eia.zip_links
+eia.download()
 
 # %%
-u.pull_data(dest_folder="./../data/eia")
+eia.extract()
 
 # %%
-u.pull_plant_shapefile(dest_folder="./../data/eia")
+# u.pull_plant_shapefile(dest_folder="./../data/eia")
 
 # %%

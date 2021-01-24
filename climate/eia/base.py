@@ -2,16 +2,48 @@ from pydantic.dataclasses import dataclass
 from functools import cached_property
 import requests
 from bs4 import BeautifulSoup
-from typing import List
+from typing import List, TypeVar
 from pygsutils import general as g
+import logging
 
 url_prefix = r"https://www.eia.gov/electricity/data/eia923"
 
 
 @dataclass
 class EIAYear:
-    loc: str
+    eia: TypeVar("EIA")
     url_suffix: str
+
+    @property
+    def url(self) -> str:
+        return f"{url_prefix}/{self.url_suffix}"
+
+    @property
+    def filename(self) -> str:
+        return self.url_suffix.split("/")[-1]
+
+    @property
+    def foldername(self) -> str:
+        return self.filename.split(".")[0]
+
+    @property
+    def fp_orig(self) -> str:
+        return f"{self.eia.loc_orig}/{self.filename}"
+
+    @property
+    def loc_extract(self) -> str:
+        return f"{self.eia.loc_extract}/{self.foldername}"
+
+    def download(self) -> None:
+        g.download(url=self.url, fp=self.fp_orig)
+
+    def extract(self) -> None:
+        g.extract_zip(path_to_zip=self.fp_orig, dest_folder=self.loc_extract)
+
+
+@dataclass
+class EIA:
+    loc: str
 
     @property
     @g.make_dir
@@ -19,13 +51,9 @@ class EIAYear:
         return f"{self.loc}/originals"
 
     @property
-    def url(self) -> str:
-        return f"{url_prefix}/{self.url_suffix}"
-
-
-@dataclass
-class EIA:
-    loc: str
+    @g.make_dir
+    def loc_extract(self) -> str:
+        return f"{self.loc}/extracted"
 
     @cached_property
     def home_html(self) -> str:
@@ -47,3 +75,15 @@ class EIA:
             if "zip" in href:
                 links.append(href)
         return links
+
+    @cached_property
+    def years(self) -> List[EIAYear]:
+        return [EIAYear(eia=self, url_suffix=i) for i in self.zip_links]
+
+    def download(self) -> None:
+        for yr in self.years:
+            yr.download()
+
+    def extract(self) -> None:
+        for yr in self.years:
+            yr.extract()
