@@ -9,18 +9,18 @@ if get_ipython() is not None:
     get_ipython().run_line_magic("autoreload", "2")
 
 # %%
-from climate.eia import base as b
+from climate.eia import pull as p
 from pygsutils import general as g
 
 # %%
-loc = "./../data/eia"
+loc = "./../../data/eia"
 fp_log = f"{loc}/log_get_eia.log"
 
 # %%
 g.setup_logging(fp=fp_log)
 
 # %%
-eia = b.EIA(loc=loc)
+eia = p.EIA(loc=loc)
 
 # %%
 eia.download()

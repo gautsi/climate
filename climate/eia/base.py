@@ -1,21 +1,21 @@
-from pydantic.dataclasses import dataclass
 from functools import cached_property
 import requests
 from bs4 import BeautifulSoup
-from typing import List, TypeVar
+from typing import List, TypeVar, Optional
 from pygsutils import general as g
 import logging
+import glob
+from pydantic import BaseModel
 
-url_prefix = r"https://www.eia.gov/electricity/data/eia923"
 
-
-@dataclass
 class EIAYear:
-    eia: TypeVar("EIA")
-    url_suffix: str
+    def __init__(self, eia: TypeVar("EIA"), url_suffix: str):
+        self.eia = eia
+        self.url_suffix = url_suffix
 
     @property
     def url(self) -> str:
+        url_prefix = r"https://www.eia.gov/electricity/data/eia923"
         return f"{url_prefix}/{self.url_suffix}"
 
     @property
@@ -34,16 +34,35 @@ class EIAYear:
     def loc_extract(self) -> str:
         return f"{self.eia.loc_extract}/{self.foldername}"
 
-    def download(self) -> None:
-        g.download(url=self.url, fp=self.fp_orig)
+    @property
+    def year(self) -> Optional[int]:
+        try:
+            year = int(self.loc_extract.split("_")[-1])
+        except ValueError:
+            logging.info(f"could not get year for {self.loc_extract}")
+            year = None
+        return year
 
-    def extract(self) -> None:
-        g.extract_zip(path_to_zip=self.fp_orig, dest_folder=self.loc_extract)
+    @property
+    def fp_gen(self) -> str:
+        fn_prefix = r"EIA923_Schedules_2_3_4_5_M_"
+        pos_fp = glob.glob(f"{self.loc_extract}/{fn_prefix}*.xlsx")
+        assert (
+            len(pos_fp) == 1
+        ), f"too many possible filepaths for generation data for {self.year}"
+        return pos_fp[0]
+
+    @property
+    def start_row_gen(self) -> int:
+        if self.year in [2016, 2017, 2018, 2019, 2020]:
+            return 6
+        else:
+            raise (f"data for year {self.year} has not been checked yet")
 
 
-@dataclass
 class EIA:
-    loc: str
+    def __init__(self, loc: str):
+        self.loc = loc
 
     @property
     @g.make_dir
@@ -54,6 +73,11 @@ class EIA:
     @g.make_dir
     def loc_extract(self) -> str:
         return f"{self.loc}/extracted"
+
+    @property
+    @g.make_dir
+    def loc_processed(self) -> str:
+        return f"{self.loc}/processed"
 
     @cached_property
     def home_html(self) -> str:
@@ -80,10 +104,54 @@ class EIA:
     def years(self) -> List[EIAYear]:
         return [EIAYear(eia=self, url_suffix=i) for i in self.zip_links]
 
-    def download(self) -> None:
-        for yr in self.years:
-            yr.download()
 
-    def extract(self) -> None:
-        for yr in self.years:
-            yr.extract()
+class GeneralFuelType(BaseModel):
+    name: str
+
+
+fossil_fuel = GeneralFuelType(name="fossil_fuel")
+nuclear = GeneralFuelType(name="nuclear")
+renewable = GeneralFuelType(name="renewable")
+
+
+class FuelType(BaseModel):
+    code: str
+    desc: str
+    general: GeneralFuelType
+    renew: bool
+
+
+fuel_types = [
+    FuelType(code="SUN", desc="Solar PV and thermal", renew=True, general=renewable),
+    FuelType(code="COL", desc="Coal ", renew=False, general=fossil_fuel),
+    FuelType(code="DFO", desc="Distillate Petroleum", renew=False, general=fossil_fuel),
+    FuelType(code="GEO", desc="Geothermal", renew=True, general=renewable),
+    FuelType(
+        code="HPS", desc="Hydroelectric Pumped Storage", renew=True, general=renewable
+    ),
+    FuelType(
+        code="HYC", desc="Hydroelectric Conventional", renew=True, general=renewable
+    ),
+    FuelType(
+        code="MLG",
+        desc="Biogenic Municipal Solid Waste and Landfill Gas",
+        renew=True,
+        general=renewable,
+    ),
+    FuelType(code="NG", desc="Natural Gas", renew=False, general=fossil_fuel),
+    FuelType(code="NUC", desc="Nuclear", renew=False, general=nuclear),
+    FuelType(code="OOG", desc="Other Gases", renew=False, general=fossil_fuel),
+    FuelType(code="ORW", desc="OtherRenewables ", renew=True, general=renewable),
+    FuelType(
+        code="OTH",
+        desc="Other (including nonbiogenic MSW)",
+        renew=False,
+        general=fossil_fuel,
+    ),
+    FuelType(code="PC", desc="Petroleum Coke", renew=False, general=fossil_fuel),
+    FuelType(code="RFO", desc="Residual Petroleum", renew=False, general=fossil_fuel),
+    FuelType(code="WND", desc="Wind", renew=True, general=renewable),
+    FuelType(code="WOC", desc="Waste Coal", renew=False, general=fossil_fuel),
+    FuelType(code="WOO", desc="Waste Oil", renew=False, general=fossil_fuel),
+    FuelType(code="WWW", desc="Wood and Wood Waste", renew=True, general=renewable),
+]

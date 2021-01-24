@@ -78,7 +78,6 @@ def add_orig_fields(gf_df, fields):
 def get_long_form(gf_df):
     # fill in "none" for null values in the ids
     gf_df.fillna(value={c: "None" for c in id_fields}, inplace=True)
-
     # check id fields uniquely define rows
     assert len(gf_df) == len(gf_df[id_fields].drop_duplicates())
 

@@ -56,13 +56,6 @@ def pull_data(dest_folder):
         )
 
 
-def fmt_field_names(df):
-    def fmt_field_name(name):
-        return name.replace("\n", "_").replace(" ", "_").lower()
-
-    return df.rename(columns={f: fmt_field_name(f) for f in df.columns})
-
-
 def read_json(fp):
     with open(fp, "r") as f:
         contents = f.contents
