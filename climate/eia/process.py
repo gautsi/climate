@@ -6,6 +6,7 @@ from pygsutils import data as d
 import logging
 import pandas as pd
 import calendar
+import datetime as dt
 
 
 class GenFuelYear(b.EIAYear):
@@ -175,3 +176,27 @@ class GenFuel(b.EIA):
             how="left",
             validate="many_to_one",
         )
+
+    @cached_property
+    def df_replace_periods(self) -> pd.DataFrame:
+        logging.info("replacing periods with zeros")
+        for field in self.prefixes_fields_month:
+            self.df_w_fuel_desc[field] = (
+                self.df_w_fuel_desc[field].replace(".", "0").astype("float")
+            )
+        return self.df_w_fuel_desc
+
+    @cached_property
+    def df(self) -> pd.DataFrame:
+        logging.info("last processing steps")
+        df = self.df_replace_periods
+        df["gwh"] = df["netgen"] / 1e3
+        df["physical_unit_label"] = df["physical_unit_label"].fillna("")
+        df["year_month"] = df.apply(
+            lambda row: dt.datetime(year=row["year"], month=row["month"], day=1), axis=1
+        )
+        return df
+
+    def save(self) -> None:
+        logging.info(f"saving to {self.fp}")
+        self.df.to_csv(self.fp, index=False)

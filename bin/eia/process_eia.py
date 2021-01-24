@@ -22,4 +22,4 @@ g.setup_logging(fp=fp_log)
 genfuel = p.GenFuel(loc=loc)
 
 # %%
-genfuel.df_w_fuel_desc.head()
+genfuel.save()

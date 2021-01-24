@@ -17,15 +17,14 @@ Previewing generation and fuel data...
 """
 
 # %% tags=["hide-input"]
-from climate.eia import utils as u
-from climate.eia import gen_and_fuel as gf
+from climate.eia import read as r
 import altair as alt
 import pandas as pd
 import geopandas as gpd
 
 data_path = "./../../data/eia"
-gf_df = gf.get_gen_and_fuel(dest_folder=data_path)
-gf_df.head()
+df = r.GenFuel(loc=data_path).df
+df.head()
 
 # %% [markdown]
 """
@@ -34,19 +33,69 @@ gf_df.head()
 """
 
 # %% tags=["hide-input"]
-ny_gf_df = gf_df[gf_df.plant_state == "NY"]
+ny_df = df[df.plant_state == "NY"]
 
 ny_month_netgen = (
-    ny_gf_df.groupby(["year_month"], as_index=False)
-    .agg({"netgen": "sum"})
-    .query("netgen > 0")
+    ny_df.groupby(["year_month"], as_index=False).agg({"gwh": "sum"})
+    # .query("gwh > 0")
 )
 
-alt.Chart(ny_month_netgen).mark_bar().encode(x="year_month", y="netgen").configure_axis(
+alt.Chart(ny_month_netgen).mark_bar().encode(x="year_month", y="gwh").configure_axis(
     title=None
-).properties(title={
-    "text": "NYS net generation (MWh) by month",
-    "subtitle": "2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/"})
+).properties(
+    title={
+        "text": "NYS net generation (GWh) by month",
+        "subtitle": "2016-2020, US EIA https://www.eia.gov/electricity/data/eia923/",
+    }
+)
+
+# %% [markdown]
+"""
+### Generation by fuel
+"""
+
+# %%
+fm_yr_general = ny_df.groupby(["year", "general_fuel_type"], as_index=False).agg({"gwh": "sum"})
+
+# %%
+color = alt.Color("general_fuel_type", legend=alt.Legend(title="Fuel type"), sort="descending")
+
+# %%
+fm_yr_chrt = (
+    alt.Chart(fm_yr_general)
+    .mark_bar()
+    .encode(
+        x="year:O",
+        y="gwh",
+        color=color,
+    )
+    .properties(
+        title={"text": "NYS yearly net generation fuel mix", "subtitle": "EIA"}
+    )
+)
+
+# %%
+fm_yr_chrt
+
+# %%
+fm_mo = ny_df.groupby(["year_month", "general_fuel_type"], as_index=False).agg({"gwh": "sum"})
+
+# %%
+fm_mo_chrt = (
+    alt.Chart(fm_mo)
+    .mark_bar()
+    .encode(
+        x="year_month:O",
+        y="gwh",
+        color=color,
+    )
+    .properties(
+        title={"text": "NYS monthly net generation fuel mix", "subtitle": "EIA"}
+    )
+)
+
+# %%
+fm_mo_chrt
 
 # %% [markdown]
 """
@@ -55,14 +104,11 @@ alt.Chart(ny_month_netgen).mark_bar().encode(x="year_month", y="netgen").configu
 
 # %% tags=["hide-input"]
 ny_sector_netgen = u.add_sector_desc(
-    ny_gf_df.groupby(["eia_sector_number"], as_index=False)
-    .agg({"netgen": "sum"})
+    ny_gf_df.groupby(["eia_sector_number"], as_index=False).agg({"netgen": "sum"})
 )
 alt.Chart(ny_sector_netgen).mark_bar().encode(
-    y=alt.Y("eia_sector_desc", sort="-x"),
-    x="netgen").configure_axis(
-    title=None
-).properties(title="NYS net generation (MWh) by sector")
+    y=alt.Y("eia_sector_desc", sort="-x"), x="netgen"
+).configure_axis(title=None).properties(title="NYS net generation (MWh) by sector")
 
 
 # %% [markdown]
@@ -79,9 +125,9 @@ nyc_month_netgen = (
     .query("netgen > 0")
 )
 
-alt.Chart(nyc_month_netgen).mark_bar().encode(x="year_month", y="netgen").configure_axis(
-    title=None
-).properties(title="NYC net generation (MWh) by month")
+alt.Chart(nyc_month_netgen).mark_bar().encode(
+    x="year_month", y="netgen"
+).configure_axis(title=None).properties(title="NYC net generation (MWh) by month")
 
 # %% [markdown]
 """
@@ -90,14 +136,11 @@ alt.Chart(nyc_month_netgen).mark_bar().encode(x="year_month", y="netgen").config
 
 # %% tags=["hide-input"]
 nyc_sector_netgen = u.add_sector_desc(
-    nyc_gf_df.groupby(["eia_sector_number"], as_index=False)
-    .agg({"netgen": "sum"})
+    nyc_gf_df.groupby(["eia_sector_number"], as_index=False).agg({"netgen": "sum"})
 )
 alt.Chart(nyc_sector_netgen).mark_bar().encode(
-    y=alt.Y("eia_sector_desc", sort="-x"),
-    x="netgen").configure_axis(
-    title=None
-).properties(title="NYC net generation (MWh) by sector")
+    y=alt.Y("eia_sector_desc", sort="-x"), x="netgen"
+).configure_axis(title=None).properties(title="NYC net generation (MWh) by sector")
 
 # %% [markdown]
 """
@@ -106,13 +149,19 @@ alt.Chart(nyc_sector_netgen).mark_bar().encode(
 """
 
 # %%
-queens_gf_df =  u.add_county(nyc_gf_df, dest_folder=data_path).query("County == 'Queens'")
-queens_plants = queens_gf_df.groupby(["plant_id"], as_index=False).agg(
-    {"plant_name": u.nonnull_unq_str,
-    "operator_name": u.nonnull_unq_str,
-    "netgen": "sum"}
+queens_gf_df = u.add_county(nyc_gf_df, dest_folder=data_path).query(
+    "County == 'Queens'"
 )
-queens_plants[["operator_name", "plant_name", "netgen"]].sort_values("netgen", ascending=False).style.format({"netgen": "{:,.0f}"})
+queens_plants = queens_gf_df.groupby(["plant_id"], as_index=False).agg(
+    {
+        "plant_name": u.nonnull_unq_str,
+        "operator_name": u.nonnull_unq_str,
+        "netgen": "sum",
+    }
+)
+queens_plants[["operator_name", "plant_name", "netgen"]].sort_values(
+    "netgen", ascending=False
+).style.format({"netgen": "{:,.0f}"})
 
 # %% [markdown]
 """
@@ -121,10 +170,8 @@ queens_plants[["operator_name", "plant_name", "netgen"]].sort_values("netgen", a
 
 # %% tags=["hide-input"]
 alt.Chart(queens_plants).mark_bar().encode(
-    y=alt.Y("plant_name", sort="-x"),
-    x="netgen").configure_axis(
-    title=None
-).properties(title="Queens net generation (MWh) by plant")
+    y=alt.Y("plant_name", sort="-x"), x="netgen"
+).configure_axis(title=None).properties(title="Queens net generation (MWh) by plant")
 
 # %% [markdown]
 """
@@ -132,48 +179,46 @@ alt.Chart(queens_plants).mark_bar().encode(
 """
 
 # %% tags=["hide-input"]
-nbd_gdf = gpd.read_file("https://data.cityofnewyork.us/api/geospatial/cpf4-rkhq?method=export&format=GeoJSON")
+nbd_gdf = gpd.read_file(
+    "https://data.cityofnewyork.us/api/geospatial/cpf4-rkhq?method=export&format=GeoJSON"
+)
 queens_nbd_gdf = nbd_gdf[nbd_gdf.boro_name == "Queens"]
 queens_plants_gdf = u.get_nyc_plants(dest_folder=data_path).query("County == 'Queens'")
 
-queens_top_plants = queens_plants.sort_values(
-    "netgen",
-    ascending=False).iloc[:5]
+queens_top_plants = queens_plants.sort_values("netgen", ascending=False).iloc[:5]
 queens_top_plants_gdf = queens_plants_gdf.rename(
     columns={"Plant_Code": "plant_id"}
 ).merge(
     right=queens_top_plants[["plant_id"]],
     on=["plant_id"],
     how="inner",
-    validate="one_to_one"
+    validate="one_to_one",
 )
 
 queens_top_nbd_gdf = gpd.sjoin(
-    queens_nbd_gdf,
-    queens_top_plants_gdf,
-    how="inner",
-    op="intersects")[["ntaname", "geometry"]].drop_duplicates()
+    queens_nbd_gdf, queens_top_plants_gdf, how="inner", op="intersects"
+)[["ntaname", "geometry"]].drop_duplicates()
 
-queens_top_nbd_gdf.loc[:,"centroid_lat"] = queens_top_nbd_gdf.geometry.centroid.y
-queens_top_nbd_gdf.loc[:,"centroid_long"] = queens_top_nbd_gdf.geometry.centroid.x
+queens_top_nbd_gdf.loc[:, "centroid_lat"] = queens_top_nbd_gdf.geometry.centroid.y
+queens_top_nbd_gdf.loc[:, "centroid_long"] = queens_top_nbd_gdf.geometry.centroid.x
 alt.Chart(queens_top_nbd_gdf).mark_geoshape(
-    fill='lightgray',
-    stroke='white'
-) + alt.Chart(queens_top_plants_gdf).mark_geoshape(   
-) + alt.Chart(queens_top_plants_gdf).mark_text(
-    align="left",
-    baseline="middle"
+    fill="lightgray", stroke="white"
+) + alt.Chart(queens_top_plants_gdf).mark_geoshape() + alt.Chart(
+    queens_top_plants_gdf
+).mark_text(
+    align="left", baseline="middle"
 ).encode(
-         longitude="Longitude",
-         latitude="Latitude",
-         text="Plant_Name",
-) + alt.Chart(queens_top_nbd_gdf).mark_text(
-    align="center",
-    baseline="middle"
+    longitude="Longitude",
+    latitude="Latitude",
+    text="Plant_Name",
+) + alt.Chart(
+    queens_top_nbd_gdf
+).mark_text(
+    align="center", baseline="middle"
 ).encode(
-         longitude='centroid_long',
-         latitude='centroid_lat',
-         text='ntaname',
-     )
+    longitude="centroid_long",
+    latitude="centroid_lat",
+    text="ntaname",
+)
 
 # %%
