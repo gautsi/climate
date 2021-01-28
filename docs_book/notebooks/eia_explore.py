@@ -28,6 +28,67 @@ df.head()
 
 # %% [markdown]
 """
+##  US
+### Generation over time
+"""
+# %%
+color = alt.Color("general_fuel_type", legend=alt.Legend(title="Fuel type"), sort="descending")
+
+# %% [markdown]
+"""
+### Generation by fuel
+"""
+
+# %%
+fm_yr_general = df.groupby(["year", "general_fuel_type"], as_index=False).agg({"gwh": "sum"})
+
+
+# %%
+fm_yr_chrt = (
+    alt.Chart(fm_yr_general)
+    .mark_bar()
+    .encode(
+        x="year:O",
+        y="gwh",
+        color=color,
+    )
+    .properties(
+        title={"text": "US yearly net generation fuel mix", "subtitle": "EIA"}
+    )
+)
+
+# %%
+fm_yr_chrt
+
+# %%
+fm_yr_w_ttl = fm_yr_general.merge(
+    right=fm_yr_general.groupby(["year"], as_index=False)
+    .agg({"gwh": "sum"})
+    .rename(columns={"gwh": "ttl_gwh"})
+)
+
+# %%
+fm_yr_w_ttl["pcnt"] = fm_yr_w_ttl["gwh"] / fm_yr_w_ttl["ttl_gwh"]
+
+
+# %%
+fm_yr_pcnt_chrt = (
+    alt.Chart(fm_yr_w_ttl)
+    .mark_line()
+    .encode(
+        x="year:O",
+        y=alt.Y("pcnt", axis=alt.Axis(format="%", title="percent")),
+        color=color,
+    )
+    .properties(title={"text": "US yearly generated fuel mix", "subtitle": "EIA"})
+)
+
+
+# %%
+fm_yr_pcnt_chrt
+
+# %% [markdown]
+"""
 ##  New York State
 ### Generation over time
 """
@@ -57,8 +118,6 @@ alt.Chart(ny_month_netgen).mark_bar().encode(x="year_month", y="gwh").configure_
 # %%
 fm_yr_general = ny_df.groupby(["year", "general_fuel_type"], as_index=False).agg({"gwh": "sum"})
 
-# %%
-color = alt.Color("general_fuel_type", legend=alt.Legend(title="Fuel type"), sort="descending")
 
 # %%
 fm_yr_chrt = (
@@ -76,6 +135,33 @@ fm_yr_chrt = (
 
 # %%
 fm_yr_chrt
+
+# %%
+fm_yr_w_ttl = fm_yr_general.merge(
+    right=fm_yr_general.groupby(["year"], as_index=False)
+    .agg({"gwh": "sum"})
+    .rename(columns={"gwh": "ttl_gwh"})
+)
+
+# %%
+fm_yr_w_ttl["pcnt"] = fm_yr_w_ttl["gwh"] / fm_yr_w_ttl["ttl_gwh"]
+
+
+# %%
+fm_yr_pcnt_chrt = (
+    alt.Chart(fm_yr_w_ttl)
+    .mark_line()
+    .encode(
+        x="year:O",
+        y=alt.Y("pcnt", axis=alt.Axis(format="%", title="percent")),
+        color=color,
+    )
+    .properties(title={"text": "US yearly generated fuel mix", "subtitle": "EIA"})
+)
+
+
+# %%
+fm_yr_pcnt_chrt
 
 # %%
 fm_mo = ny_df.groupby(["year_month", "general_fuel_type"], as_index=False).agg({"gwh": "sum"})
