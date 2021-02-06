@@ -17,7 +17,7 @@ Previewing generation and fuel data...
 """
 
 # %% tags=["hide-input"]
-from climate.eia import read as r
+from climate.eia import read as r, utils as u
 import altair as alt
 import pandas as pd
 import geopandas as gpd
@@ -182,6 +182,89 @@ fm_mo_chrt = (
 
 # %%
 fm_mo_chrt
+
+# %%
+fm_mo_w_ttl = fm_mo.merge(
+    right=fm_mo.groupby(["year_month"], as_index=False)
+    .agg({"gwh": "sum"})
+    .rename(columns={"gwh": "ttl_gwh"})
+)
+
+# %%
+fm_mo_w_ttl["pcnt"] = fm_mo_w_ttl["gwh"] / fm_mo_w_ttl["ttl_gwh"]
+
+
+# %%
+fm_mo_pcnt_chrt = (
+    alt.Chart(fm_mo_w_ttl)
+    .mark_line()
+    .encode(
+        x="year_month",
+        y=alt.Y("pcnt", axis=alt.Axis(format="%", title="percent")),
+        color=color,
+    )
+    .properties(title={"text": "NYS monthly generated fuel mix", "subtitle": "EIA"})
+)
+
+
+# %%
+fm_mo_pcnt_chrt
+
+# %% [markdown]
+"""
+### Dip in nuclear: responsible plants
+Which plants had the biggest month-to-month changes in generation between 2020-03-01 and 2020-08-01?
+"""
+
+# %%
+ny_df[ny_df["year_month"] == "2020-04-01"].head()
+
+
+# %%
+ny_plants = ny_df.groupby(["plant_id", "general_fuel_type", "year_month"], as_index=False).agg(
+    {
+        "plant_name": u.nonnull_unq_str,
+        "operator_name": u.nonnull_unq_str,
+        "gwh": "sum",
+    }
+).query("year_month < '2020-11-01'")
+
+# %%
+ny_plants.sort_values("gwh", ascending=False).head()
+
+# %%
+ny_plants["prev_gwh"] = ny_plants["gwh"].shift(1)
+
+# %%
+ny_plants.sort_values(["plant_id", "year_month"]).head()
+
+# %%
+ny_plants["diff"] = ny_plants["gwh"] - ny_plants["prev_gwh"]
+
+# %%
+ny_plants.query("year_month >= '2020-01-01'").sort_values("diff").head(10)
+
+# %%
+ny_plants.query("year_month >= '2020-01-01'").sort_values("diff", ascending=False).head(10)
+
+# %%
+ny_plants_stats = ny_plants.groupby(["plant_id", "plant_name", "operator_name", "general_fuel_type"], as_index=False).agg({"gwh": "sum"}).sort_values("gwh", ascending=False)
+
+# %%
+ny_plants_hist = (
+    alt.Chart(ny_plants_stats)
+    .mark_bar()
+    .encode(
+        x=alt.X("gwh:Q", bin=True),
+        y="count()",
+    )
+    .properties(title={"text": "NYS total gwh by plant histogram", "subtitle": "EIA"})
+)
+
+
+# %%
+ny_plants_hist
+
 
 # %% [markdown]
 """
