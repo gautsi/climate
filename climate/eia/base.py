@@ -6,8 +6,11 @@ from pygsutils import general as g
 import logging
 import glob
 from pydantic import BaseModel
+from dataclasses import dataclass
 import calendar
 import pandas as pd
+import geopandas as gpd
+from enum import Enum
 
 
 class EIAYear:
@@ -216,16 +219,50 @@ class GenFuel(EIA):
         return pd.read_csv(self.fp)
 
 
+@dataclass
+class NYCBorough:
+    name: str
+    county: str
+
+
+class NYCBoroughs(Enum):
+    MANHATTAN = NYCBorough(name="Manhattan", county="new york")
+    BROOKLYN = NYCBorough(name="Brooklyn", county="kings")
+    QUEENS = NYCBorough(name="Queens", county="queens")
+    STATENISLAND = NYCBorough(name="Staten Island", county="richmond")
+    BRONX = NYCBorough(name="Bronx", county="bronx")
+
+
 class PlantGeo:
     def __init__(self, loc: str):
         self.loc = loc
-    
-    @property # type: ignore
+
+    @property  # type: ignore
     @g.make_dir
     def loc_orig(self) -> str:
         return f"{self.loc}/originals"
 
-    @property # type: ignore
+    @property  # type: ignore
     @g.make_dir
     def loc_extract(self) -> str:
         return f"{self.loc}/extracted/PowerPlants_US_EIA"
+
+    @property
+    def fp_shp(self) -> str:
+        return f"{self.loc_extract}/PowerPlants_US_EIA/PowerPlants_US_202004.shp"
+
+    @cached_property
+    def gdf(self) -> gpd.GeoDataFrame:
+        return gpd.read_file(self.fp_shp)
+
+    @cached_property
+    def gdf_nyc(self) -> gpd.GeoDataFrame:
+        return self.gdf[
+            (self.gdf.StateName == "New York")
+            & (
+                self.gdf.County.map(
+                    lambda x: x is not None
+                    and x.lower() in [i.name for i in NYCBoroughs]
+                )
+            )
+        ]

@@ -22,9 +22,7 @@ Previewing generation and fuel data...
 """
 
 # %% tags=["hide-input"]
-from climate.eia import utils as u
-from climate.eia import specs as s
-from climate.eia import gen_and_fuel as gf
+from climate.eia import analysis as a
 import altair as alt
 import pandas as pd
 import geopandas as gpd
@@ -33,10 +31,10 @@ from myst_nb import glue
 data_path = "./../../data/eia"
 
 # %%
-# gf.pull_gen_and_fuel(dest_folder=data_path)
+gf = a.GenFuel(loc=data_path)
 
 # %%
-gf_df = gf.get_gen_and_fuel(dest_folder=data_path).query("year < 2020")
+gf_df = gf.df.query("year < 2020")
 gf_df.head()
 
 # %%
@@ -56,7 +54,10 @@ subtitle = (
 
 
 # %%
-nyc_gf_df = u.add_nyc_flag(gf_df, dest_folder=data_path).query("nyc == 1")
+nyc_gf_df = gf.df_nyc
+nyc_gf_df.head()
+
+# %%
 ttl_nyc_gwh = nyc_gf_df.gwh.sum()
 glue("ttl_nyc_gwh", "{:,.0f}".format(ttl_nyc_gwh))
 glue(

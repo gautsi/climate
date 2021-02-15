@@ -7,6 +7,7 @@ import logging
 import pandas as pd
 import calendar
 import datetime as dt
+import geopandas as gpd
 
 
 class GenFuelYear(b.GenFuelYear):
@@ -32,7 +33,7 @@ class MonthField(b.MonthField):
     def __init__(self, genfuel: TypeVar("GenFuel"), prefix: str):
         super().__init__(prefix=prefix)
         self.genfuel = genfuel
- 
+
     @cached_property
     def df_melted(self):
         logging.info(f"melting across months for prefix {self.prefix}")
@@ -50,6 +51,11 @@ class MonthField(b.MonthField):
 class GenFuel(b.GenFuel):
     def __init__(self, loc: str):
         super().__init__(loc=loc)
+        self.plant_geo = b.PlantGeo(loc=loc)
+
+    @cached_property
+    def years(self) -> List[GenFuelYear]:
+        return [GenFuelYear(eia=self, url_suffix=i) for i in self.zip_links]
 
     @cached_property
     def df_comb(self) -> pd.DataFrame:
@@ -151,12 +157,45 @@ class GenFuel(b.GenFuel):
     @cached_property
     def df_nyc_flag(self) -> pd.DataFrame:
         logging.info("adding nyc flag")
+        return self.df_replace_periods.merge(
+            right=self.plant_geo.gdf_nyc[["Plant_Code"]]
+            .rename(columns={"Plant_Code": "plant_id"})
+            .assign(nyc=1),
+            on=["plant_id"],
+            how="left",
+            validate="many_to_one",
+        ).fillna(value={"nyc": 0})
 
+    @cached_property
+    def df_w_county(self) -> pd.DataFrame:
+        logging.info("adding county")
+        return self.df_nyc_flag.merge(
+            right=self.plant_geo.gdf[["Plant_Code", "County"]].rename(
+                columns={"Plant_Code": "plant_id"}
+            ),
+            on=["plant_id"],
+            how="left",
+            validate="many_to_one",
+        ).rename(columns={"County": "county"})
+
+    @cached_property
+    def df_w_borough(self) -> pd.DataFrame:
+        logging.info("adding borough name")
+        df_boroughs = pd.DataFrame(
+            [{"county": i.value.county, "borough": i.value.name} for i in b.NYCBoroughs]
+        )
+        self.df_w_county["county"] = self.df_w_county["county"].str.lower()
+        return self.df_w_county.merge(
+            right=df_boroughs,
+            on=["county"],
+            how="left",
+            validate="many_to_one",
+        )
 
     @cached_property
     def df(self) -> pd.DataFrame:
         logging.info("last processing steps")
-        df = self.df_replace_periods
+        df = self.df_w_borough
         df["gwh"] = df["netgen"] / 1e3
         df["physical_unit_label"] = df["physical_unit_label"].fillna("")
         df["year_month"] = df.apply(

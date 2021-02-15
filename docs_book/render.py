@@ -1,16 +1,18 @@
 # render templates
-from climate.eia import gen_and_fuel as gf
+from climate.eia import analysis as a
 from jinja2 import Template
 from pygsutils import general as g
 
 data_path = "./data/eia"
+
+gen_fuel = a.GenFuel(loc=data_path)
 
 specs = [
     {
         "filename": "queens",
         "target": "analysis",
         "ext": "md",
-        "parameters": {"queen_top_plants": gf.get_queens_top_plants(dest_folder=data_path)},
+        "parameters": {"queen_top_plants": gen_fuel.list_nyc_plants_top_queens},
     }
 ]
 
