@@ -20,15 +20,21 @@ fp_log = f"{loc}/log_get_eia.log"
 g.setup_logging(fp=fp_log)
 
 # %%
-eia = p.EIA(loc=loc)
+# EIA data
+# eia = p.EIA(loc=loc)
 
 # %%
-eia.download()
+# eia.download()
 
 # %%
-eia.extract()
+# eia.extract()
 
 # %%
-# u.pull_plant_shapefile(dest_folder="./../data/eia")
+# plant geo data
+plant_geo = p.PlantGeo(loc=loc)
 
 # %%
+plant_geo.download()
+
+# %%
+plant_geo.extract()

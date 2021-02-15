@@ -33,3 +33,31 @@ class EIA(b.EIA):
     def extract(self) -> None:
         for yr in self.years:
             yr.extract()
+
+
+class PlantGeo(b.PlantGeo):
+    def __init__(self, loc: str):
+        super().__init__(loc=loc)
+
+    @property
+    def fn_zip(self) -> str:
+        return "PowerPlants_US_EIA.zip"
+
+    @property
+    def url(self) -> str:
+        return f"https://www.eia.gov/maps/map_data/{self.fn_zip}"
+
+    @property
+    def fp_orig(self) -> str:
+        return f"{self.loc_orig}/{self.fn_zip}"
+
+    def download(self) -> None:
+        logging.info(f"downloading plant geo data to {self.fp_orig}")
+        g.download(
+            url=self.url,
+            fp=self.fp_orig,
+        )
+
+    def extract(self) -> None:
+        logging.info(f"extracting plant geo data to {self.loc_extract}")
+        g.extract_zip(path_to_zip=self.fp_orig, dest_folder=self.loc_extract)

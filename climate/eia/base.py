@@ -6,6 +6,8 @@ from pygsutils import general as g
 import logging
 import glob
 from pydantic import BaseModel
+import calendar
+import pandas as pd
 
 
 class EIAYear:
@@ -155,3 +157,75 @@ fuel_types = [
     FuelType(code="WOO", desc="Waste Oil", renew=False, general=fossil_fuel),
     FuelType(code="WWW", desc="Wood and Wood Waste", renew=True, general=renewable),
 ]
+
+
+class GenFuelYear(EIAYear):
+    def __init__(self, eia: TypeVar("EIA"), url_suffix: str):
+        super().__init__(eia=eia, url_suffix=url_suffix)
+
+
+class MonthField:
+    def __init__(self, prefix: str):
+        self.prefix = prefix
+
+    @property
+    def month_names(self) -> List[str]:
+        return [i.lower() for i in calendar.month_name if not i == ""]
+
+    def get_month_as_int(self, field: str) -> int:
+        return self.month_names.index(field.split("_")[-1]) + 1
+
+    @property
+    def month_fields(self) -> List[str]:
+        return [f"{self.prefix}_{i}" for i in self.month_names]
+
+
+class GenFuel(EIA):
+    def __init__(self, loc: str):
+        super().__init__(loc=loc)
+
+    @cached_property
+    def years(self) -> List[GenFuelYear]:
+        return [GenFuelYear(eia=self, url_suffix=i) for i in self.zip_links]
+
+    @cached_property
+    def years_to_include(self) -> List[int]:
+        return [2020, 2019, 2018, 2017, 2016]
+
+    @property
+    def fp(self) -> str:
+        return f"{self.loc_processed}/gen_fuel.csv"
+
+    @property
+    def id_fields(self) -> List[str]:
+        return [
+            "plant_id",
+            "combined_heat_and_power_plant",
+            "nuclear_unit_id",
+            "operator_id",
+            "naics_code",
+            "plant_state",
+            "eia_sector_number",
+            "reported_prime_mover",
+            "reported_fuel_type_code",
+            "year",
+        ]
+
+    @cached_property
+    def df(self) -> pd.DataFrame:
+        return pd.read_csv(self.fp)
+
+
+class PlantGeo:
+    def __init__(self, loc: str):
+        self.loc = loc
+    
+    @property # type: ignore
+    @g.make_dir
+    def loc_orig(self) -> str:
+        return f"{self.loc}/originals"
+
+    @property # type: ignore
+    @g.make_dir
+    def loc_extract(self) -> str:
+        return f"{self.loc}/extracted/PowerPlants_US_EIA"

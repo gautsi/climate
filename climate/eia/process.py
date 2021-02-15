@@ -9,7 +9,7 @@ import calendar
 import datetime as dt
 
 
-class GenFuelYear(b.EIAYear):
+class GenFuelYear(b.GenFuelYear):
     def __init__(self, eia: TypeVar("EIA"), url_suffix: str):
         super().__init__(eia=eia, url_suffix=url_suffix)
 
@@ -28,22 +28,11 @@ class GenFuelYear(b.EIAYear):
         return d.fmt_field_names(self.df_raw)
 
 
-class MonthField:
+class MonthField(b.MonthField):
     def __init__(self, genfuel: TypeVar("GenFuel"), prefix: str):
+        super().__init__(prefix=prefix)
         self.genfuel = genfuel
-        self.prefix = prefix
-
-    @property
-    def month_names(self) -> List[str]:
-        return [i.lower() for i in calendar.month_name if not i == ""]
-
-    def get_month_as_int(self, field: str) -> int:
-        return self.month_names.index(field.split("_")[-1]) + 1
-
-    @property
-    def month_fields(self) -> List[str]:
-        return [f"{self.prefix}_{i}" for i in self.month_names]
-
+ 
     @cached_property
     def df_melted(self):
         logging.info(f"melting across months for prefix {self.prefix}")
@@ -58,21 +47,9 @@ class MonthField:
         return melted
 
 
-class GenFuel(b.EIA):
+class GenFuel(b.GenFuel):
     def __init__(self, loc: str):
         super().__init__(loc=loc)
-
-    @cached_property
-    def years(self) -> List[GenFuelYear]:
-        return [GenFuelYear(eia=self, url_suffix=i) for i in self.zip_links]
-
-    @cached_property
-    def years_to_include(self) -> List[int]:
-        return [2020, 2019, 2018, 2017, 2016]
-
-    @property
-    def fp(self) -> str:
-        return f"{self.loc_processed}/gen_fuel.csv"
 
     @cached_property
     def df_comb(self) -> pd.DataFrame:
@@ -80,21 +57,6 @@ class GenFuel(b.EIA):
         return pd.concat(
             [yr.df_fix_fields for yr in self.years if yr.year in self.years_to_include]
         )
-
-    @property
-    def id_fields(self) -> List[str]:
-        return [
-            "plant_id",
-            "combined_heat_and_power_plant",
-            "nuclear_unit_id",
-            "operator_id",
-            "naics_code",
-            "plant_state",
-            "eia_sector_number",
-            "reported_prime_mover",
-            "reported_fuel_type_code",
-            "year",
-        ]
 
     @property
     def prefixes_fields_month(self) -> List[str]:
@@ -185,6 +147,11 @@ class GenFuel(b.EIA):
                 self.df_w_fuel_desc[field].replace(".", "0").astype("float")
             )
         return self.df_w_fuel_desc
+
+    @cached_property
+    def df_nyc_flag(self) -> pd.DataFrame:
+        logging.info("adding nyc flag")
+
 
     @cached_property
     def df(self) -> pd.DataFrame:
