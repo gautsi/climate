@@ -21,13 +21,13 @@ g.setup_logging(fp=fp_log)
 
 # %%
 # EIA data
-# eia = p.EIA(loc=loc)
+eia = p.EIA(loc=loc)
 
 # %%
-# eia.download()
+eia.download()
 
 # %%
-# eia.extract()
+eia.extract()
 
 # %%
 # plant geo data
