@@ -22,7 +22,7 @@ Previewing generation and fuel data...
 """
 
 # %% tags=["hide-input"]
-from climate.eia import analysis as a
+from climate.eia import analysis as a, utils as u
 import altair as alt
 import pandas as pd
 import geopandas as gpd
@@ -34,12 +34,11 @@ data_path = "./../../data/eia"
 gf = a.GenFuel(loc=data_path)
 
 # %%
-gf_df = gf.df.query("year < 2020")
-gf_df.head()
+gf.df.head()
 
 # %%
-start_year = gf_df.query("quantity > 0").year.min()
-end_year = gf_df.query("quantity > 0").year.max()
+start_year = gf.df.query("quantity > 0").year.min()
+end_year = gf.df.query("quantity > 0").year.max()
 glue("start_year", start_year)
 glue("end_year", end_year)
 
@@ -54,20 +53,19 @@ subtitle = (
 
 
 # %%
-nyc_gf_df = gf.df_nyc
-nyc_gf_df.head()
+gf.df_nyc.head()
 
 # %%
-ttl_nyc_gwh = nyc_gf_df.gwh.sum()
+ttl_nyc_gwh = gf.df_nyc.gwh.sum()
 glue("ttl_nyc_gwh", "{:,.0f}".format(ttl_nyc_gwh))
 glue(
     "avg_nyc_gwh_per_month",
-    "{:,.0f}".format(ttl_nyc_gwh / nyc_gf_df.year_month.nunique()),
+    "{:,.0f}".format(ttl_nyc_gwh / gf.df_nyc.year_month.nunique()),
 )
 
 # %%
 nyc_year_gwh = (
-    nyc_gf_df.assign(year_str=nyc_gf_df.year.astype(str))
+    gf.df_nyc.assign(year_str=gf.df_nyc.year.astype(str))
     .groupby(["year_str"], as_index=False)
     .agg({"gwh": "sum"})
     .query("gwh > 0")
@@ -91,13 +89,7 @@ glue("nyc_year_gwh_chart", nyc_year_gwh_chart)
 
 
 # %%
-nyc_gf_df_w_borough = u.add_borough(nyc_gf_df, dest_folder=data_path)
-
-# %%
-nyc_gf_df_w_borough.head()
-
-# %%
-borough_gwh = nyc_gf_df_w_borough.groupby(["borough"], as_index=False).agg(
+borough_gwh = gf.df_nyc.groupby(["borough"], as_index=False).agg(
     {"gwh": "sum"}
 )
 
@@ -126,24 +118,18 @@ glue("borough_gwh_chart", borough_gwh_chart)
 
 
 # %%
-nyc_plants = nyc_gf_df_w_borough.groupby(
-    ["plant_id", "plant_name", "operator_name", "borough"], as_index=False
-).agg({"gwh": "sum"})
-
-# %%
-nyc_top_plants = nyc_plants.sort_values("gwh", ascending=False).iloc[:10]
-glue("top_ten_pcnt", "{:.0%}".format(nyc_top_plants.gwh.sum() / nyc_plants.gwh.sum()))
-glue("top_ten_queens", len(nyc_top_plants.query("borough == 'Queens'")))
+glue("top_ten_pcnt", "{:.0%}".format(gf.df_nyc_plants_top.gwh.sum() / gf.df_nyc_plants.gwh.sum()))
+glue("top_ten_queens", len(gf.list_nyc_plants_top_queens))
 
 # %%
 nyc_top_plants_table = (
-    nyc_top_plants.sort_values("gwh", ascending=False)[
+    gf.df_nyc_plants_top.sort_values("gwh", ascending=False)[
         ["operator_name", "plant_name", "borough", "gwh"]
     ]
     .style.format({"gwh": "{:,.0f}"})
     .bar(subset=["gwh"])
     .apply(u.highlight_queens, subset=["borough"])
-    .set_table_styles(s.table_styles)
+    .set_table_styles(u.table_styles)
     .hide_index()
     .set_caption(subtitle)
 )
@@ -151,7 +137,7 @@ nyc_top_plants_table = (
 glue("nyc_top_plants_table", nyc_top_plants_table)
 
 # %%
-nyc_fuel = nyc_gf_df_w_borough.groupby(
+nyc_fuel = gf.df_nyc.groupby(
     ["fuel_desc", "physical_unit_label"], as_index=False
 ).agg({"elec_quantity": "sum", "gwh": "sum"})
 nyc_fuel["gwh_pcnt"] = nyc_fuel.gwh / nyc_fuel.gwh.sum()
@@ -164,7 +150,7 @@ glue(
 nyc_fuel_table = (
     nyc_fuel.sort_values("gwh", ascending=False)
     .style.format({"elec_quantity": "{:,.0f}", "gwh": "{:,.0f}", "gwh_pcnt": "{:.2%}"})
-    .set_table_styles(s.table_styles)
+    .set_table_styles(u.table_styles)
     .hide_index()
     .set_caption(subtitle)
 )
@@ -172,29 +158,19 @@ nyc_fuel_table = (
 glue("nyc_fuel_table", nyc_fuel_table)
 
 # %%
-queens_top_plants = nyc_top_plants.query("borough == 'Queens'")
-queens_top_gf_df = nyc_gf_df_w_borough.merge(
-    right=queens_top_plants[["plant_id"]],
-    on=["plant_id"],
-    how="inner",
-    validate="many_to_one",
-)
-
-
-# %%
-queens_top_gf_df.plant_name.unique()
+gf.df_nyc_plants_top_queens.plant_name.unique()
 
 # %%
 glue(
     "nat_gas_queens_pcnt",
     "{:.0%}".format(
-        queens_top_gf_df.query("fuel_desc == 'Natural Gas'").elec_quantity.sum()
-        / nyc_gf_df.query("fuel_desc == 'Natural Gas'").elec_quantity.sum()
+        gf.df_top_queens.query("fuel_desc == 'Natural Gas'").elec_quantity.sum()
+        / gf.df_nyc.query("fuel_desc == 'Natural Gas'").elec_quantity.sum()
     ),
 )
 
 # %%
-queens_fuel = queens_top_gf_df.groupby(
+queens_fuel = gf.df_top_queens.groupby(
     ["fuel_desc", "physical_unit_label"], as_index=False
 ).agg({"elec_quantity": "sum", "gwh": "sum"})
 queens_fuel["gwh_pcnt"] = queens_fuel.gwh / queens_fuel.gwh.sum()
@@ -221,7 +197,7 @@ queens_fuel_table = (
             "elec_quantity_pcnt_of_nyc": "{:.2%}",
         }
     )
-    .set_table_styles(s.table_styles)
+    .set_table_styles(u.table_styles)
     .hide_index()
     .set_caption("2019-July 2020, US EIA https://www.eia.gov/electricity/data/eia923/")
 )
@@ -234,14 +210,11 @@ glue("queens_fuel_table", queens_fuel_table)
 
 
 # %%
-queens_top_plants
-
-# %%
-for i in queens_top_plants.plant_id.values:
-    plant_info = queens_top_plants.query(f"plant_id == {i}").iloc[0]
+for i in gf.df_nyc_plants_top_queens.plant_id.values:
+    plant_info = gf.df_nyc_plants_top_queens.query(f"plant_id == {i}").iloc[0]
     glue(f"queens_top_gwh_pcnt_{i}", "{:.0%}".format(plant_info.gwh / ttl_nyc_gwh))
 
-    plant_gf_df = nyc_gf_df.query(f"plant_id == {i}")
+    plant_gf_df = gf.df_top_queens.query(f"plant_id == {i}")
     plant_gen_year = (
         plant_gf_df.assign(year_str=plant_gf_df.year.astype(str))
         .groupby(["year_str"], as_index=False)
@@ -269,7 +242,7 @@ for i in queens_top_plants.plant_id.values:
         f"queens_top_nat_gas_pcnt_{i}",
         "{:.0%}".format(
             plant_gf_df.query("fuel_desc == 'Natural Gas'").elec_quantity.sum()
-            / nyc_gf_df.query("fuel_desc == 'Natural Gas'").elec_quantity.sum()
+            / gf.df_nyc.query("fuel_desc == 'Natural Gas'").elec_quantity.sum()
         ),
     )
 
@@ -301,7 +274,7 @@ for i in queens_top_plants.plant_id.values:
                 "elec_quantity_pcnt_of_nyc": "{:.2%}",
             }
         )
-        .set_table_styles(s.table_styles)
+        .set_table_styles(u.table_styles)
         .hide_index()
         .set_caption(
             subtitle

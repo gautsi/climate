@@ -22,5 +22,9 @@ g.setup_logging(fp=fp_log, level=logging.INFO)
 # %%
 genfuel = p.GenFuel(loc=loc)
 
+
+# %%
+genfuel.plant_geo.gdf_nyc.head()
+
 # %%
 genfuel.save()

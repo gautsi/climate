@@ -177,6 +177,7 @@ class GenFuel(b.GenFuel):
 
     def get_df_nyc_flag(self) -> pd.DataFrame:
         logging.info("adding nyc flag")
+        self.df_replace_periods["plant_id"] = self.df_replace_periods["plant_id"].astype(int)
         return self.df_replace_periods.merge(
             right=self.plant_geo.gdf_nyc[["Plant_Code"]]
             .rename(columns={"Plant_Code": "plant_id"})
@@ -190,9 +191,9 @@ class GenFuel(b.GenFuel):
     def df_nyc_flag(self) -> pd.DataFrame:
         return self.cache.store(name="df_nyc_flag")(self.get_df_nyc_flag)()
 
-    @cached_property
-    def df_w_county(self) -> pd.DataFrame:
+    def get_df_w_county(self) -> pd.DataFrame:
         logging.info("adding county")
+        self.df_nyc_flag["plant_id"] = self.df_nyc_flag["plant_id"].astype(int)
         return self.df_nyc_flag.merge(
             right=self.plant_geo.gdf[["Plant_Code", "County"]].rename(
                 columns={"Plant_Code": "plant_id"}
@@ -203,7 +204,10 @@ class GenFuel(b.GenFuel):
         ).rename(columns={"County": "county"})
 
     @cached_property
-    def df_w_borough(self) -> pd.DataFrame:
+    def df_w_county(self) -> pd.DataFrame:
+        return self.cache.store(name="df_w_county")(self.get_df_w_county)()
+
+    def get_df_w_borough(self) -> pd.DataFrame:
         logging.info("adding borough name")
         df_boroughs = pd.DataFrame(
             [{"county": i.value.county, "borough": i.value.name} for i in b.NYCBoroughs]
@@ -217,13 +221,18 @@ class GenFuel(b.GenFuel):
         )
 
     @cached_property
+    def df_w_borough(self) -> pd.DataFrame:
+        return self.cache.store(name="df_w_borough")(self.get_df_w_borough)()
+
+
+    @cached_property
     def df(self) -> pd.DataFrame:
         logging.info("last processing steps")
         df = self.df_w_borough
-        df["gwh"] = df["netgen"] / 1e3
+        df["gwh"] = df["netgen"].astype(float) / 1e3
         df["physical_unit_label"] = df["physical_unit_label"].fillna("")
         df["year_month"] = df.apply(
-            lambda row: dt.datetime(year=row["year"], month=row["month"], day=1), axis=1
+            lambda row: dt.datetime(year=int(row["year"]), month=int(row["month"]), day=1), axis=1
         )
         return df
 

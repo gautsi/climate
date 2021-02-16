@@ -26,7 +26,18 @@ class GenFuel(b.GenFuel):
         return self.df_nyc_plants.sort_values("gwh", ascending=False).iloc[:10]
 
     @cached_property
+    def df_nyc_plants_top_queens(self) -> pd.DataFrame:
+        return self.df_nyc_plants_top.query("borough == 'Queens'")
+
+    @cached_property
     def list_nyc_plants_top_queens(self) -> List[Dict]:
-        return self.df_nyc_plants_top.query("borough == 'Queens'").to_dict(
-            orient="records"
+        return self.df_nyc_plants_top_queens.to_dict(orient="records")
+
+    @cached_property
+    def df_top_queens(self) -> pd.DataFrame:
+        return self.df_nyc.merge(
+            right=self.df_nyc_plants_top_queens[["plant_id"]],
+            on=["plant_id"],
+            how="inner",
+            validate="many_to_one",
         )

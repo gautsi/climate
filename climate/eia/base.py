@@ -262,7 +262,7 @@ class PlantGeo:
             & (
                 self.gdf.County.map(
                     lambda x: x is not None
-                    and x.lower() in [i.name for i in NYCBoroughs]
+                    and x.lower() in [i.value.county for i in NYCBoroughs]
                 )
             )
         ]
