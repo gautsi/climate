@@ -10,13 +10,14 @@ if get_ipython() is not None:
 # %%
 from climate.eia import process as p
 from pygsutils import general as g
+import logging
 
 # %%
 loc = "./../../data/eia"
 fp_log = f"{loc}/log_process_eia.log"
 
 # %%
-g.setup_logging(fp=fp_log)
+g.setup_logging(fp=fp_log, level=logging.INFO)
 
 # %%
 genfuel = p.GenFuel(loc=loc)
