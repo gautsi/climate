@@ -12,6 +12,10 @@ class GenFuel(b.GenFuel):
         super().__init__(loc=loc)
 
     @cached_property
+    def df_nys(self) -> pd.DataFrame:
+        return self.df[self.df.plant_state == "NY"]
+
+    @cached_property
     def df_nyc(self) -> pd.DataFrame:
         return self.df.query("nyc == 1")
 

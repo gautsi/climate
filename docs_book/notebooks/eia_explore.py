@@ -17,14 +17,18 @@ Previewing generation and fuel data...
 """
 
 # %% tags=["hide-input"]
-from climate.eia import read as r, utils as u
+from climate.eia import analysis as a, utils as u
 import altair as alt
 import pandas as pd
 import geopandas as gpd
+from pygsutils import data as d
 
 data_path = "./../../data/eia"
-df = r.GenFuel(loc=data_path).df
-df.head()
+
+# %%
+gf = a.GenFuel(loc=data_path)
+
+gf.df.head()
 
 # %% [markdown]
 """
@@ -40,7 +44,7 @@ color = alt.Color("general_fuel_type", legend=alt.Legend(title="Fuel type"), sor
 """
 
 # %%
-fm_yr_general = df.groupby(["year", "general_fuel_type"], as_index=False).agg({"gwh": "sum"})
+fm_yr_general = gf.df.groupby(["year", "general_fuel_type"], as_index=False).agg({"gwh": "sum"})
 
 
 # %%
@@ -94,10 +98,8 @@ fm_yr_pcnt_chrt
 """
 
 # %% tags=["hide-input"]
-ny_df = df[df.plant_state == "NY"]
-
 ny_month_netgen = (
-    ny_df.groupby(["year_month"], as_index=False).agg({"gwh": "sum"})
+    gf.df_nys.groupby(["year_month"], as_index=False).agg({"gwh": "sum"})
     # .query("gwh > 0")
 )
 
@@ -116,7 +118,7 @@ alt.Chart(ny_month_netgen).mark_bar().encode(x="year_month", y="gwh").configure_
 """
 
 # %%
-fm_yr_general = ny_df.groupby(["year", "general_fuel_type"], as_index=False).agg({"gwh": "sum"})
+fm_yr_general = gf.df_nys.groupby(["year", "general_fuel_type"], as_index=False).agg({"gwh": "sum"})
 
 
 # %%
@@ -164,7 +166,7 @@ fm_yr_pcnt_chrt = (
 fm_yr_pcnt_chrt
 
 # %%
-fm_mo = ny_df.groupby(["year_month", "general_fuel_type"], as_index=False).agg({"gwh": "sum"})
+fm_mo = gf.df_nys.groupby(["year_month", "general_fuel_type"], as_index=False).agg({"gwh": "sum"})
 
 # %%
 fm_mo_chrt = (
@@ -217,11 +219,11 @@ Which plants had the biggest month-to-month changes in generation between 2020-0
 """
 
 # %%
-ny_df[ny_df["year_month"] == "2020-04-01"].head()
+gf.df_nys[gf.df_nys["year_month"] == "2020-04-01"].head()
 
 
 # %%
-ny_plants = ny_df.groupby(["plant_id", "general_fuel_type", "year_month"], as_index=False).agg(
+ny_plants = gf.df_nys.groupby(["plant_id", "general_fuel_type", "year_month"], as_index=False).agg(
     {
         "plant_name": u.nonnull_unq_str,
         "operator_name": u.nonnull_unq_str,
