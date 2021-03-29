@@ -110,7 +110,7 @@ pycparser==2.20
 pydantic==1.7.3
 pydata-sphinx-theme==0.4.1
 pygeos==0.8
-Pygments==2.5.2
+Pygments==2.7.4
 -e git+https://github.com/gautsi/pygsutils.git@9a41a727badca3d8f7d90acdd7ff9ad169acfbbc#egg=pygsutils
 pylint==2.6.0
 pyparsing==2.4.6
