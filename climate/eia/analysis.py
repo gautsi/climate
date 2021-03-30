@@ -38,7 +38,15 @@ class GenFuel(b.GenFuel):
         return self.df_nyc_plants_top_queens.to_dict(orient="records")
 
     @cached_property
-    def df_top_queens(self) -> pd.DataFrame:
+    def df_queens(self) -> pd.DataFrame:
+        return self.df_nyc.query("borough == 'Queens'")
+    
+    @cached_property
+    def df_queens_plants(self) -> pd.DataFrame:
+        return self.df_nyc_plants.query("borough == 'Queens'")
+    
+    @cached_property
+    def df_queens_top(self) -> pd.DataFrame:
         return self.df_nyc.merge(
             right=self.df_nyc_plants_top_queens[["plant_id"]],
             on=["plant_id"],

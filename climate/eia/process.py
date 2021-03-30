@@ -51,7 +51,7 @@ class GenFuel(b.GenFuel):
     def __init__(self, loc: str):
         super().__init__(loc=loc)
         self.plant_geo = b.PlantGeo(loc=loc)
-        self.cache = c.DFCache(loc=f"{self.loc}/intermediate")
+        self.cache = c.DFCache()
 
     @cached_property
     def years(self) -> List[GenFuelYear]:
@@ -82,7 +82,8 @@ class GenFuel(b.GenFuel):
     def month_fields(self) -> List[MonthField]:
         return [MonthField(genfuel=self, prefix=i) for i in self.prefixes_fields_month]
 
-    def get_df_fillna(self) -> pd.DataFrame:
+    @c.DFCache(name="df_fillna")
+    def df_fillna(self) -> pd.DataFrame:
         logging.info("filling in 'None' for null values in the ids")
 
         df_fillna = self.df_comb.fillna(value={c: "None" for c in self.id_fields})
@@ -90,11 +91,8 @@ class GenFuel(b.GenFuel):
         assert len(df_fillna) == len(df_fillna[self.id_fields].drop_duplicates())
         return df_fillna
 
-    @cached_property
-    def df_fillna(self) -> pd.DataFrame:
-        return self.cache.store(name="df_fillna")(self.get_df_fillna)()
-
-    def get_df_lng_raw(self) -> pd.DataFrame:
+    @c.DFCache(name="df_lng_raw")
+    def df_lng_raw(self) -> pd.DataFrame:
         logging.info("generating long form data")
         df_lng_raw = None
         for month_field in self.month_fields:
@@ -109,10 +107,6 @@ class GenFuel(b.GenFuel):
                 )
         return df_lng_raw
 
-    @cached_property
-    def df_lng_raw(self) -> pd.DataFrame:
-        return self.cache.store(name="df_lng_raw")(self.get_df_lng_raw)()
-
     @property
     def fields_orig(self) -> List[str]:
         return [
@@ -122,7 +116,8 @@ class GenFuel(b.GenFuel):
             "physical_unit_label",
         ]
 
-    def get_df_lng_w_orig(self) -> pd.DataFrame:
+    @c.DFCache(name="df_lng_w_orig")
+    def df_lng_w_orig(self) -> pd.DataFrame:
         return self.df_lng_raw.merge(
             right=self.df_fillna.groupby(self.id_fields, as_index=False).agg(
                 {f: d.nonnull_unq_str for f in self.fields_orig}
@@ -131,10 +126,6 @@ class GenFuel(b.GenFuel):
             how="left",
             validate="many_to_one",
         )
-
-    @cached_property
-    def df_lng_w_orig(self) -> pd.DataFrame:
-        return self.cache.store(name="df_lng_w_orig")(self.get_df_lng_w_orig)()
 
     @property
     def df_fuel_types(self) -> pd.DataFrame:
@@ -148,7 +139,8 @@ class GenFuel(b.GenFuel):
             }
         )
 
-    def get_df_w_fuel_desc(self) -> pd.DataFrame:
+    @c.DFCache(name="df_w_fuel_desc")
+    def df_w_fuel_desc(self) -> pd.DataFrame:
         logging.info("adding fuel desc")
         return self.df_lng_w_orig.merge(
             right=self.df_fuel_types,
@@ -157,11 +149,8 @@ class GenFuel(b.GenFuel):
             validate="many_to_one",
         )
 
-    @cached_property
-    def df_w_fuel_desc(self) -> pd.DataFrame:
-        return self.cache.store(name="df_w_fuel_desc")(self.get_df_w_fuel_desc)()
-
-    def get_df_replace_periods(self) -> pd.DataFrame:
+    @c.DFCache(name="df_replace_periods")
+    def df_replace_periods(self) -> pd.DataFrame:
         logging.info("replacing periods with zeros")
         for field in self.prefixes_fields_month:
             self.df_w_fuel_desc[field] = (
@@ -169,15 +158,13 @@ class GenFuel(b.GenFuel):
             )
         return self.df_w_fuel_desc
 
-    @cached_property
-    def df_replace_periods(self) -> pd.DataFrame:
-        return self.cache.store(name="df_replace_periods")(
-            self.get_df_replace_periods
-        )()
 
-    def get_df_nyc_flag(self) -> pd.DataFrame:
+    @c.DFCache(name="df_nyc_flag")
+    def df_nyc_flag(self) -> pd.DataFrame:
         logging.info("adding nyc flag")
-        self.df_replace_periods["plant_id"] = self.df_replace_periods["plant_id"].astype(int)
+        self.df_replace_periods["plant_id"] = self.df_replace_periods[
+            "plant_id"
+        ].astype(int)
         return self.df_replace_periods.merge(
             right=self.plant_geo.gdf_nyc[["Plant_Code"]]
             .rename(columns={"Plant_Code": "plant_id"})
@@ -186,10 +173,6 @@ class GenFuel(b.GenFuel):
             how="left",
             validate="many_to_one",
         ).fillna(value={"nyc": 0})
-
-    @cached_property
-    def df_nyc_flag(self) -> pd.DataFrame:
-        return self.cache.store(name="df_nyc_flag")(self.get_df_nyc_flag)()
 
     def get_df_w_county(self) -> pd.DataFrame:
         logging.info("adding county")
@@ -224,7 +207,6 @@ class GenFuel(b.GenFuel):
     def df_w_borough(self) -> pd.DataFrame:
         return self.cache.store(name="df_w_borough")(self.get_df_w_borough)()
 
-
     @cached_property
     def df(self) -> pd.DataFrame:
         logging.info("last processing steps")
@@ -232,7 +214,10 @@ class GenFuel(b.GenFuel):
         df["gwh"] = df["netgen"].astype(float) / 1e3
         df["physical_unit_label"] = df["physical_unit_label"].fillna("")
         df["year_month"] = df.apply(
-            lambda row: dt.datetime(year=int(row["year"]), month=int(row["month"]), day=1), axis=1
+            lambda row: dt.datetime(
+                year=int(row["year"]), month=int(row["month"]), day=1
+            ),
+            axis=1,
         )
         return df
 

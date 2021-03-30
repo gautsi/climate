@@ -9,12 +9,18 @@ if get_ipython() is not None:
 
 # %%
 from climate.eia import process as p
-from pygsutils import general as g
+from pygsutils import general as g, cache as c
 import logging
 
 # %%
 loc = "./../../data/eia"
 fp_log = f"{loc}/log_process_eia.log"
+
+# %%
+c.set_loc(f"{loc}/intermediate")
+
+# %%
+print("hello")
 
 # %%
 g.setup_logging(fp=fp_log, level=logging.INFO)

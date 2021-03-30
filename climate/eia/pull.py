@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from typing import List, TypeVar
 from pygsutils import general as g
 import logging
+import time
 
 
 class EIAYear(b.EIAYear):
@@ -29,6 +30,7 @@ class EIA(b.EIA):
     def download(self) -> None:
         for yr in self.years:
             yr.download()
+            time.sleep(5)
 
     def extract(self) -> None:
         for yr in self.years:

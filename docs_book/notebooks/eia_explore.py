@@ -17,7 +17,7 @@ Previewing generation and fuel data...
 """
 
 # %% tags=["hide-input"]
-from climate.eia import analysis as a, utils as u
+from climate.eia import analysis as a, utils as u, base as b
 import altair as alt
 import pandas as pd
 import geopandas as gpd
@@ -36,7 +36,9 @@ gf.df.head()
 ### Generation over time
 """
 # %%
-color = alt.Color("general_fuel_type", legend=alt.Legend(title="Fuel type"), sort="descending")
+color = alt.Color(
+    "general_fuel_type", legend=alt.Legend(title="Fuel type"), sort="descending"
+)
 
 # %% [markdown]
 """
@@ -44,7 +46,9 @@ color = alt.Color("general_fuel_type", legend=alt.Legend(title="Fuel type"), sor
 """
 
 # %%
-fm_yr_general = gf.df.groupby(["year", "general_fuel_type"], as_index=False).agg({"gwh": "sum"})
+fm_yr_general = gf.df.groupby(["year", "general_fuel_type"], as_index=False).agg(
+    {"gwh": "sum"}
+)
 
 
 # %%
@@ -56,9 +60,7 @@ fm_yr_chrt = (
         y="gwh",
         color=color,
     )
-    .properties(
-        title={"text": "US yearly net generation fuel mix", "subtitle": "EIA"}
-    )
+    .properties(title={"text": "US yearly net generation fuel mix", "subtitle": "EIA"})
 )
 
 # %%
@@ -90,6 +92,65 @@ fm_yr_pcnt_chrt = (
 
 # %%
 fm_yr_pcnt_chrt
+
+# %% [markdown]
+"""
+### Generation by state and fuel
+"""
+
+# %%
+fm_yr_general_state = gf.df.groupby(
+    ["year", "plant_state", "general_fuel_type"], as_index=False
+).agg({"gwh": "sum"})
+
+# %%
+fm_yr_general_state_w_ttl = fm_yr_general_state.merge(
+    right=fm_yr_general_state.groupby(["plant_state", "year"], as_index=False)
+    .agg({"gwh": "sum"})
+    .rename(columns={"gwh": "ttl_gwh"})
+)
+
+# %%
+fm_yr_general_state_w_ttl["pcnt_gwh"] = (
+    fm_yr_general_state_w_ttl["gwh"] / fm_yr_general_state_w_ttl["ttl_gwh"]
+)
+
+
+# %%
+top_states = (
+    fm_yr_general_state_w_ttl.query("year == 2020")
+    .query("general_fuel_type == 'renewable'")
+    .sort_values("pcnt_gwh", ascending=False)
+    .iloc[:15][["plant_state"]]
+)
+
+# %%
+fm_yr_renew_state_top = fm_yr_general_state_w_ttl.query(
+    "general_fuel_type == 'renewable'"
+).merge(right=top_states, on=["plant_state"], how="inner", validate="many_to_one")
+
+# %%
+fm_yr_general_state_pcnt_chrt = (
+    alt.Chart(fm_yr_renew_state_top)
+    .mark_line()
+    .encode(
+        x="year:O",
+        y=alt.Y("pcnt_gwh", axis=alt.Axis(format="%", title="percent")),
+        color=alt.Color("plant_state"),
+    )
+    .properties(title={"text": "US renewable proportion by state", "subtitle": "EIA"})
+)
+
+
+text = fm_yr_general_state_pcnt_chrt.mark_text(
+    align="left",
+    baseline="middle",
+    dx=3,  # Nudges text to right so it doesn't appear on top of the bar
+).encode(text="plant_state")
+
+# %%
+fm_yr_general_state_pcnt_chrt + text
+
 
 # %% [markdown]
 """
@@ -118,7 +179,9 @@ alt.Chart(ny_month_netgen).mark_bar().encode(x="year_month", y="gwh").configure_
 """
 
 # %%
-fm_yr_general = gf.df_nys.groupby(["year", "general_fuel_type"], as_index=False).agg({"gwh": "sum"})
+fm_yr_general = gf.df_nys.groupby(["year", "general_fuel_type"], as_index=False).agg(
+    {"gwh": "sum"}
+)
 
 
 # %%
@@ -130,9 +193,7 @@ fm_yr_chrt = (
         y="gwh",
         color=color,
     )
-    .properties(
-        title={"text": "NYS yearly net generation fuel mix", "subtitle": "EIA"}
-    )
+    .properties(title={"text": "NYS yearly net generation fuel mix", "subtitle": "EIA"})
 )
 
 # %%
@@ -166,7 +227,9 @@ fm_yr_pcnt_chrt = (
 fm_yr_pcnt_chrt
 
 # %%
-fm_mo = gf.df_nys.groupby(["year_month", "general_fuel_type"], as_index=False).agg({"gwh": "sum"})
+fm_mo = gf.df_nys.groupby(["year_month", "general_fuel_type"], as_index=False).agg(
+    {"gwh": "sum"}
+)
 
 # %%
 fm_mo_chrt = (
@@ -223,13 +286,17 @@ gf.df_nys[gf.df_nys["year_month"] == "2020-04-01"].head()
 
 
 # %%
-ny_plants = gf.df_nys.groupby(["plant_id", "general_fuel_type", "year_month"], as_index=False).agg(
-    {
-        "plant_name": u.nonnull_unq_str,
-        "operator_name": u.nonnull_unq_str,
-        "gwh": "sum",
-    }
-).query("year_month < '2020-11-01'")
+ny_plants = (
+    gf.df_nys.groupby(["plant_id", "general_fuel_type", "year_month"], as_index=False)
+    .agg(
+        {
+            "plant_name": d.nonnull_unq_str,
+            "operator_name": d.nonnull_unq_str,
+            "gwh": "sum",
+        }
+    )
+    .query("year_month < '2020-11-01'")
+)
 
 # %%
 ny_plants.sort_values("gwh", ascending=False).head()
@@ -247,10 +314,18 @@ ny_plants["diff"] = ny_plants["gwh"] - ny_plants["prev_gwh"]
 ny_plants.query("year_month >= '2020-01-01'").sort_values("diff").head(10)
 
 # %%
-ny_plants.query("year_month >= '2020-01-01'").sort_values("diff", ascending=False).head(10)
+ny_plants.query("year_month >= '2020-01-01'").sort_values("diff", ascending=False).head(
+    10
+)
 
 # %%
-ny_plants_stats = ny_plants.groupby(["plant_id", "plant_name", "operator_name", "general_fuel_type"], as_index=False).agg({"gwh": "sum"}).sort_values("gwh", ascending=False)
+ny_plants_stats = (
+    ny_plants.groupby(
+        ["plant_id", "plant_name", "operator_name", "general_fuel_type"], as_index=False
+    )
+    .agg({"gwh": "sum"})
+    .sort_values("gwh", ascending=False)
+)
 
 # %%
 ny_plants_hist = (
@@ -274,12 +349,12 @@ ny_plants_hist
 """
 
 # %% tags=["hide-input"]
-ny_sector_netgen = u.add_sector_desc(
-    ny_gf_df.groupby(["eia_sector_number"], as_index=False).agg({"netgen": "sum"})
-)
-alt.Chart(ny_sector_netgen).mark_bar().encode(
-    y=alt.Y("eia_sector_desc", sort="-x"), x="netgen"
-).configure_axis(title=None).properties(title="NYS net generation (MWh) by sector")
+# ny_sector_netgen = u.add_sector_desc(
+#     ny_gf_df.groupby(["eia_sector_number"], as_index=False).agg({"netgen": "sum"})
+# )
+# alt.Chart(ny_sector_netgen).mark_bar().encode(
+#     y=alt.Y("eia_sector_desc", sort="-x"), x="netgen"
+# ).configure_axis(title=None).properties(title="NYS net generation (MWh) by sector")
 
 
 # %% [markdown]
@@ -288,10 +363,9 @@ alt.Chart(ny_sector_netgen).mark_bar().encode(
 ### Generation over time
 """
 # %% tags=["hide-input"]
-nyc_gf_df = u.add_nyc_flag(ny_gf_df, dest_folder=data_path).query("nyc == 1")
 
 nyc_month_netgen = (
-    nyc_gf_df.groupby(["year_month"], as_index=False)
+    gf.df_nyc.groupby(["year_month"], as_index=False)
     .agg({"netgen": "sum"})
     .query("netgen > 0")
 )
@@ -306,12 +380,12 @@ alt.Chart(nyc_month_netgen).mark_bar().encode(
 """
 
 # %% tags=["hide-input"]
-nyc_sector_netgen = u.add_sector_desc(
-    nyc_gf_df.groupby(["eia_sector_number"], as_index=False).agg({"netgen": "sum"})
-)
-alt.Chart(nyc_sector_netgen).mark_bar().encode(
-    y=alt.Y("eia_sector_desc", sort="-x"), x="netgen"
-).configure_axis(title=None).properties(title="NYC net generation (MWh) by sector")
+# nyc_sector_netgen = u.add_sector_desc(
+#     nyc_gf_df.groupby(["eia_sector_number"], as_index=False).agg({"netgen": "sum"})
+# )
+# alt.Chart(nyc_sector_netgen).mark_bar().encode(
+#     y=alt.Y("eia_sector_desc", sort="-x"), x="netgen"
+# ).configure_axis(title=None).properties(title="NYC net generation (MWh) by sector")
 
 # %% [markdown]
 """
@@ -320,19 +394,7 @@ alt.Chart(nyc_sector_netgen).mark_bar().encode(
 """
 
 # %%
-queens_gf_df = u.add_county(nyc_gf_df, dest_folder=data_path).query(
-    "County == 'Queens'"
-)
-queens_plants = queens_gf_df.groupby(["plant_id"], as_index=False).agg(
-    {
-        "plant_name": u.nonnull_unq_str,
-        "operator_name": u.nonnull_unq_str,
-        "netgen": "sum",
-    }
-)
-queens_plants[["operator_name", "plant_name", "netgen"]].sort_values(
-    "netgen", ascending=False
-).style.format({"netgen": "{:,.0f}"})
+gf.df_queens_plants.sort_values("gwh", ascending=False).style.format({"gwh": "{:,.0f}"})
 
 # %% [markdown]
 """
@@ -340,8 +402,8 @@ queens_plants[["operator_name", "plant_name", "netgen"]].sort_values(
 """
 
 # %% tags=["hide-input"]
-alt.Chart(queens_plants).mark_bar().encode(
-    y=alt.Y("plant_name", sort="-x"), x="netgen"
+alt.Chart(gf.df_queens_plants).mark_bar().encode(
+    y=alt.Y("plant_name", sort="-x"), x="gwh"
 ).configure_axis(title=None).properties(title="Queens net generation (MWh) by plant")
 
 # %% [markdown]
@@ -353,10 +415,15 @@ alt.Chart(queens_plants).mark_bar().encode(
 nbd_gdf = gpd.read_file(
     "https://data.cityofnewyork.us/api/geospatial/cpf4-rkhq?method=export&format=GeoJSON"
 )
-queens_nbd_gdf = nbd_gdf[nbd_gdf.boro_name == "Queens"]
-queens_plants_gdf = u.get_nyc_plants(dest_folder=data_path).query("County == 'Queens'")
 
-queens_top_plants = queens_plants.sort_values("netgen", ascending=False).iloc[:5]
+# %%
+queens_nbd_gdf = nbd_gdf[nbd_gdf.boro_name == "Queens"]
+
+# %%
+queens_plants_gdf = b.PlantGeo(loc=data_path).gdf_nyc.query("County == 'Queens'")
+
+# %%
+queens_top_plants = gf.df_queens_plants.sort_values("gwh", ascending=False).iloc[:5]
 queens_top_plants_gdf = queens_plants_gdf.rename(
     columns={"Plant_Code": "plant_id"}
 ).merge(

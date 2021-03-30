@@ -164,13 +164,13 @@ gf.df_nyc_plants_top_queens.plant_name.unique()
 glue(
     "nat_gas_queens_pcnt",
     "{:.0%}".format(
-        gf.df_top_queens.query("fuel_desc == 'Natural Gas'").elec_quantity.sum()
+        gf.df_queens_top.query("fuel_desc == 'Natural Gas'").elec_quantity.sum()
         / gf.df_nyc.query("fuel_desc == 'Natural Gas'").elec_quantity.sum()
     ),
 )
 
 # %%
-queens_fuel = gf.df_top_queens.groupby(
+queens_fuel = gf.df_queens_top.groupby(
     ["fuel_desc", "physical_unit_label"], as_index=False
 ).agg({"elec_quantity": "sum", "gwh": "sum"})
 queens_fuel["gwh_pcnt"] = queens_fuel.gwh / queens_fuel.gwh.sum()
@@ -214,7 +214,7 @@ for i in gf.df_nyc_plants_top_queens.plant_id.values:
     plant_info = gf.df_nyc_plants_top_queens.query(f"plant_id == {i}").iloc[0]
     glue(f"queens_top_gwh_pcnt_{i}", "{:.0%}".format(plant_info.gwh / ttl_nyc_gwh))
 
-    plant_gf_df = gf.df_top_queens.query(f"plant_id == {i}")
+    plant_gf_df = gf.df_queens_top.query(f"plant_id == {i}")
     plant_gen_year = (
         plant_gf_df.assign(year_str=plant_gf_df.year.astype(str))
         .groupby(["year_str"], as_index=False)
