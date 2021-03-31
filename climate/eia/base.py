@@ -54,7 +54,7 @@ class EIAYear:
         pos_fp = glob.glob(f"{self.loc_extract}/{fn_prefix}*.xlsx")
         assert (
             len(pos_fp) == 1
-        ), f"too many possible filepaths for generation data for {self.year}"
+        ), f"too many possible filepaths for generation data for {self.year}: {pos_fp}"
         return pos_fp[0]
 
     @property

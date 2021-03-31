@@ -142,11 +142,15 @@ fm_yr_general_state_pcnt_chrt = (
 )
 
 
-text = fm_yr_general_state_pcnt_chrt.mark_text(
-    align="left",
-    baseline="middle",
-    dx=3,  # Nudges text to right so it doesn't appear on top of the bar
-).encode(text="plant_state")
+text = (
+    fm_yr_general_state_pcnt_chrt.transform_filter(alt.datum.year == 2020)
+    .mark_text(
+        align="left",
+        baseline="middle",
+        dx=3,  # Nudges text to right so it doesn't appear on top of the bar
+    )
+    .encode(text="plant_state")
+)
 
 # %%
 fm_yr_general_state_pcnt_chrt + text
@@ -458,5 +462,7 @@ alt.Chart(queens_top_nbd_gdf).mark_geoshape(
     latitude="centroid_lat",
     text="ntaname",
 )
+
+# %%
 
 # %%
