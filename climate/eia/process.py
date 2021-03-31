@@ -51,21 +51,18 @@ class GenFuel(b.GenFuel):
     def __init__(self, loc: str):
         super().__init__(loc=loc)
         self.plant_geo = b.PlantGeo(loc=loc)
-        self.cache = c.DFCache()
 
     @cached_property
     def years(self) -> List[GenFuelYear]:
         return [GenFuelYear(eia=self, url_suffix=i) for i in self.zip_links]
 
-    def get_df_comb(self) -> pd.DataFrame:
+    @cached_property
+    @c.DFCache("df_comb")
+    def df_comb(self) -> pd.DataFrame:
         logging.info("combining gen fuel data across years")
         return pd.concat(
             [yr.df_fix_fields for yr in self.years if yr.year in self.years_to_include]
         )
-
-    @cached_property
-    def df_comb(self) -> pd.DataFrame:
-        return self.cache.store(name="df_comb")(self.get_df_comb)()
 
     @property
     def prefixes_fields_month(self) -> List[str]:
@@ -82,6 +79,7 @@ class GenFuel(b.GenFuel):
     def month_fields(self) -> List[MonthField]:
         return [MonthField(genfuel=self, prefix=i) for i in self.prefixes_fields_month]
 
+    @cached_property
     @c.DFCache(name="df_fillna")
     def df_fillna(self) -> pd.DataFrame:
         logging.info("filling in 'None' for null values in the ids")
@@ -91,6 +89,7 @@ class GenFuel(b.GenFuel):
         assert len(df_fillna) == len(df_fillna[self.id_fields].drop_duplicates())
         return df_fillna
 
+    @cached_property
     @c.DFCache(name="df_lng_raw")
     def df_lng_raw(self) -> pd.DataFrame:
         logging.info("generating long form data")
@@ -116,6 +115,7 @@ class GenFuel(b.GenFuel):
             "physical_unit_label",
         ]
 
+    @cached_property
     @c.DFCache(name="df_lng_w_orig")
     def df_lng_w_orig(self) -> pd.DataFrame:
         return self.df_lng_raw.merge(
@@ -139,6 +139,7 @@ class GenFuel(b.GenFuel):
             }
         )
 
+    @cached_property
     @c.DFCache(name="df_w_fuel_desc")
     def df_w_fuel_desc(self) -> pd.DataFrame:
         logging.info("adding fuel desc")
@@ -149,6 +150,7 @@ class GenFuel(b.GenFuel):
             validate="many_to_one",
         )
 
+    @cached_property
     @c.DFCache(name="df_replace_periods")
     def df_replace_periods(self) -> pd.DataFrame:
         logging.info("replacing periods with zeros")
@@ -159,6 +161,7 @@ class GenFuel(b.GenFuel):
         return self.df_w_fuel_desc
 
 
+    @cached_property
     @c.DFCache(name="df_nyc_flag")
     def df_nyc_flag(self) -> pd.DataFrame:
         logging.info("adding nyc flag")
@@ -174,7 +177,9 @@ class GenFuel(b.GenFuel):
             validate="many_to_one",
         ).fillna(value={"nyc": 0})
 
-    def get_df_w_county(self) -> pd.DataFrame:
+    @cached_property
+    @c.DFCache("df_w_county")
+    def df_w_county(self) -> pd.DataFrame:
         logging.info("adding county")
         self.df_nyc_flag["plant_id"] = self.df_nyc_flag["plant_id"].astype(int)
         return self.df_nyc_flag.merge(
@@ -187,10 +192,8 @@ class GenFuel(b.GenFuel):
         ).rename(columns={"County": "county"})
 
     @cached_property
-    def df_w_county(self) -> pd.DataFrame:
-        return self.cache.store(name="df_w_county")(self.get_df_w_county)()
-
-    def get_df_w_borough(self) -> pd.DataFrame:
+    @c.DFCache("df_w_borough")
+    def df_w_borough(self) -> pd.DataFrame:
         logging.info("adding borough name")
         df_boroughs = pd.DataFrame(
             [{"county": i.value.county, "borough": i.value.name} for i in b.NYCBoroughs]
@@ -202,10 +205,6 @@ class GenFuel(b.GenFuel):
             how="left",
             validate="many_to_one",
         )
-
-    @cached_property
-    def df_w_borough(self) -> pd.DataFrame:
-        return self.cache.store(name="df_w_borough")(self.get_df_w_borough)()
 
     @cached_property
     def df(self) -> pd.DataFrame:
