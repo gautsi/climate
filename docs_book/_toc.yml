@@ -13,7 +13,7 @@
 - part: EIA
   chapters:
   - file: content/eia/intro
-  - file: content/eia/eia_explore
+  - file: notebooks/eia_explore
 
 - part: Analysis
   chapters:
