@@ -103,7 +103,7 @@ prometheus-client==0.8.0
 prompt-toolkit==3.0.2
 psutil==5.7.2
 ptyprocess==0.6.0
-py==1.8.1
+py==1.10.0
 pybtex==0.22.2
 pybtex-docutils==0.2.2
 pycparser==2.20
