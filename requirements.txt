@@ -107,7 +107,7 @@ py==1.8.1
 pybtex==0.22.2
 pybtex-docutils==0.2.2
 pycparser==2.20
-pydantic==1.7.3
+pydantic==1.7.4
 pydata-sphinx-theme==0.4.1
 pygeos==0.8
 Pygments==2.5.2
